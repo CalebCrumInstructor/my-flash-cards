@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { signToken, AuthenticationError, UserInputError } = require('../utils/auth');
+const { signToken, AuthenticationError, UserInputError, emailHasAccount, emailDoesNotHaveAccount, incorrectPassword } = require('../utils/auth');
 const { dateScalar } = require('./scalar');
 
 const resolvers = {
@@ -27,20 +27,20 @@ const resolvers = {
         return { token, user };
       } catch (err) {
         console.log(err);
-        throw UserInputError;
+        throw emailHasAccount;
       }
     },
     loginUser: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw AuthenticationError;
+        throw emailDoesNotHaveAccount;
       }
 
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw AuthenticationError;
+        throw incorrectPassword;
       }
 
       const token = signToken(user);

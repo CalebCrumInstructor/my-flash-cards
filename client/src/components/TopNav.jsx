@@ -2,6 +2,7 @@ import { useState } from "react";
 import AuthServices from "../utils/auth";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleSideNav } from "../redux/slices/navSlice";
+import { toggleTheme, getTheme } from "../redux/slices/themeSlice";
 import { getUser } from "../redux/slices/userSlice";
 import UnstyledLink from "./UnstyledLink";
 
@@ -24,10 +25,17 @@ export default function TopNav() {
   const dispatch = useDispatch();
 
   const { isAuthenticated } = useSelector(getUser());
+  const { mode } = useSelector(getTheme());
 
   const handleLogout = (e) => {
     handleCloseUserMenu(null);
     AuthServices.logout();
+  };
+
+  const handleToggleTheme = () => {
+    handleCloseUserMenu(null);
+    localStorage.setItem("themeMode", mode === "light" ? "dark" : "light");
+    dispatch(toggleTheme());
   };
 
   const handleNavIconClick = () => {
@@ -114,8 +122,10 @@ export default function TopNav() {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                   >
-                    <MenuItem onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">Profile</Typography>
+                    <MenuItem onClick={handleToggleTheme}>
+                      <Typography textAlign="center">
+                        {mode === "light" ? "dark mode" : "light mode"}
+                      </Typography>
                     </MenuItem>
                     <MenuItem onClick={handleLogout}>
                       <Typography textAlign="center">Logout</Typography>

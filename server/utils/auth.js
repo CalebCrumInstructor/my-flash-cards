@@ -9,6 +9,21 @@ module.exports = {
       code: 'BAD_USER_INPUT',
     },
   }),
+  emailHasAccount: new GraphQLError('This email already has an account. Please go to the login page.', {
+    extensions: {
+      code: 'BAD_USER_INPUT',
+    },
+  }),
+  emailDoesNotHaveAccount: new GraphQLError('This email does not have an account. Please go to the sign up page.', {
+    extensions: {
+      code: 'BAD_USER_INPUT',
+    },
+  }),
+  incorrectPassword: new GraphQLError('Incorrect Password', {
+    extensions: {
+      code: 'BAD_USER_INPUT',
+    },
+  }),
   AuthenticationError: new GraphQLError('Could not authenticate user.', {
     extensions: {
       code: 'UNAUTHENTICATED',

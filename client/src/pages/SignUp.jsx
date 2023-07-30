@@ -24,30 +24,18 @@ import UnstyledLink from "../components/UnstyledLink";
 import Page from "../components/Page";
 import AuthService from "../utils/auth";
 
-const styles = {
-  form: {
-    display: "flex",
-    flexDirection: "Column",
-    width: "300px",
-  },
-  submitBtn: {
-    cursor: "pointer",
-  },
-};
-
 const headContent = (
   <>
-    <title>Change Me! - Sign Up</title>
-    <meta
-      name="description"
-      content="Sign Up page for Project-3 Starter Code."
-    />
+    <title>Sign Up - My-Flash-Cards</title>
+    <meta name="description" content="Sign Up page for My-Flash-Cards." />
   </>
 );
 
 export default function SignUp() {
   const [addUser, { error, data, loading }] = useMutation(ADD_USER);
   const { isAuthenticated } = useSelector(getUser());
+
+  const [displayedErrorText, setDisplayedErrorText] = useState("");
 
   const [registerCreds, setRegisterCreds] = useState({
     email: {
@@ -78,6 +66,7 @@ export default function SignUp() {
   });
 
   const handleChange = (event) => {
+    setDisplayedErrorText("");
     clearAllErrors(registerCreds, setRegisterCreds);
     const { name, value } = event.target;
 
@@ -92,6 +81,7 @@ export default function SignUp() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    setDisplayedErrorText("");
 
     if (!validateRegistrationOrLogin(registerCreds, setRegisterCreds, true))
       return;
@@ -112,6 +102,7 @@ export default function SignUp() {
       AuthService.login(data.addUser.token);
     } catch (e) {
       console.error(e);
+      setDisplayedErrorText(e.message);
     }
   };
 
@@ -210,6 +201,11 @@ export default function SignUp() {
                           registerCreds.secondPassword.errorMsg
                         }
                       />
+                      {displayedErrorText && (
+                        <Typography color={"error"}>
+                          {displayedErrorText}
+                        </Typography>
+                      )}
                       <Button
                         type="submit"
                         fullWidth
@@ -218,7 +214,7 @@ export default function SignUp() {
                         size="large"
                       >
                         {loading ? (
-                          <CircularProgress color="secondary" />
+                          <CircularProgress color="inherit" />
                         ) : (
                           "Create Account"
                         )}

@@ -3,10 +3,14 @@ import { createTheme } from '@mui/material/styles';
 
 // A custom theme for this app
 // https://mui.com/material-ui/customization/theming/
-const theme = createTheme({
+export const lightTheme = {
   palette: {
-
+    mode: 'light'
   },
-});
+};
 
-export default theme;
+export const darkTheme = {
+  palette: {
+    mode: 'dark'
+  },
+};

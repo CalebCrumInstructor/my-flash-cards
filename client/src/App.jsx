@@ -7,7 +7,7 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
-
+import CustomThemeProvider from "./components/CustomThemeProvider";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter } from "react-router-dom";
 import AllRoutes from "./pages/AllRoutes";
@@ -38,9 +38,11 @@ function App() {
       <HelmetProvider>
         <BrowserRouter>
           <Provider store={store}>
-            <Auth>
-              <AllRoutes />
-            </Auth>
+            <CustomThemeProvider>
+              <Auth>
+                <AllRoutes />
+              </Auth>
+            </CustomThemeProvider>
           </Provider>
         </BrowserRouter>
       </HelmetProvider>
