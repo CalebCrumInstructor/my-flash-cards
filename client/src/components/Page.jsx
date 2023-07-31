@@ -6,6 +6,7 @@ import { Container, Stack } from "@mui/material";
 
 import TopNav from "./TopNav";
 import SideNav from "./SideNav";
+import BottomNavBar from "./BottomNav";
 
 const defaultHeadContent = (
   <>
@@ -21,6 +22,7 @@ export default function Page({
   isProtected = false,
   headContent = defaultHeadContent,
   withSideNav = true,
+  withBottomNav = true,
   children,
 }) {
   const { isAuthenticated } = useSelector(getUser());
@@ -40,6 +42,7 @@ export default function Page({
             )}
           </Container>
         </Stack>
+        {withBottomNav && <BottomNavBar />}
       </Stack>
     </>
   );

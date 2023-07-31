@@ -7,10 +7,10 @@ const headContent = (
   </>
 );
 
-export default function Dashboard() {
+export default function HomeFolder() {
   return (
     <Page isProtected={true} headContent={headContent}>
-      <div>Dashboard</div>
+      <div>Starred</div>
     </Page>
   );
 }
