@@ -1,7 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Page404 from "./Page404";
-import Dashboard from "./Dashboard";
+import HomeFolder from "./HomeFolder";
+import Starred from "./Starred";
 import Login from "./Login";
 import SignUp from "./SignUp";
 
@@ -9,7 +10,8 @@ export default function AllRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/home-folder" element={<HomeFolder />} />
+      <Route path="/starred" element={<Starred />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<Page404 />} />

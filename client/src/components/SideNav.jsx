@@ -13,6 +13,7 @@ import UnstyledLink from "./UnstyledLink";
 import { navWidth } from "../theme/defaultPalette";
 import FolderIcon from "@mui/icons-material/Folder";
 import StarIcon from "@mui/icons-material/Star";
+import { useLocation } from "react-router-dom";
 
 function VerticalNavListItem({
   sideNavOpen,
@@ -20,6 +21,7 @@ function VerticalNavListItem({
   primaryText = "",
   href = "/",
   viewable = false,
+  selected = false,
 }) {
   if (!viewable) return null;
   return (
@@ -47,6 +49,7 @@ function VerticalNavListItem({
                   duration: theme.transitions.duration.shorter,
                 }),
             }}
+            selected={selected}
           >
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText primary={primaryText} className="line-clamp-1" />
@@ -59,6 +62,7 @@ function VerticalNavListItem({
 
 export default function SideNav() {
   const { sideNavOpen } = useSelector(getNav());
+  const { pathname } = useLocation();
 
   return (
     <Paper
@@ -80,12 +84,16 @@ export default function SideNav() {
           sideNavOpen={sideNavOpen}
           primaryText={"Home Folder"}
           viewable={true}
+          href={"/home-folder"}
+          selected={pathname === "/home-folder"}
         />
         <VerticalNavListItem
           icon={<StarIcon />}
           sideNavOpen={sideNavOpen}
           primaryText={"Starred"}
           viewable={true}
+          href={"/starred"}
+          selected={pathname === "/starred"}
         />
       </List>
     </Paper>
