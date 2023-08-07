@@ -8,9 +8,9 @@ import {
   Tooltip,
 } from "@mui/material";
 import { useSelector } from "react-redux";
-import { getNav } from "../redux/slices/navSlice";
-import UnstyledLink from "./UnstyledLink";
-import { navWidth } from "../theme/defaultPalette";
+import { getNav } from "../../redux/slices/navSlice";
+import UnstyledLink from "../UnstyledLink";
+import { navWidth } from "../../theme/defaultPalette";
 import FolderIcon from "@mui/icons-material/Folder";
 import StarIcon from "@mui/icons-material/Star";
 import { useLocation } from "react-router-dom";

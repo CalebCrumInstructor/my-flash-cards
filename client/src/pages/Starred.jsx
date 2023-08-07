@@ -1,4 +1,7 @@
 import Page from "../components/Page";
+import { Stack, Typography } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
+import DefaultLayout from "../components/layouts/DefaultLayout";
 
 const headContent = (
   <>
@@ -10,7 +13,9 @@ const headContent = (
 export default function HomeFolder() {
   return (
     <Page isProtected={true} headContent={headContent}>
-      <div>Starred</div>
+      <DefaultLayout icon={<StarIcon fontSize="large" />} title={"Starred"}>
+        <div>hello</div>
+      </DefaultLayout>
     </Page>
   );
 }
