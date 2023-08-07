@@ -1,4 +1,7 @@
 import Page from "../components/Page";
+import FolderIcon from "@mui/icons-material/Folder";
+import { Stack, Typography } from "@mui/material";
+import DefaultLayout from "../components/layouts/DefaultLayout";
 
 const headContent = (
   <>
@@ -10,7 +13,12 @@ const headContent = (
 export default function HomeFolder() {
   return (
     <Page isProtected={true} headContent={headContent}>
-      <div>HomeFolder</div>
+      <DefaultLayout
+        icon={<FolderIcon fontSize="large" />}
+        title={"Home Folder"}
+      >
+        <div>hello</div>
+      </DefaultLayout>
     </Page>
   );
 }

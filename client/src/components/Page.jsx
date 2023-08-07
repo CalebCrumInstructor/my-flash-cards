@@ -4,9 +4,9 @@ import { getUser } from "../redux/slices/userSlice";
 
 import { Container, Stack } from "@mui/material";
 
-import TopNav from "./TopNav";
-import SideNav from "./SideNav";
-import BottomNavBar from "./BottomNav";
+import TopNav from "./nav/TopNav";
+import SideNav from "./nav/SideNav";
+import BottomNavBar from "./nav/BottomNav";
 
 const defaultHeadContent = (
   <>
@@ -31,7 +31,7 @@ export default function Page({
     <>
       <Helmet>{headContent}</Helmet>
       <Stack height={"100vh"}>
-        <TopNav />
+        <TopNav withSideNav={withSideNav} />
         <Stack flexGrow={1} direction={"row"}>
           {withSideNav && <SideNav />}
           <Container maxWidth="xl" sx={{ display: "flex" }}>

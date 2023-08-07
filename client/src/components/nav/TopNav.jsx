@@ -1,10 +1,12 @@
 import { useState } from "react";
-import AuthServices from "../utils/auth";
+import AuthServices from "../../utils/auth";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleSideNav } from "../redux/slices/navSlice";
-import { toggleTheme, getTheme } from "../redux/slices/themeSlice";
-import { getUser } from "../redux/slices/userSlice";
-import UnstyledLink from "./UnstyledLink";
+import { toggleSideNav } from "../../redux/slices/navSlice";
+import { toggleTheme, getTheme } from "../../redux/slices/themeSlice";
+import { getUser } from "../../redux/slices/userSlice";
+import UnstyledLink from "../UnstyledLink";
+import { useLocation } from "react-router-dom";
+import FolderIcon from "@mui/icons-material/Folder";
 
 import {
   AppBar,
@@ -17,12 +19,17 @@ import {
   Tooltip,
   MenuItem,
   Stack,
+  useMediaQuery,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-export default function TopNav() {
+const routesWithHomeButtonArr = ["/"];
+
+export default function TopNav({ withSideNav }) {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
+  const isMediumOrUp = useMediaQuery((theme) => theme.breakpoints.up("md"));
 
   const { isAuthenticated } = useSelector(getUser());
   const { mode } = useSelector(getTheme());
@@ -63,23 +70,19 @@ export default function TopNav() {
             flexGrow={1}
           >
             <Stack direction={"row"} alignItems={"center"} spacing={2}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleNavIconClick}
-                color="inherit"
-                sx={{
-                  display: {
-                    xs: "none",
-                    md: "inline-flex",
-                  },
-                }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <UnstyledLink to={"/"}>
+              {withSideNav && isMediumOrUp && (
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleNavIconClick}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
+              )}
+              <UnstyledLink to={isAuthenticated ? "/home-folder" : "/"}>
                 <Typography
                   variant="h6"
                   noWrap
@@ -95,7 +98,19 @@ export default function TopNav() {
             </Stack>
             <Stack direction={"row"} alignItems={"center"}>
               {isAuthenticated ? (
-                <>
+                <Stack direction={"row"} spacing={2}>
+                  {routesWithHomeButtonArr.includes(pathname) &&
+                    isMediumOrUp && (
+                      <UnstyledLink to={"/home-folder"}>
+                        <Button
+                          variant="outlined"
+                          color="inherit"
+                          startIcon={<FolderIcon />}
+                        >
+                          Home Folder
+                        </Button>
+                      </UnstyledLink>
+                    )}
                   <Tooltip title="Open settings">
                     <IconButton
                       onClick={handleOpenUserMenu}
@@ -131,7 +146,7 @@ export default function TopNav() {
                       <Typography textAlign="center">Logout</Typography>
                     </MenuItem>
                   </Menu>
-                </>
+                </Stack>
               ) : (
                 <Stack direction={"row"} spacing={2}>
                   <UnstyledLink to={"/login"}>
