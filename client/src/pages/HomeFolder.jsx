@@ -2,15 +2,24 @@ import Page from "../components/Page";
 import FolderIcon from "@mui/icons-material/Folder";
 import { Stack, Typography } from "@mui/material";
 import DefaultLayout from "../components/layouts/DefaultLayout";
+import { useQuery } from "@apollo/client";
+import { GET_ROOT_FOLDER } from "../graphql/queries";
 
 const headContent = (
   <>
-    <title>Change Me! - Home</title>
-    <meta name="description" content="This is the home page of my app." />
+    <title>Home Folder - My-Flash-Cards</title>
+    <meta
+      name="description"
+      content="View all your folders and card decks here."
+    />
   </>
 );
 
 export default function HomeFolder() {
+  const { loading, data, error } = useQuery(GET_ROOT_FOLDER);
+
+  console.log(data);
+
   return (
     <Page isProtected={true} headContent={headContent}>
       <DefaultLayout

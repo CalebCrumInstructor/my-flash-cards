@@ -13,3 +13,35 @@ export const QUERY_ME = gql`
   }
 `;
 
+// Define the recursive fragment
+const folderFragment = gql`
+  fragment FolderDetails on DeckFolder {
+    _id
+    title
+    isPublic
+    isFolder
+    isDeckFolderReference
+    cardCount
+    createdAt
+    updatedAt
+  }
+`;
+
+// Define the recursive query using the fragment
+export const GET_ROOT_FOLDER = gql`
+  ${folderFragment}
+  query GetRootFolderDepthOfFour {
+    rootFolderDepthOfFour {
+      ...FolderDetails
+      subFolder {
+        ...FolderDetails
+        subFolder {
+          ...FolderDetails
+          subFolder {
+            ...FolderDetails
+          }
+        }
+      }
+    }
+  }
+`;

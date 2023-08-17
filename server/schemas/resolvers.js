@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, DeckFolder } = require('../models');
 const { signToken, AuthenticationError, UserInputError, emailHasAccount, emailDoesNotHaveAccount, incorrectPassword } = require('../utils/auth');
 const { dateScalar } = require('./scalar');
 
@@ -14,6 +14,38 @@ const resolvers = {
         const data = await User.findById(context.user._id).select('-__v -password');
 
         return data
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    rootFolderDepthOfFour: async (parent, args, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      try {
+        const data = await User.findById(context.user._id)
+          .select('_id')
+          .populate([
+            {
+              path: 'rootFolder',
+              select: '-cards -__v',
+              populate: {
+                path: 'subFolder',
+                select: ' -__v',
+                populate: {
+                  path: 'subFolder',
+                  select: '-cards -__v',
+                  populate: {
+                    path: 'subFolder',
+                    select: '-cards -__v',
+                  }
+                }
+              }
+            }
+          ])
+
+        return data.rootFolder;
       } catch (err) {
         console.log(err);
       }
