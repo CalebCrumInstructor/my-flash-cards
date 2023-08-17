@@ -1,37 +1,59 @@
 const db = require('../config/connection');
-const { School, Class, Professor } = require('../models');
+const { User, DeckFolder, Card } = require('../models');
+const userJson = require('./user.json');
+const decksJson = require('./decks.json');
 
-const schoolData = require('./schoolData.json');
-const classData = require('./classData.json');
-const professorData = require('./professorData.json');
+const handleSubFolderCreation = async (DeckFolder, deckFolderObj, parentDeckFolderId) => {
+  try {
+    const newDeckFolderObj = {
+      ...deckFolderObj,
+      parentDeckFolder: parentDeckFolderId
+    };
+    delete newDeckFolderObj.subFolder;
+
+    if (!newDeckFolderObj.isFolder) {
+      const deck = await DeckFolder.create(newDeckFolderObj);
+      return deck;
+    }
+
+
+    const deck = await DeckFolder.create(newDeckFolderObj);
+
+    for (const subDeckFolderObj of deckFolderObj.subFolder) {
+      const subDeck = await handleSubFolderCreation(DeckFolder, subDeckFolderObj, deck._id);
+
+      deck.subFolder.push(subDeck._id);
+    };
+
+    await deck.save();
+
+    return deck;
+  } catch (err) {
+    console.log(err);
+  };
+};
 
 db.once('open', async () => {
-  // clean database
-  await School.deleteMany({});
-  await Class.deleteMany({});
-  await Professor.deleteMany({});
-
   // bulk create each model
-  const schools = await School.insertMany(schoolData);
-  const classes = await Class.insertMany(classData);
-  const professors = await Professor.insertMany(professorData);
+  try {
 
-  for (newClass of classes) {
-    // randomly add each class to a school
-    const tempSchool = schools[Math.floor(Math.random() * schools.length)];
-    tempSchool.classes.push(newClass._id);
-    await tempSchool.save();
+    // ! Clear DB
+    await DeckFolder.deleteMany({});
+    await User.deleteMany({});
 
-    // randomly add a professor to each class
-    const tempProfessor = professors[Math.floor(Math.random() * professors.length)];
-    newClass.professor = tempProfessor._id;
-    await newClass.save();
+    const userData = await User.create(userJson);
 
-    // reference class on professor model, too
-    tempProfessor.classes.push(newClass._id);
-    await tempProfessor.save();
+    for (const deckFolderObj of decksJson) {
+      const deck = await handleSubFolderCreation(DeckFolder, deckFolderObj, null);
+      userData.rootFolder.push(deck._id);
+    };
+
+    await userData.save();
+
+    console.log('Seeding Complete');
+  } catch (err) {
+    console.log(err);
   }
 
-  console.log('all done!');
   process.exit(0);
 });

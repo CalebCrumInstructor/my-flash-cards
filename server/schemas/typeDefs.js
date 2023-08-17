@@ -20,6 +20,7 @@ const typeDefs = `
     isPublic: Boolean!
     isFolder: Boolean!
     cards: [Card]
+    cardCount: Int
     parentDeckFolder: DeckFolder
     subFolder: [DeckFolder]
     createdByUser: User
@@ -44,6 +45,7 @@ const typeDefs = `
 
   type Query {
     me: User
+    rootFolderDepthOfFour: [DeckFolder]
   }
 
   type Mutation {

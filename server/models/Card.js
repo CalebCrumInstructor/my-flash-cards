@@ -1,4 +1,5 @@
 const { Schema, Types } = require('mongoose');
+const bcrypt = require('bcrypt')
 
 const cardSchema = new Schema(
   {
@@ -28,18 +29,5 @@ const cardSchema = new Schema(
     id: false
   }
 );
-
-cardSchema.pre('save', async function (next) {
-  if (this.isModified('frontContent')) {
-    const saltRounds = 10;
-    this.password = await bcrypt.hash(this.password, saltRounds);
-  }
-  if (this.isModified('backContent')) {
-    const saltRounds = 10;
-    this.password = await bcrypt.hash(this.password, saltRounds);
-  }
-
-  next();
-});
 
 module.exports = cardSchema;

@@ -19,6 +19,11 @@ const deckFolderSchema = new Schema(
       default: false
     },
     cards: [cardSchema],
+    cardCount: {
+      type: Number,
+      default: 0,
+      required: true
+    },
     parentDeckFolder: {
       type: Schema.Types.ObjectId,
       ref: 'DeckFolder'
@@ -53,11 +58,19 @@ const deckFolderSchema = new Schema(
   },
   {
     toJSON: {
-      getters: true
+      getters: true,
+      virtuals: true
     },
     id: false
   }
 );
+
+// ! Will need to add more code to ensure cardCount stays up to date
+deckFolderSchema.pre('save', async function (next) {
+  this.cardCount = this.cards.length;
+
+  next();
+});
 
 const DeckFolder = model('DeckFolder', deckFolderSchema);
 
