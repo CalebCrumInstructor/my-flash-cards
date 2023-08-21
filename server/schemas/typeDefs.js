@@ -43,9 +43,35 @@ const typeDefs = `
     user: User
   }
 
+  type DeckObjForArr {
+    selected: Boolean
+    _id: String
+    title: String
+    cardCount: Int
+  }
+
+  type FolderObjForArr {
+    open: Boolean
+    _id: String
+    title: String
+  }
+
+  type RootFolderDepthOfFourType {
+    rootFolder: [DeckFolder]
+    deckArr: [DeckObjForArr]
+    folderArr: [FolderObjForArr]
+  }
+
+  type DeckFolderDepthOfFourType {
+    subFolder: [DeckFolder]
+    deckArr: [DeckObjForArr]
+    folderArr: [FolderObjForArr]
+  }
+
   type Query {
     me: User
-    rootFolderDepthOfFour: [DeckFolder]
+    rootFolderDepthOfFour: RootFolderDepthOfFourType
+    deckFolderDepthOfFourByIdPrivate(_id: String!): DeckFolderDepthOfFourType
   }
 
   type Mutation {

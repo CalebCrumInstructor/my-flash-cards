@@ -3,11 +3,12 @@ const { User, DeckFolder, Card } = require('../models');
 const userJson = require('./user.json');
 const decksJson = require('./decks.json');
 
-const handleSubFolderCreation = async (DeckFolder, deckFolderObj, parentDeckFolderId) => {
+const handleSubFolderCreation = async (DeckFolder, deckFolderObj, parentDeckFolderId, userId) => {
   try {
     const newDeckFolderObj = {
       ...deckFolderObj,
-      parentDeckFolder: parentDeckFolderId
+      parentDeckFolder: parentDeckFolderId,
+      createdByUser: userId
     };
     delete newDeckFolderObj.subFolder;
 
@@ -20,7 +21,7 @@ const handleSubFolderCreation = async (DeckFolder, deckFolderObj, parentDeckFold
     const deck = await DeckFolder.create(newDeckFolderObj);
 
     for (const subDeckFolderObj of deckFolderObj.subFolder) {
-      const subDeck = await handleSubFolderCreation(DeckFolder, subDeckFolderObj, deck._id);
+      const subDeck = await handleSubFolderCreation(DeckFolder, subDeckFolderObj, deck._id, userId);
 
       deck.subFolder.push(subDeck._id);
     };
@@ -44,7 +45,7 @@ db.once('open', async () => {
     const userData = await User.create(userJson);
 
     for (const deckFolderObj of decksJson) {
-      const deck = await handleSubFolderCreation(DeckFolder, deckFolderObj, null);
+      const deck = await handleSubFolderCreation(DeckFolder, deckFolderObj, null, userData._id);
       userData.rootFolder.push(deck._id);
     };
 

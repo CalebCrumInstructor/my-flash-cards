@@ -64,6 +64,8 @@ export default function SideNav() {
   const { sideNavOpen } = useSelector(getNav());
   const { pathname } = useLocation();
 
+  console.log(navWidth);
+
   return (
     <Paper
       square
@@ -76,6 +78,9 @@ export default function SideNav() {
           xs: "none",
           md: "block",
         },
+        height: "100vh",
+        position: "fixed",
+        zIndex: 100,
       }}
     >
       <List>

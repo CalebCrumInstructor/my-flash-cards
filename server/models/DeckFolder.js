@@ -30,7 +30,8 @@ const deckFolderSchema = new Schema(
     },
     createdByUser: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
+      required: true
     },
     subFolder: [
       {

@@ -22,6 +22,9 @@ const folderFragment = gql`
     isFolder
     isDeckFolderReference
     cardCount
+    parentDeckFolder {
+      _id
+    }
     createdAt
     updatedAt
   }
@@ -32,13 +35,57 @@ export const GET_ROOT_FOLDER = gql`
   ${folderFragment}
   query GetRootFolderDepthOfFour {
     rootFolderDepthOfFour {
-      ...FolderDetails
+      deckArr {
+        selected
+        _id
+        title
+        cardCount
+      }
+      folderArr {
+        open
+        _id
+        title
+      }
+      rootFolder {
+        ...FolderDetails
+        subFolder {
+          ...FolderDetails
+          subFolder {
+            ...FolderDetails
+            subFolder {
+              ...FolderDetails
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_SUB_FOLDER_BY_ID_PRIVATE = gql`
+  ${folderFragment}
+  query GetDeckFolderDepthOfFourByIdPrivate($_id: String!) {
+    deckFolderDepthOfFourByIdPrivate(_id: $_id) {
+      deckArr {
+        selected
+        _id
+        title
+        cardCount
+      }
+      folderArr {
+        open
+        _id
+        title
+      }
       subFolder {
         ...FolderDetails
         subFolder {
           ...FolderDetails
           subFolder {
             ...FolderDetails
+            subFolder {
+              ...FolderDetails
+            }
           }
         }
       }
