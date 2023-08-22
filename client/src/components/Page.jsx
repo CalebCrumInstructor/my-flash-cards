@@ -33,8 +33,6 @@ export default function Page({
   const { isMediumOrUp } = useBreakpoints();
   const { sideNavOpen } = useSelector(getNav());
 
-  console.log(navWidth);
-
   return (
     <>
       <Helmet>{headContent}</Helmet>
@@ -52,9 +50,7 @@ export default function Page({
                 xs: "none",
                 md: "block",
               },
-              height: "100vh",
-              // position: "fixed",
-              // zIndex: 100,
+              height: "100%",
             }}
           ></Box>
           <Container

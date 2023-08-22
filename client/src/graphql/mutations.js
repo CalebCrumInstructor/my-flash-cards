@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { folderFragment } from './fragments';
 
 export const LOGIN_USER = gql`
   mutation LoginUserMutation($email: String!, $password: String!) {
@@ -33,3 +34,12 @@ export const ADD_USER = gql`
     }
   }
 `;
+
+export const CREATE_FOLDER = gql`
+  ${folderFragment}
+  mutation CreateFolder($title: String!, $parentDeckFolderId: String) {
+    createFolder(title: $title, parentDeckFolderId: $parentDeckFolderId) {
+      ...FolderDetails
+    }
+  }
+`

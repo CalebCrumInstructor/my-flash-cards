@@ -12,6 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useBreakpoints } from "../../hooks";
 
+import AddItemToList from "./AddItemToList";
+import CreateFolderDialog from "../Dialogs/CreateFolderDialog";
+
 export default function HomeFolderList() {
   const dispatch = useDispatch();
   const [errorMsg, setErrorMsg] = useState("");
@@ -43,6 +46,7 @@ export default function HomeFolderList() {
         <Typography>{errorMsg}</Typography>
       ) : (
         <List>
+          <AddItemToList paddingLeft={0} />
           {rootFolder.map((deckFolder) => (
             <ListDeckFolderItem
               deckFolder={deckFolder}
@@ -51,6 +55,7 @@ export default function HomeFolderList() {
           ))}
         </List>
       )}
+      <CreateFolderDialog />
     </Card>
   );
 }

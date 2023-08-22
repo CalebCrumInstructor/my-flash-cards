@@ -1,4 +1,6 @@
 import { gql } from '@apollo/client';
+import { folderFragment } from './fragments';
+
 
 export const QUERY_ME = gql`
   query getMeQuery {
@@ -13,22 +15,6 @@ export const QUERY_ME = gql`
   }
 `;
 
-// Define the recursive fragment
-const folderFragment = gql`
-  fragment FolderDetails on DeckFolder {
-    _id
-    title
-    isPublic
-    isFolder
-    isDeckFolderReference
-    cardCount
-    parentDeckFolder {
-      _id
-    }
-    createdAt
-    updatedAt
-  }
-`;
 
 // Define the recursive query using the fragment
 export const GET_ROOT_FOLDER = gql`

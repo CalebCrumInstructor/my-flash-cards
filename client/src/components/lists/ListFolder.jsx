@@ -17,9 +17,11 @@ import FolderIcon from "@mui/icons-material/Folder";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
 import ListDeckFolderItem from "./ListDeckFolderItem";
 import LoadDeckFolders from "./LoadDeckFolders";
+import AddItemToList from "./AddItemToList";
 
 export default function ListFolder({
   deckFolder,
@@ -33,9 +35,20 @@ export default function ListFolder({
     <>
       <ListItem
         secondaryAction={
-          <IconButton edge="end">
-            <MoreVertIcon />
-          </IconButton>
+          <Stack direction={"row"}>
+            <IconButton>
+              <MoreVertIcon />
+            </IconButton>
+            <IconButton
+            // sx={{
+            //   "&:hover": {
+            //     cursor: "grab",
+            //   },
+            // }}
+            >
+              <DragIndicatorIcon />
+            </IconButton>
+          </Stack>
         }
         disablePadding
         sx={{
@@ -55,6 +68,7 @@ export default function ListFolder({
         </ListItemButton>
       </ListItem>
       <Collapse in={open} timeout={"auto"} unmountOnExit>
+        <AddItemToList paddingLeft={paddingLeft + 4} parentDeckFolderId={_id} />
         {subFolder ? (
           subFolder.map((deckFolder) => (
             <ListDeckFolderItem

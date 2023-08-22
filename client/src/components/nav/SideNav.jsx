@@ -64,8 +64,6 @@ export default function SideNav() {
   const { sideNavOpen } = useSelector(getNav());
   const { pathname } = useLocation();
 
-  console.log(navWidth);
-
   return (
     <Paper
       square

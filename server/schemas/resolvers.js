@@ -130,6 +130,47 @@ const resolvers = {
 
       return { token, user };
     },
+    createFolder: async (parent, { parentDeckFolderId, title }, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      if (!parentDeckFolderId) {
+        const userData = await User.findById(context.user._id);
+
+        const deckFolderData = await DeckFolder.create({
+          title,
+          createdByUser: context.user._id,
+          parentDeckFolder: null,
+          isFolder: true
+        });
+
+        userData.rootFolder.push(deckFolderData);
+
+        await userData.save();
+
+        return deckFolderData;
+      }
+
+      const parentDeckFolderData = await DeckFolder.findById(parentDeckFolderId)
+
+      if (parentDeckFolderData.createdByUser.toString() !== context.user._id) {
+        throw AuthenticationError;
+      }
+
+      const deckFolderData = await DeckFolder.create({
+        title,
+        createdByUser: context.user._id,
+        parentDeckFolder: parentDeckFolderData._id,
+        isFolder: true
+      });
+
+      parentDeckFolderData.subFolder.push(deckFolderData);
+
+      await parentDeckFolderData.save();
+
+      return deckFolderData;
+    },
   }
 };
 
