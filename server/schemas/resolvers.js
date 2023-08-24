@@ -216,6 +216,28 @@ const resolvers = {
 
       return deckFolderData;
     },
+    editFolderTitle: async (parent, { title, deckFolderId }, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      const deckFolderData = await DeckFolder.findOneAndUpdate(
+        {
+          _id: deckFolderId,
+          createdByUser: context.user._id
+        },
+        {
+          title
+        },
+        {
+          new: true,
+          runValidators: true
+        });
+
+      return {
+        message: 'successful edit'
+      };
+    },
   }
 };
 

@@ -71,6 +71,10 @@ const typeDefs = `
     folderArr: [FolderObjForArr]
   }
 
+  type SuccessObj {
+    message: String
+  }
+
   type Query {
     me: User
     rootFolderDepthOfFour: RootFolderDepthOfFourType
@@ -81,6 +85,7 @@ const typeDefs = `
     addUser(email: String!, password: String!, username: String!): Auth
     loginUser(email: String!, password: String!): Auth
     createFolder(title: String!, parentDeckFolderId: String): DeckFolder
+    editFolderTitle(title: String!, deckFolderId: String!): SuccessObj
     deleteFolder(parentDeckFolderId: String, deckFolderId: String!): DeckFolder
   }
 `;

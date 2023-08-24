@@ -54,6 +54,27 @@ export const returnFilteredDeckFolder = (deckFolder, deckFolderIdForRemoval) => 
   return deckFolder;
 };
 
+export const editValueInDeckFolder = (deckFolder, deckFolderId, key, value) => {
+  const { isFolder, _id } = deckFolder;
+  if (_id === deckFolderId) {
+    return {
+      ...deckFolder,
+      [key]: value
+    };
+  }
+
+  if (!isFolder) {
+    return deckFolder;
+  };
+
+  const reconstructedSubFolder = deckFolder?.subFolder?.map((ob) => {
+    return editValueInDeckFolder(ob, deckFolderId, key, value);
+  });
+
+  return { ...deckFolder, subFolder: reconstructedSubFolder };
+
+};
+
 
 const findAndReturnFolders = (deckFolder, foldersObj, decksObj, state) => {
   const { _id, isFolder } = deckFolder;

@@ -12,7 +12,19 @@ export default function FolderOptionsMenu({
   deckFolderId,
 }) {
   const dispatch = useDispatch();
+
   const openCreateFolderDialog = () => {
+    handleCloseMenu();
+    dispatch(
+      setDialogOpen({
+        open: true,
+        dialogName: "createFolderDialog",
+        parentDeckFolderId: deckFolderId,
+      })
+    );
+  };
+
+  const openDeleteFolderDialog = () => {
     handleCloseMenu();
     dispatch(
       setDialogOpen({
@@ -21,6 +33,17 @@ export default function FolderOptionsMenu({
         parentDeckFolderId,
         deckFolderId,
         isFolder: true,
+      })
+    );
+  };
+
+  const openEditFolderDialog = () => {
+    handleCloseMenu();
+    dispatch(
+      setDialogOpen({
+        open: true,
+        dialogName: "editFolderDialog",
+        deckFolderId,
       })
     );
   };
@@ -42,19 +65,19 @@ export default function FolderOptionsMenu({
       open={Boolean(anchorEl)}
       onClose={handleCloseMenu}
     >
-      <MenuItem>
+      <MenuItem onClick={openCreateFolderDialog}>
         <ListItemIcon>
           <AddCircleOutlineIcon />
         </ListItemIcon>
         <ListItemText sx={{ marginRight: 0.5 }}>Add</ListItemText>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={openEditFolderDialog}>
         <ListItemIcon>
           <EditIcon />
         </ListItemIcon>
         <ListItemText sx={{ marginRight: 0.5 }}>Edit</ListItemText>
       </MenuItem>
-      <MenuItem onClick={openCreateFolderDialog}>
+      <MenuItem onClick={openDeleteFolderDialog}>
         <ListItemIcon>
           <DeleteForeverIcon color="error" />
         </ListItemIcon>

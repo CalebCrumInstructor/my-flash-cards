@@ -11,17 +11,24 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setDialogOpen,
   getHomeFolder,
-  updateStateWithSubFolderWithNewFolder,
+  updateAfterFolderEdit,
 } from "../../redux/slices/homeFolderSlice";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_FOLDER } from "../../graphql/mutations";
+import { EDIT_FOLDER_TITLE } from "../../graphql/mutations";
 import { GET_ROOT_FOLDER } from "../../graphql/queries";
 import { clearAllErrors } from "../../lib/helperFunctions";
+import EditIcon from "@mui/icons-material/Edit";
 
-export default function CreateFolderDialog() {
+export default function EditFolderDialog() {
   const dispatch = useDispatch();
-  const [createFolder, { loading, error }] = useMutation(CREATE_FOLDER);
+  const [editFolderTitle, { loading, error }] = useMutation(EDIT_FOLDER_TITLE);
+  const { dialogs, folders } = useSelector(getHomeFolder());
+
+  const { open, deckFolderId } = dialogs.editFolderDialog;
+
+  // console.log(deckFolderId, folders[deckFolderId]?.title);
+
   const [folderInput, setFolderInput] = useState({
     title: {
       val: "",
@@ -31,14 +38,23 @@ export default function CreateFolderDialog() {
     },
   });
 
-  const { dialogs } = useSelector(getHomeFolder());
+  useEffect(() => {
+    if (!deckFolderId) return;
+    const newObj = {
+      ...folderInput,
+    };
+
+    newObj.title.val = folders[deckFolderId].title;
+
+    setFolderInput(newObj);
+  }, [deckFolderId]);
 
   const handleClose = () => {
     dispatch(
       setDialogOpen({
         open: false,
-        dialogName: "createFolderDialog",
-        parentDeckFolderId: null,
+        dialogName: "editFolderDialog",
+        deckFolderId: null,
       })
     );
   };
@@ -73,14 +89,10 @@ export default function CreateFolderDialog() {
     try {
       const variables = {
         title: folderInput.title.val,
+        deckFolderId,
       };
 
-      if (dialogs.createFolderDialog.parentDeckFolderId) {
-        variables.parentDeckFolderId =
-          dialogs.createFolderDialog.parentDeckFolderId;
-      }
-
-      const { data } = await createFolder({
+      const { data } = await editFolderTitle({
         variables,
       });
 
@@ -90,12 +102,7 @@ export default function CreateFolderDialog() {
         return;
       }
 
-      dispatch(
-        updateStateWithSubFolderWithNewFolder({
-          parentDeckFolderId: dialogs.createFolderDialog.parentDeckFolderId,
-          deckFolder: data.createFolder,
-        })
-      );
+      dispatch(updateAfterFolderEdit(variables));
       handleClose();
     } catch (err) {
       console.log(err);
@@ -103,14 +110,9 @@ export default function CreateFolderDialog() {
   };
 
   return (
-    <Dialog
-      open={dialogs.createFolderDialog.open}
-      onClose={handleClose}
-      fullWidth
-      maxWidth="xs"
-    >
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
       <form onSubmit={handleOnSubmit}>
-        <DialogTitle>New Folder</DialogTitle>
+        <DialogTitle>Edit Folder</DialogTitle>
         <DialogContent>
           <TextField
             sx={{
@@ -126,6 +128,7 @@ export default function CreateFolderDialog() {
             autoComplete="title"
             error={folderInput.title.error}
             helperText={folderInput.title.error && folderInput.title.errorMsg}
+            value={folderInput.title.val}
           />
         </DialogContent>
         <DialogActions>
@@ -134,8 +137,13 @@ export default function CreateFolderDialog() {
           ) : (
             <>
               <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit" variant="contained" color="primary">
-                Create
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                startIcon={<EditIcon />}
+              >
+                Edit
               </Button>
             </>
           )}

@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { returnEditedDeckFolder, returnEditedDeckFolderAfterFolderCreation, returnFilteredDeckFolder, updatedFoldersAndDecks } from '../../lib/helperFunctions';
+import {
+  returnEditedDeckFolder,
+  returnEditedDeckFolderAfterFolderCreation,
+  returnFilteredDeckFolder,
+  updatedFoldersAndDecks,
+  editValueInDeckFolder
+} from '../../lib/helperFunctions';
 
 const initialState = {
   rootFolder: [],
@@ -15,6 +21,10 @@ const initialState = {
       isFolder: false,
       parentDeckFolderId: null,
       deckFolderId: null,
+    },
+    editFolderDialog: {
+      open: false,
+      deckFolderId: null
     }
   }
 }
@@ -25,6 +35,7 @@ export const homeFolderSlice = createSlice({
   reducers: {
     setInitialState: (state, { payload }) => {
       const { folderArr, deckArr, rootFolder } = payload.rootFolderDepthOfFour;
+      const { folders, decks } = state;
 
       const folderObj = {};
 
@@ -32,6 +43,11 @@ export const homeFolderSlice = createSlice({
         folderObj[folder._id] = {
           ...folder
         };
+
+        if (folders[folder._id]) {
+          folderObj[folder._id].open = folders[folder._id].open;
+        };
+
       });
 
       state.folders = folderObj;
@@ -42,6 +58,11 @@ export const homeFolderSlice = createSlice({
         deckObj[deck._id] = {
           ...deck
         };
+
+        if (decks[deck._id]) {
+          deckObj[deck._id].selected = decks[deck._id].selected;
+        };
+
       });
 
       state.decks = deckObj;
@@ -50,12 +71,17 @@ export const homeFolderSlice = createSlice({
     },
     updateStateWithSubFolder: (state, { payload }) => {
       const { folderArr, deckArr, subFolder } = payload.deckFolderDepthOfFourByIdPrivate;
+      const { folders, decks } = state;
 
       const folderObj = {};
 
       folderArr.forEach((folder) => {
         folderObj[folder._id] = {
           ...folder
+        };
+
+        if (folders[folder._id]) {
+          folderObj[folder._id].open = folders[folder._id].open;
         };
       });
 
@@ -70,6 +96,11 @@ export const homeFolderSlice = createSlice({
         deckObj[deck._id] = {
           ...deck
         };
+
+        if (decks[deck._id]) {
+          deckObj[deck._id].selected = decks[deck._id].selected;
+        };
+
       });
 
       state.decks = {
@@ -93,6 +124,14 @@ export const homeFolderSlice = createSlice({
       }
 
       state.rootFolder = state.rootFolder.map((deckFolderObj) => returnEditedDeckFolderAfterFolderCreation(deckFolderObj, parentDeckFolderId, deckFolder))
+    },
+    updateAfterFolderEdit: (state, { payload }) => {
+      const { deckFolderId, title } = payload;
+
+      state.folders[deckFolderId].title = title;
+
+      state.rootFolder = state.rootFolder.map((deckFolderObj) => editValueInDeckFolder(deckFolderObj, deckFolderId, 'title', title))
+
     },
     removeDeckFolder: (state, { payload }) => {
       const { deckFolderId, parentDeckFolderId, isFolder } = payload;
@@ -156,7 +195,16 @@ export const homeFolderSlice = createSlice({
   },
 })
 
-export const { setInitialState, toggleFolderOpen, updateStateWithSubFolder, updateStateWithSubFolderWithNewFolder, toggleDialog, setDialogOpen, removeDeckFolder } = homeFolderSlice.actions
+export const {
+  setInitialState,
+  toggleFolderOpen,
+  updateStateWithSubFolder,
+  updateStateWithSubFolderWithNewFolder,
+  toggleDialog,
+  setDialogOpen,
+  removeDeckFolder,
+  updateAfterFolderEdit
+} = homeFolderSlice.actions
 
 export const getHomeFolder = () => (state) =>
   state?.[homeFolderSlice.name];

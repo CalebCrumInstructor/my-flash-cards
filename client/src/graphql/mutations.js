@@ -52,3 +52,11 @@ export const DELETE_FOLDER = gql`
     }
   }
 `
+
+export const EDIT_FOLDER_TITLE = gql`
+  mutation EditFolderTitle($title: String!, $deckFolderId: String!) {
+    editFolderTitle(title: $title, deckFolderId: $deckFolderId) {
+      message
+    }
+  }
+`

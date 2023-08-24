@@ -15,6 +15,7 @@ import { useBreakpoints } from "../../hooks";
 import AddItemToList from "./AddItemToList";
 import CreateFolderDialog from "../Dialogs/CreateFolderDialog";
 import DeleteDeckFolderDialog from "../Dialogs/DeleteDeckFolderDialog";
+import EditFolderDialog from "../Dialogs/EditFolderDialog";
 
 export default function HomeFolderList() {
   const dispatch = useDispatch();
@@ -34,7 +35,8 @@ export default function HomeFolderList() {
       setErrorMsg("An Error Ocurred. Please, Log out and sign back in.");
       return;
     }
-    console.log("hfl", data);
+
+    console.log("AAAAAAAAAAHHHHHHHHH!");
     dispatch(setInitialState(data));
   }, [data]);
 
@@ -63,6 +65,7 @@ export default function HomeFolderList() {
       )}
       <CreateFolderDialog />
       <DeleteDeckFolderDialog />
+      <EditFolderDialog />
     </Card>
   );
 }
