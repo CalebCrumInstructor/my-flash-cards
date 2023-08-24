@@ -14,12 +14,17 @@ import { useBreakpoints } from "../../hooks";
 
 import AddItemToList from "./AddItemToList";
 import CreateFolderDialog from "../Dialogs/CreateFolderDialog";
+import DeleteDeckFolderDialog from "../Dialogs/DeleteDeckFolderDialog";
 
 export default function HomeFolderList() {
   const dispatch = useDispatch();
   const [errorMsg, setErrorMsg] = useState("");
   const { rootFolder } = useSelector(getHomeFolder());
-  const { loading, data, error } = useQuery(GET_ROOT_FOLDER);
+  // ! Will need to eventually add updating of this cache,
+  // ! for now make request each time component renders
+  const { loading, data, error } = useQuery(GET_ROOT_FOLDER, {
+    fetchPolicy: "network-only",
+  });
   const { isMediumOrUp } = useBreakpoints();
 
   useEffect(() => {
@@ -29,6 +34,7 @@ export default function HomeFolderList() {
       setErrorMsg("An Error Ocurred. Please, Log out and sign back in.");
       return;
     }
+    console.log("hfl", data);
     dispatch(setInitialState(data));
   }, [data]);
 
@@ -56,6 +62,7 @@ export default function HomeFolderList() {
         </List>
       )}
       <CreateFolderDialog />
+      <DeleteDeckFolderDialog />
     </Card>
   );
 }

@@ -16,11 +16,27 @@ import {
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_FOLDER } from "../../graphql/mutations";
+import { GET_ROOT_FOLDER } from "../../graphql/queries";
 import { clearAllErrors } from "../../lib/helperFunctions";
 
 export default function CreateFolderDialog() {
   const dispatch = useDispatch();
-  const [createFolder, { loading, error }] = useMutation(CREATE_FOLDER);
+  const [createFolder, { loading, error }] = useMutation(CREATE_FOLDER, {
+    // update(cache, { data: { createFolder } }) {
+    //   const { rootFolderDepthOfFour } = cache.readQuery({
+    //     query: GET_ROOT_FOLDER,
+    //   });
+    //   cache.writeQuery({
+    //     query: GET_ROOT_FOLDER,
+    //     data: {
+    //       rootFolderDepthOfFour: {
+    //         ...rootFolderDepthOfFour,
+    //         rootFolder: [],
+    //       },
+    //     },
+    //   });
+    // },
+  });
   const [folderInput, setFolderInput] = useState({
     title: {
       val: "",
@@ -35,7 +51,7 @@ export default function CreateFolderDialog() {
   const handleClose = () => {
     dispatch(
       setDialogOpen({
-        value: false,
+        open: false,
         dialogName: "createFolderDialog",
         parentDeckFolderId: null,
       })
@@ -102,7 +118,12 @@ export default function CreateFolderDialog() {
   };
 
   return (
-    <Dialog open={dialogs.createFolderDialog.open} onClose={handleClose}>
+    <Dialog
+      open={dialogs.createFolderDialog.open}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="xs"
+    >
       <form onSubmit={handleOnSubmit}>
         <DialogTitle>New Folder</DialogTitle>
         <DialogContent>

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { returnEditedDeckFolder, returnEditedDeckFolderAfterFolderCreation } from '../../lib/helperFunctions';
+import { returnEditedDeckFolder, returnEditedDeckFolderAfterFolderCreation, returnFilteredDeckFolder, updatedFoldersAndDecks } from '../../lib/helperFunctions';
 
 const initialState = {
   rootFolder: [],
@@ -9,6 +9,12 @@ const initialState = {
     createFolderDialog: {
       open: false,
       parentDeckFolderId: null
+    },
+    deleteDeckFolder: {
+      open: false,
+      isFolder: false,
+      parentDeckFolderId: null,
+      deckFolderId: null,
     }
   }
 }
@@ -88,6 +94,45 @@ export const homeFolderSlice = createSlice({
 
       state.rootFolder = state.rootFolder.map((deckFolderObj) => returnEditedDeckFolderAfterFolderCreation(deckFolderObj, parentDeckFolderId, deckFolder))
     },
+    removeDeckFolder: (state, { payload }) => {
+      const { deckFolderId, parentDeckFolderId, isFolder } = payload;
+
+      if (!isFolder) {
+        const decks = state.decks;
+        delete decks[deckFolderId];
+
+        state.decks = decks;
+
+        if (parentDeckFolderId) {
+          state.rootFolder = state.rootFolder.map((deckFolder) => returnFilteredDeckFolder(deckFolder, deckFolderId));
+
+        } else {
+          state.rootFolder = state.rootFolder.filter(({ _id }) => _id !== deckFolderId);
+        };
+
+        return;
+      }
+
+      const folders = state.folders;
+      delete folders[deckFolderId];
+
+      state.folders = folders;
+
+      if (parentDeckFolderId) {
+        const filteredRootFolder = state.rootFolder.map((deckFolder) => returnFilteredDeckFolder(deckFolder, deckFolderId));
+
+        const { foldersObj, decksObj } = updatedFoldersAndDecks(state, filteredRootFolder);
+
+        state.folders = foldersObj;
+        state.decks = decksObj;
+
+        state.rootFolder = filteredRootFolder;
+
+      } else {
+        state.rootFolder = state.rootFolder.filter(({ _id }) => _id !== deckFolderId);
+      };
+
+    },
     toggleFolderOpen: (state, { payload }) => {
       state.folders[payload].open = !state.folders[payload].open;
     },
@@ -95,16 +140,23 @@ export const homeFolderSlice = createSlice({
       state.dialogs[payload].open = !state.dialogs[payload].open
     },
     setDialogOpen: (state, { payload }) => {
-      const { value, dialogName, parentDeckFolderId = null } = payload;
+      const dialogValues = {
+        ...payload
+      };
 
-      state.dialogs[dialogName].open = value;
-      state.dialogs[dialogName].parentDeckFolderId = parentDeckFolderId;
+      delete dialogValues.dialogName;
+
+      state.dialogs[payload.dialogName] = {
+        ...state.dialogs[payload.dialogName],
+        ...dialogValues
+      }
+
 
     }
   },
 })
 
-export const { setInitialState, toggleFolderOpen, updateStateWithSubFolder, updateStateWithSubFolderWithNewFolder, toggleDialog, setDialogOpen } = homeFolderSlice.actions
+export const { setInitialState, toggleFolderOpen, updateStateWithSubFolder, updateStateWithSubFolderWithNewFolder, toggleDialog, setDialogOpen, removeDeckFolder } = homeFolderSlice.actions
 
 export const getHomeFolder = () => (state) =>
   state?.[homeFolderSlice.name];

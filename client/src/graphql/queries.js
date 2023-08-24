@@ -26,11 +26,13 @@ export const GET_ROOT_FOLDER = gql`
         _id
         title
         cardCount
+        parentDeckFolderId
       }
       folderArr {
         open
         _id
         title
+        parentDeckFolderId
       }
       rootFolder {
         ...FolderDetails

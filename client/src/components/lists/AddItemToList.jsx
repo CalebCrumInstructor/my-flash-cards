@@ -35,7 +35,7 @@ export default function AddItemToList({
     handleCloseMenu();
     dispatch(
       setDialogOpen({
-        value: true,
+        open: true,
         dialogName: "createFolderDialog",
         parentDeckFolderId,
       })

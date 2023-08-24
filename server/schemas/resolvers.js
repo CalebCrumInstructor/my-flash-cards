@@ -3,6 +3,20 @@ const { signToken, AuthenticationError, UserInputError, emailHasAccount, emailDo
 const { dateScalar } = require('./scalar');
 const createDeckAndFolderArrays = require('../lib/helperFunctions/createDeckAndFolderArrays')
 
+const removeFolders = async (objId) => {
+  const deckFolderData = await DeckFolder.findByIdAndUpdate(
+    objId,
+    {
+      status: 'removed'
+    },
+    {
+      new: true,
+      runValidators: true
+    });
+
+  await Promise.all(deckFolderData.subFolder.map(removeFolders));
+}
+
 const resolvers = {
   Date: dateScalar,
   Query: {
@@ -168,6 +182,37 @@ const resolvers = {
       parentDeckFolderData.subFolder.push(deckFolderData);
 
       await parentDeckFolderData.save();
+
+      return deckFolderData;
+    },
+    deleteFolder: async (parent, { parentDeckFolderId, deckFolderId }, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      const deckFolderData = await DeckFolder.findOneAndUpdate(
+        {
+          _id: deckFolderId,
+          createdByUser: context.user._id
+        },
+        {
+          status: 'removed'
+        },
+        {
+          new: true,
+          runValidators: true
+        });
+
+      await Promise.all(deckFolderData.subFolder.map(removeFolders));
+
+      if (!parentDeckFolderId) {
+        const userData = await User.findByIdAndUpdate(context.user._id, { $pull: { rootFolder: deckFolderId } });
+      } else {
+        const parentDeckFolderData = await DeckFolder.findOneAndUpdate({
+          _id: parentDeckFolderId,
+          createdByUser: context.user._id
+        }, { $pull: { subFolder: deckFolderId } });
+      }
 
       return deckFolderData;
     },

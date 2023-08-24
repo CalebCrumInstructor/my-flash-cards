@@ -67,7 +67,7 @@ export default function SideNav() {
   return (
     <Paper
       square
-      elevation={1}
+      elevation={0}
       sx={{
         width: sideNavOpen
           ? navWidth.drawerWidth

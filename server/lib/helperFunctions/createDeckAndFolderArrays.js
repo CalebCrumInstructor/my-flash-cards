@@ -5,7 +5,8 @@ const findAndReturnFolders = (deckFolder, folderArr, deckArr) => {
       selected: false,
       _id,
       title,
-      cardCount
+      cardCount,
+      parentDeckFolderId: parentDeckFolder ? parentDeckFolder : null
     })
     return;
   };
@@ -18,6 +19,7 @@ const findAndReturnFolders = (deckFolder, folderArr, deckArr) => {
     open: !Boolean(parentDeckFolder),
     _id,
     title,
+    parentDeckFolderId: parentDeckFolder ? parentDeckFolder : null
   });
 
 };

@@ -26,6 +26,7 @@ const typeDefs = `
     createdByUser: User
     isDeckFolderReference: Boolean!
     DeckFolderReference: DeckFolder
+    status: String
     createdAt: String
     updatedAt: String
   }
@@ -48,12 +49,14 @@ const typeDefs = `
     _id: String
     title: String
     cardCount: Int
+    parentDeckFolderId: ID
   }
 
   type FolderObjForArr {
     open: Boolean
     _id: String
     title: String
+    parentDeckFolderId: ID
   }
 
   type RootFolderDepthOfFourType {
@@ -78,6 +81,7 @@ const typeDefs = `
     addUser(email: String!, password: String!, username: String!): Auth
     loginUser(email: String!, password: String!): Auth
     createFolder(title: String!, parentDeckFolderId: String): DeckFolder
+    deleteFolder(parentDeckFolderId: String, deckFolderId: String!): DeckFolder
   }
 `;
 

@@ -9,7 +9,7 @@ import {
   Typography,
   Skeleton,
 } from "@mui/material";
-
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getFolderById } from "../../redux/slices/homeFolderSlice";
 
@@ -22,21 +22,32 @@ import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import ListDeckFolderItem from "./ListDeckFolderItem";
 import LoadDeckFolders from "./LoadDeckFolders";
 import AddItemToList from "./AddItemToList";
+import FolderOptionsMenu from "../Menus/FolderOptionsMenu";
 
 export default function ListFolder({
   deckFolder,
   handleListButtonOnClick,
   paddingLeft,
 }) {
-  const { title, _id, subFolder } = deckFolder;
+  const { title, _id, subFolder, parentDeckFolder } = deckFolder;
   const { open } = useSelector(getFolderById(_id));
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const handleOpenMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   return (
     <>
       <ListItem
         secondaryAction={
           <Stack direction={"row"}>
-            <IconButton>
+            <IconButton onClick={handleOpenMenu}>
               <MoreVertIcon />
             </IconButton>
             <IconButton
@@ -81,6 +92,12 @@ export default function ListFolder({
           <LoadDeckFolders marginLeft={paddingLeft + 4} _id={_id} />
         )}
       </Collapse>
+      <FolderOptionsMenu
+        handleCloseMenu={handleCloseMenu}
+        anchorEl={anchorEl}
+        parentDeckFolderId={parentDeckFolder?._id}
+        deckFolderId={_id}
+      />
     </>
   );
 }

@@ -6,7 +6,14 @@ export default function DefaultLayout({ icon, title, children }) {
 
   return (
     <Fade in={true}>
-      <Stack sx={{ paddingY: 3, width: "100%" }} spacing={3}>
+      <Stack
+        sx={{
+          paddingTop: isMediumOrUp ? 1 : 3,
+          paddingBottom: 3,
+          width: "100%",
+        }}
+        spacing={3}
+      >
         <Stack
           direction={"row"}
           alignItems={"center"}

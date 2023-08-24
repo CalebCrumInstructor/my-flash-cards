@@ -33,7 +33,7 @@ export default function BottomNavBar() {
           md: "none",
         },
       }}
-      elevation={1}
+      elevation={0}
     >
       <BottomNavigation showLabels value={setPageValue(pathname)}>
         <BottomNavigationAction

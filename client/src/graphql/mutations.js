@@ -43,3 +43,12 @@ export const CREATE_FOLDER = gql`
     }
   }
 `
+
+export const DELETE_FOLDER = gql`
+  mutation DeleteFolder($deckFolderId: String!, $parentDeckFolderId: String) {
+    deleteFolder(deckFolderId: $deckFolderId, parentDeckFolderId: $parentDeckFolderId) {
+      _id
+      status
+    }
+  }
+`

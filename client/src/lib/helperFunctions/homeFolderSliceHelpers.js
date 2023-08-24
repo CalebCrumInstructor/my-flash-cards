@@ -20,9 +20,7 @@ export const returnEditedDeckFolder = (deckFolder, deckFolderId, key, value) => 
 
 export const returnEditedDeckFolderAfterFolderCreation = (deckFolder, deckFolderId, value) => {
   const { isFolder, _id } = deckFolder;
-  console.log("hit me");
   if (_id === deckFolderId) {
-    console.log('Bingo!')
     return {
       ...deckFolder,
       subFolder: [...deckFolder.subFolder, value]
@@ -38,4 +36,55 @@ export const returnEditedDeckFolderAfterFolderCreation = (deckFolder, deckFolder
   });
 
   return { ...deckFolder, subFolder: reconstructedSubFolder };
+};
+
+export const returnFilteredDeckFolder = (deckFolder, deckFolderIdForRemoval) => {
+  const { isFolder, subFolder } = deckFolder;
+  if (!isFolder || !subFolder) return deckFolder;
+
+  for (let i = 0; i < subFolder.length; i++) {
+    const currentDeckFolder = subFolder[i];
+    if (currentDeckFolder._id === deckFolderIdForRemoval) {
+      deckFolder.subFolder.splice(i, 1);
+      return deckFolder;
+    }
+    returnFilteredDeckFolder(currentDeckFolder, deckFolderIdForRemoval);
+  };
+
+  return deckFolder;
+};
+
+
+const findAndReturnFolders = (deckFolder, foldersObj, decksObj, state) => {
+  const { _id, isFolder } = deckFolder;
+  const { folders, decks } = state;
+
+  if (!isFolder) {
+    decksObj[_id] = {
+      ...decks[_id]
+    }
+    return;
+  };
+
+  if (deckFolder.subFolder) {
+    deckFolder.subFolder.forEach((deckFolder) => findAndReturnFolders(deckFolder, foldersObj, decksObj, state));
+  };
+
+  foldersObj[_id] = {
+    ...folders[_id]
+  }
+
+};
+
+
+export const updatedFoldersAndDecks = (state, rootFolder) => {
+  const foldersObj = {};
+  const decksObj = {};
+
+  rootFolder.forEach((deckFolder) => findAndReturnFolders(deckFolder, foldersObj, decksObj, state));
+
+  return {
+    foldersObj,
+    decksObj
+  };
 };
