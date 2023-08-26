@@ -1,9 +1,8 @@
 import Page from "../components/Page";
 import FolderIcon from "@mui/icons-material/Folder";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, Grid } from "@mui/material";
 import DefaultLayout from "../components/layouts/DefaultLayout";
-import { useQuery } from "@apollo/client";
-import { GET_ROOT_FOLDER } from "../graphql/queries";
+import HomeFolderList from "../components/lists/HomeFolderList";
 
 const headContent = (
   <>
@@ -16,17 +15,17 @@ const headContent = (
 );
 
 export default function HomeFolder() {
-  const { loading, data, error } = useQuery(GET_ROOT_FOLDER);
-
-  console.log(data);
-
   return (
     <Page isProtected={true} headContent={headContent}>
       <DefaultLayout
-        icon={<FolderIcon fontSize="large" />}
+        icon={<FolderIcon fontSize="large" color="inherit" />}
         title={"Home Folder"}
       >
-        <div>hello</div>
+        <Grid container>
+          <Grid item xs={12} md={6}>
+            <HomeFolderList />
+          </Grid>
+        </Grid>
       </DefaultLayout>
     </Page>
   );

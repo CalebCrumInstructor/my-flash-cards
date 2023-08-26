@@ -67,7 +67,7 @@ export default function SideNav() {
   return (
     <Paper
       square
-      elevation={1}
+      elevation={0}
       sx={{
         width: sideNavOpen
           ? navWidth.drawerWidth
@@ -76,6 +76,9 @@ export default function SideNav() {
           xs: "none",
           md: "block",
         },
+        height: "100vh",
+        position: "fixed",
+        zIndex: 100,
       }}
     >
       <List>

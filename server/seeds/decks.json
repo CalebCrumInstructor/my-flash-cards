@@ -122,5 +122,51 @@
         ]
       }
     ]
+  },
+  {
+    "title": "Second Deeply Nested Folders level 1",
+    "isFolder": true,
+    "subFolder": [
+      {
+        "title": "Second Deeply Nested Folders level 2",
+        "isFolder": true,
+        "subFolder": [
+          {
+            "title": "Second Deeply Nested Folders level 3",
+            "isFolder": true,
+            "subFolder": [
+              {
+                "title": "Second Deeply Nested Folders level 4",
+                "isFolder": true,
+                "subFolder": [
+                  {
+                    "title": "Second Deeply Nested Folders level 5",
+                    "isFolder": true,
+                    "subFolder": [
+                      {
+                        "title": "Second Deeply Nested Folders level 6",
+                        "isFolder": true,
+                        "subFolder": [
+                          {
+                            "title": "Second Deeply Nested Deck",
+                            "isFolder": false,
+                            "cards": [
+                              {
+                                "frontContent": "Is this deck deeply nested in folders?",
+                                "backContent": "yes"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]

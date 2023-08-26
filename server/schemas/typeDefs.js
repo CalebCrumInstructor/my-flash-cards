@@ -26,6 +26,7 @@ const typeDefs = `
     createdByUser: User
     isDeckFolderReference: Boolean!
     DeckFolderReference: DeckFolder
+    status: String
     createdAt: String
     updatedAt: String
   }
@@ -43,14 +44,50 @@ const typeDefs = `
     user: User
   }
 
+  type DeckObjForArr {
+    selected: Boolean
+    _id: String
+    title: String
+    cardCount: Int
+    parentDeckFolderId: ID
+  }
+
+  type FolderObjForArr {
+    open: Boolean
+    _id: String
+    title: String
+    parentDeckFolderId: ID
+  }
+
+  type RootFolderDepthOfFourType {
+    rootFolder: [DeckFolder]
+    deckArr: [DeckObjForArr]
+    folderArr: [FolderObjForArr]
+  }
+
+  type DeckFolderDepthOfFourType {
+    subFolder: [DeckFolder]
+    deckArr: [DeckObjForArr]
+    folderArr: [FolderObjForArr]
+  }
+
+  type SuccessObj {
+    message: String
+  }
+
   type Query {
     me: User
-    rootFolderDepthOfFour: [DeckFolder]
+    rootFolderDepthOfFour: RootFolderDepthOfFourType
+    deckFolderDepthOfFourByIdPrivate(_id: String!): DeckFolderDepthOfFourType
   }
 
   type Mutation {
     addUser(email: String!, password: String!, username: String!): Auth
     loginUser(email: String!, password: String!): Auth
+    createFolder(title: String!, parentDeckFolderId: String): DeckFolder
+    editFolderTitle(title: String!, deckFolderId: String!): SuccessObj
+    moveDeckFolder(deckFolderId: String!, oldParentFolderId: String, newParentFolderId: String): SuccessObj
+    deleteFolder(parentDeckFolderId: String, deckFolderId: String!): DeckFolder
   }
 `;
 

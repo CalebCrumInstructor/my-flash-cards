@@ -60,7 +60,7 @@ export default function TopNav({ withSideNav }) {
   };
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" color="inherit" elevation={0}>
       <Container maxWidth={false} disableGutters sx={{ px: 2 }}>
         <Toolbar disableGutters>
           <Stack

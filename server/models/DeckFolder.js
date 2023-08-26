@@ -1,6 +1,8 @@
 const { Schema, model, Types } = require('mongoose');
 const cardSchema = require('./Card');
 
+const validDeckStatus = ['inUse', 'removed',]
+
 const deckFolderSchema = new Schema(
   {
     title: {
@@ -30,7 +32,8 @@ const deckFolderSchema = new Schema(
     },
     createdByUser: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
+      required: true
     },
     subFolder: [
       {
@@ -46,6 +49,17 @@ const deckFolderSchema = new Schema(
     DeckFolderReference: {
       type: Schema.Types.ObjectId,
       ref: 'DeckFolder'
+    },
+    status: {
+      type: String,
+      required: true,
+      default: 'inUse',
+      validate: {
+        validator: function (value) {
+          return validDeckStatus.includes(value)
+        },
+        message: 'Invalid status value'
+      }
     },
     createdAt: {
       type: Date,
