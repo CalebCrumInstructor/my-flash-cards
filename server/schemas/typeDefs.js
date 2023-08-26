@@ -86,6 +86,7 @@ const typeDefs = `
     loginUser(email: String!, password: String!): Auth
     createFolder(title: String!, parentDeckFolderId: String): DeckFolder
     editFolderTitle(title: String!, deckFolderId: String!): SuccessObj
+    moveDeckFolder(deckFolderId: String!, oldParentFolderId: String, newParentFolderId: String): SuccessObj
     deleteFolder(parentDeckFolderId: String, deckFolderId: String!): DeckFolder
   }
 `;

@@ -12,6 +12,10 @@ import {
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getFolderById } from "../../redux/slices/homeFolderSlice";
+import { useMutation } from "@apollo/client";
+import { MOVE_DECK_FOLDER } from "../../graphql/mutations";
+import { useDispatch } from "react-redux";
+import { updateAfterFolderDeckMove } from "../../redux/slices/homeFolderSlice";
 
 import FolderIcon from "@mui/icons-material/Folder";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -24,15 +28,40 @@ import LoadDeckFolders from "./LoadDeckFolders";
 import AddItemToList from "./AddItemToList";
 import FolderOptionsMenu from "../Menus/FolderOptionsMenu";
 
+import { Draggable, Droppable } from "react-beautiful-dnd";
+
+const handleDragStart = (event, deckFolderId, oldParentFolderId) => {
+  event.stopPropagation();
+  event.dataTransfer.clearData();
+
+  const dragPreview = document.createElement("div");
+  event.dataTransfer.setDragImage(dragPreview, 0, 0);
+
+  const obj = {
+    deckFolderId,
+    oldParentFolderId,
+  };
+
+  event.dataTransfer.setData("text/plain", JSON.stringify(obj));
+};
+
 export default function ListFolder({
   deckFolder,
   handleListButtonOnClick,
   paddingLeft,
 }) {
+  const dispatch = useDispatch();
   const { title, _id, subFolder, parentDeckFolder } = deckFolder;
   const { open } = useSelector(getFolderById(_id));
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [secondAnchorEl, setSecondAnchorEl] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const [
+    moveDeckFolder,
+    { loading: moveDeckFolderLoading, error: moveDeckFolderError },
+  ] = useMutation(MOVE_DECK_FOLDER);
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
@@ -42,23 +71,83 @@ export default function ListFolder({
     setAnchorEl(event.currentTarget);
   };
 
+  const handleCloseSecondMenu = () => {
+    setSecondAnchorEl(null);
+  };
+
+  const handleOpenSecondMenu = (event) => {
+    setSecondAnchorEl(anchorEl);
+    setAnchorEl(null);
+  };
+
+  const handleDrop = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const { deckFolderId, oldParentFolderId } = JSON.parse(
+      event.dataTransfer.getData("text/plain")
+    );
+    setIsHovered(false);
+
+    if (oldParentFolderId === _id || deckFolderId === _id) return;
+
+    try {
+      const moveDeckData = await moveDeckFolder({
+        variables: {
+          deckFolderId,
+          oldParentFolderId,
+          newParentFolderId: _id,
+        },
+      });
+
+      if (moveDeckFolderError || !moveDeckData.data) {
+        console.log(moveDeckFolderError);
+        return;
+      }
+
+      dispatch(
+        updateAfterFolderDeckMove({
+          deckFolderId,
+          oldParentFolderId,
+          newParentFolderId: _id,
+        })
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsHovered(true);
+  };
+
+  const handleDragLeave = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsHovered(false);
+  };
+
   return (
-    <>
+    <div
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDragStart={(event) =>
+        handleDragStart(event, _id, parentDeckFolder?._id)
+      }
+      draggable
+    >
       <ListItem
         secondaryAction={
           <Stack direction={"row"}>
             <IconButton onClick={handleOpenMenu}>
               <MoreVertIcon />
             </IconButton>
-            <IconButton
-            // sx={{
-            //   "&:hover": {
-            //     cursor: "grab",
-            //   },
-            // }}
-            >
+            {/* <IconButton>
               <DragIndicatorIcon />
-            </IconButton>
+            </IconButton> */}
           </Stack>
         }
         disablePadding
@@ -67,7 +156,11 @@ export default function ListFolder({
         }}
         key={_id}
       >
-        <ListItemButton dense onClick={() => handleListButtonOnClick(_id)}>
+        <ListItemButton
+          selected={isHovered}
+          dense
+          onClick={() => handleListButtonOnClick(_id)}
+        >
           <IconButton edge="start" disableRipple>
             {open ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
           </IconButton>
@@ -79,25 +172,39 @@ export default function ListFolder({
         </ListItemButton>
       </ListItem>
       <Collapse in={open} timeout={"auto"} unmountOnExit>
-        <AddItemToList paddingLeft={paddingLeft + 4} parentDeckFolderId={_id} />
-        {subFolder ? (
-          subFolder.map((deckFolder) => (
-            <ListDeckFolderItem
-              deckFolder={deckFolder}
-              handleListButtonOnClick={handleListButtonOnClick}
+        <div>
+          {subFolder?.length < 1 && (
+            <AddItemToList
               paddingLeft={paddingLeft + 4}
+              parentDeckFolderId={_id}
             />
-          ))
-        ) : (
-          <LoadDeckFolders marginLeft={paddingLeft + 4} _id={_id} />
-        )}
+          )}
+          {moveDeckFolderLoading && (
+            <Skeleton sx={{ marginLeft: paddingLeft + 2, marginRight: 2 }} />
+          )}
+          {subFolder ? (
+            subFolder.map((deckFolder, index) => (
+              <ListDeckFolderItem
+                deckFolder={deckFolder}
+                handleListButtonOnClick={handleListButtonOnClick}
+                paddingLeft={paddingLeft + 4}
+                index={index}
+              />
+            ))
+          ) : (
+            <LoadDeckFolders marginLeft={paddingLeft + 4} _id={_id} />
+          )}
+        </div>
       </Collapse>
       <FolderOptionsMenu
         handleCloseMenu={handleCloseMenu}
         anchorEl={anchorEl}
         parentDeckFolderId={parentDeckFolder?._id}
         deckFolderId={_id}
+        handleOpenSecondMenu={handleOpenSecondMenu}
+        secondAnchorEl={secondAnchorEl}
+        handleCloseSecondMenu={handleCloseSecondMenu}
       />
-    </>
+    </div>
   );
 }

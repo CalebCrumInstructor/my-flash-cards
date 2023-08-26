@@ -109,3 +109,34 @@ export const updatedFoldersAndDecks = (state, rootFolder) => {
     decksObj
   };
 };
+
+
+const findDeckFolderFromTree = (deckFolder, deckFolderId, shouldBreakObj) => {
+  const { _id, subFolder } = deckFolder;
+
+  if (_id === deckFolderId) {
+    shouldBreakObj.shouldBreak = true;
+    return { ...deckFolder };
+  }
+
+  if (subFolder) {
+    for (const subDeckFolder of subFolder) {
+      if (shouldBreakObj.shouldBreak) break;
+      const found = findDeckFolderFromTree(subDeckFolder, deckFolderId, shouldBreakObj);
+      if (found) return found;
+    }
+  }
+
+  return null;
+};
+
+export const returnDeckFolderById = (state, deckFolderId) => {
+  const shouldBreakObj = { shouldBreak: false };
+
+  for (const deckFolder of state.rootFolder) {
+    const found = findDeckFolderFromTree(deckFolder, deckFolderId, shouldBreakObj);
+    if (found) return found;
+  }
+
+  return null;
+};

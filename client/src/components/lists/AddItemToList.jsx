@@ -15,6 +15,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setDialogOpen } from "../../redux/slices/homeFolderSlice";
+import AddDeckOrFolderMenu from "../Menus/AddDeckOrFolderMenu";
 
 export default function AddItemToList({
   parentDeckFolderId = null,
@@ -60,35 +61,11 @@ export default function AddItemToList({
         </Stack> */}
         </ListItemButton>
       </ListItem>
-      <Menu
-        sx={{ mt: "45px" }}
-        id="menu-appbar"
+      <AddDeckOrFolderMenu
         anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        open={Boolean(anchorEl)}
-        onClose={handleCloseMenu}
-      >
-        <MenuItem>
-          <ListItemIcon>
-            <DynamicFeedIcon />
-          </ListItemIcon>
-          <ListItemText>Card Deck</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={openCreateFolderDialog}>
-          <ListItemIcon>
-            <FolderIcon />
-          </ListItemIcon>
-          <ListItemText>Folder</ListItemText>
-        </MenuItem>
-      </Menu>
+        handleCloseMenu={handleCloseMenu}
+        openCreateFolderDialog={openCreateFolderDialog}
+      />
     </>
   );
 }

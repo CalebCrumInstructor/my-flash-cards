@@ -21,10 +21,28 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import CardDeckOptionsMenu from "../Menus/CardDeckOptionsMenu";
 
+import { Draggable } from "react-beautiful-dnd";
+
+const handleDragStart = (event, deckFolderId, oldParentFolderId) => {
+  event.stopPropagation();
+  event.dataTransfer.clearData();
+
+  const dragPreview = document.createElement("div");
+  event.dataTransfer.setDragImage(dragPreview, 0, 0);
+
+  const obj = {
+    deckFolderId,
+    oldParentFolderId,
+  };
+
+  event.dataTransfer.setData("text/plain", JSON.stringify(obj));
+};
+
 export default function ListDeck({ deckFolder, paddingLeft }) {
-  const { title, _id, parentDeckFolder } = deckFolder;
+  const { title, _id, parentDeckFolder, cardCount } = deckFolder;
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isPressing, setIsPressing] = useState(false);
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
@@ -35,22 +53,21 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
   };
 
   return (
-    <>
+    <div
+      onDragStart={(event) =>
+        handleDragStart(event, _id, parentDeckFolder?._id)
+      }
+      draggable
+    >
       <ListItem
         secondaryAction={
           <Stack direction={"row"}>
             <IconButton onClick={handleOpenMenu}>
               <MoreVertIcon />
             </IconButton>
-            <IconButton
-            // sx={{
-            //   "&:hover": {
-            //     cursor: "grab",
-            //   },
-            // }}
-            >
+            {/* <IconButton>
               <DragIndicatorIcon />
-            </IconButton>
+            </IconButton> */}
           </Stack>
         }
         disablePadding
@@ -60,10 +77,26 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
         key={deckFolder._id}
       >
         <ListItemButton dense>
-          <Checkbox edge="start" disableRipple />
-          <Stack direction="row" alignItems={"center"} spacing={0.5}>
-            <DynamicFeedIcon color="primary" />
-            <Typography className="line-clamp-1">{title}</Typography>
+          <Stack
+            direction={"row"}
+            flexGrow={1}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+          >
+            <Stack direction={"row"}>
+              <Checkbox edge="start" disableRipple />
+              <Stack direction="row" alignItems={"center"} spacing={0.5}>
+                <DynamicFeedIcon color="primary" />
+                <Typography className="line-clamp-1">{title}</Typography>
+              </Stack>
+            </Stack>
+            <Typography
+              className="line-clamp-1"
+              variant="subtitle2"
+              sx={{ mr: 1 }}
+            >
+              {cardCount} card{cardCount > 1 ? "s" : ""}
+            </Typography>
           </Stack>
         </ListItemButton>
       </ListItem>
@@ -73,6 +106,6 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
         parentDeckFolderId={parentDeckFolder?._id}
         deckFolderId={_id}
       />
-    </>
+    </div>
   );
 }

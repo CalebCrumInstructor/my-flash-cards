@@ -4,7 +4,8 @@ import {
   returnEditedDeckFolderAfterFolderCreation,
   returnFilteredDeckFolder,
   updatedFoldersAndDecks,
-  editValueInDeckFolder
+  editValueInDeckFolder,
+  returnDeckFolderById
 } from '../../lib/helperFunctions';
 
 const initialState = {
@@ -133,6 +134,40 @@ export const homeFolderSlice = createSlice({
       state.rootFolder = state.rootFolder.map((deckFolderObj) => editValueInDeckFolder(deckFolderObj, deckFolderId, 'title', title))
 
     },
+    updateAfterFolderDeckMove: (state, { payload }) => {
+      const { deckFolderId, oldParentFolderId, newParentFolderId } = payload;
+
+      const deckFolderFromTree = returnDeckFolderById(state, deckFolderId);
+
+      if (!deckFolderFromTree) return;
+
+      if (deckFolderFromTree.isFolder) {
+        state.folders[deckFolderId].parentDeckFolderId = newParentFolderId ? newParentFolderId : null;
+      } else {
+        state.decks[deckFolderId].parentDeckFolderId = newParentFolderId ? newParentFolderId : null
+      }
+
+      if (oldParentFolderId) {
+        state.rootFolder = state.rootFolder.map((deckFolder) => returnFilteredDeckFolder(deckFolder, deckFolderId));
+
+      } else {
+        console.log('hit')
+        state.rootFolder = state.rootFolder.filter(({ _id }) => _id !== deckFolderId);
+      };
+
+      if (!newParentFolderId) {
+        deckFolderFromTree.parentDeckFolder = null;
+        state.rootFolder = [...state.rootFolder, deckFolderFromTree];
+        return;
+      }
+
+      deckFolderFromTree.parentDeckFolder = {
+        _id: newParentFolderId
+      };
+
+      state.rootFolder = state.rootFolder.map((deckFolderObj) => returnEditedDeckFolderAfterFolderCreation(deckFolderObj, newParentFolderId, deckFolderFromTree))
+
+    },
     removeDeckFolder: (state, { payload }) => {
       const { deckFolderId, parentDeckFolderId, isFolder } = payload;
 
@@ -203,7 +238,8 @@ export const {
   toggleDialog,
   setDialogOpen,
   removeDeckFolder,
-  updateAfterFolderEdit
+  updateAfterFolderEdit,
+  updateAfterFolderDeckMove
 } = homeFolderSlice.actions
 
 export const getHomeFolder = () => (state) =>

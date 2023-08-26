@@ -238,6 +238,65 @@ const resolvers = {
         message: 'successful edit'
       };
     },
+    moveDeckFolder: async (parent, { oldParentFolderId, deckFolderId, newParentFolderId }, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      if (!deckFolderId || (!oldParentFolderId && !newParentFolderId)) {
+        throw UserInputError;
+      }
+
+      const deckFolderData = await DeckFolder.findOne({
+        _id: deckFolderId,
+        createdByUser: context.user._id
+      });
+
+      if (!deckFolderData) {
+        throw UserInputError;
+      }
+
+      deckFolderData.parentDeckFolder = newParentFolderId ? newParentFolderId : null;
+
+      deckFolderData.save();
+
+      if (!newParentFolderId) {
+        const userData = await User.findById(context.user._id);
+        userData.rootFolder.push(deckFolderData);
+        await userData.save();
+
+        const parentDeckFolderData = await DeckFolder.findOneAndUpdate({
+          _id: oldParentFolderId,
+          createdByUser: context.user._id
+        }, { $pull: { subFolder: deckFolderId } });
+
+        return {
+          message: 'moveDeckFolder Success'
+        };
+      };
+
+      const newParentDeckFolderData = await DeckFolder.findOneAndUpdate({
+        _id: newParentFolderId,
+        createdByUser: context.user._id
+      }, { $push: { subFolder: deckFolderId } });
+
+      if (!oldParentFolderId) {
+        const parentDeckFolderData = await User.findByIdAndUpdate(context.user._id, { $pull: { rootFolder: deckFolderId } });
+
+        return {
+          message: 'moveDeckFolder Success'
+        };
+      }
+
+      const parentDeckFolderData = await DeckFolder.findOneAndUpdate({
+        _id: oldParentFolderId,
+        createdByUser: context.user._id
+      }, { $pull: { subFolder: deckFolderId } });
+
+      return {
+        message: 'moveDeckFolder Success'
+      };
+    },
   }
 };
 

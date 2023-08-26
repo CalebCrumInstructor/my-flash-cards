@@ -60,3 +60,11 @@ export const EDIT_FOLDER_TITLE = gql`
     }
   }
 `
+
+export const MOVE_DECK_FOLDER = gql`
+  mutation MoveDeckFolder($deckFolderId: String!, $oldParentFolderId: String, $newParentFolderId: String) {
+    moveDeckFolder(deckFolderId: $deckFolderId, oldParentFolderId: $oldParentFolderId, newParentFolderId: $newParentFolderId) {
+      message
+    }
+  }
+`

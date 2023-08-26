@@ -1,6 +1,13 @@
 import { validateEmail } from './validateEmail';
 import { clearAllErrors, validateRegistrationOrLogin } from './registerAndLogin';
-import { returnEditedDeckFolder, returnEditedDeckFolderAfterFolderCreation, editValueInDeckFolder, returnFilteredDeckFolder, updatedFoldersAndDecks } from './homeFolderSliceHelpers'
+import {
+  returnEditedDeckFolder,
+  returnEditedDeckFolderAfterFolderCreation,
+  editValueInDeckFolder,
+  returnFilteredDeckFolder,
+  updatedFoldersAndDecks,
+  returnDeckFolderById
+} from './homeFolderSliceHelpers'
 
 export {
   validateEmail,
@@ -11,4 +18,5 @@ export {
   returnFilteredDeckFolder,
   updatedFoldersAndDecks,
   editValueInDeckFolder,
+  returnDeckFolderById
 }
