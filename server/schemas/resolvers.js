@@ -115,6 +115,23 @@ const resolvers = {
         console.log(err);
       }
     },
+    getAllDecksForUserPrivate: async (parent, args, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      try {
+        const data = await DeckFolder.find({
+          createdByUser: context.user._id,
+          isFolder: false,
+          status: { $ne: 'removed' }
+        });
+
+        return data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
   Mutation: {
     addUser: async (parent, argObj) => {
@@ -144,7 +161,7 @@ const resolvers = {
 
       return { token, user };
     },
-    createFolder: async (parent, { parentDeckFolderId, title }, context) => {
+    createFolder: async (parent, { parentDeckFolderId, title, isPrivate }, context) => {
       if (!context.user) {
         throw AuthenticationError;
       }
@@ -154,6 +171,7 @@ const resolvers = {
 
         const deckFolderData = await DeckFolder.create({
           title,
+          isPrivate,
           createdByUser: context.user._id,
           parentDeckFolder: null,
           isFolder: true
@@ -174,9 +192,51 @@ const resolvers = {
 
       const deckFolderData = await DeckFolder.create({
         title,
+        isPrivate,
         createdByUser: context.user._id,
         parentDeckFolder: parentDeckFolderData._id,
         isFolder: true
+      });
+
+      parentDeckFolderData.subFolder.push(deckFolderData);
+
+      await parentDeckFolderData.save();
+
+      return deckFolderData;
+    },
+    createDeck: async (parent, { parentDeckFolderId, title, isPrivate }, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      if (!parentDeckFolderId) {
+        const userData = await User.findById(context.user._id);
+
+        const deckFolderData = await DeckFolder.create({
+          title,
+          createdByUser: context.user._id,
+          parentDeckFolder: null,
+          isPrivate: Boolean(isPrivate)
+        });
+
+        userData.rootFolder.push(deckFolderData);
+
+        await userData.save();
+
+        return deckFolderData;
+      }
+
+      const parentDeckFolderData = await DeckFolder.findById(parentDeckFolderId)
+
+      if (parentDeckFolderData.createdByUser.toString() !== context.user._id) {
+        throw AuthenticationError;
+      }
+
+      const deckFolderData = await DeckFolder.create({
+        title,
+        createdByUser: context.user._id,
+        parentDeckFolder: parentDeckFolderData._id,
+        isPrivate: Boolean(isPrivate)
       });
 
       parentDeckFolderData.subFolder.push(deckFolderData);
@@ -216,7 +276,7 @@ const resolvers = {
 
       return deckFolderData;
     },
-    editFolderTitle: async (parent, { title, deckFolderId }, context) => {
+    editDeckFolder: async (parent, { title, deckFolderId, isPrivate }, context) => {
       if (!context.user) {
         throw AuthenticationError;
       }
@@ -227,7 +287,8 @@ const resolvers = {
           createdByUser: context.user._id
         },
         {
-          title
+          title,
+          isPrivate
         },
         {
           new: true,

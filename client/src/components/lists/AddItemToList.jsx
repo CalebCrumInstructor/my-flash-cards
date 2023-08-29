@@ -32,12 +32,12 @@ export default function AddItemToList({
     setAnchorEl(event.currentTarget);
   };
 
-  const openCreateFolderDialog = () => {
+  const openDialog = (dialogName) => {
     handleCloseMenu();
     dispatch(
       setDialogOpen({
         open: true,
-        dialogName: "createFolderDialog",
+        dialogName,
         parentDeckFolderId,
       })
     );
@@ -64,7 +64,8 @@ export default function AddItemToList({
       <AddDeckOrFolderMenu
         anchorEl={anchorEl}
         handleCloseMenu={handleCloseMenu}
-        openCreateFolderDialog={openCreateFolderDialog}
+        openCreateFolderDialog={() => openDialog("createFolderDialog")}
+        openCreateDeckDialog={() => openDialog("createDeckDialog")}
       />
     </>
   );

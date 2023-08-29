@@ -9,20 +9,21 @@ import {
   Typography,
   Stack,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setDialogOpen,
-  getHomeFolder,
-  removeDeckFolder,
-} from "../../redux/slices/homeFolderSlice";
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { DELETE_FOLDER } from "../../graphql/mutations";
 import { clearAllErrors } from "../../lib/helperFunctions";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-export default function DeleteDeckFolderDialog() {
-  const dispatch = useDispatch();
+export default function DeleteDeckFolderDialog({
+  handleClose,
+  open,
+  isFolder,
+  parentDeckFolderId,
+  deckFolderId,
+  deckFolder,
+  alterStateAfterSuccess = () => {},
+}) {
   const [deleteFolder, { loading, error }] = useMutation(DELETE_FOLDER);
   const [deckFolderInput, setDeckFolderInput] = useState({
     title: {
@@ -44,24 +45,6 @@ export default function DeleteDeckFolderDialog() {
     newObj[name].val = value;
 
     setDeckFolderInput(newObj);
-  };
-
-  const { dialogs, folders, decks } = useSelector(getHomeFolder());
-  const { open, isFolder, parentDeckFolderId, deckFolderId } =
-    dialogs.deleteDeckFolder;
-
-  const deckFolder = isFolder ? folders[deckFolderId] : decks[deckFolderId];
-
-  const handleClose = () => {
-    dispatch(
-      setDialogOpen({
-        open: false,
-        dialogName: "deleteDeckFolder",
-        parentDeckFolderId: null,
-        deckFolderId: null,
-        isFolder: false,
-      })
-    );
   };
 
   const handleOnSubmit = async (event) => {
@@ -99,7 +82,7 @@ export default function DeleteDeckFolderDialog() {
         return;
       }
 
-      dispatch(removeDeckFolder({ ...variables, isFolder }));
+      alterStateAfterSuccess({ ...variables, isFolder });
       handleClose();
     } catch (err) {
       console.log(err);

@@ -14,6 +14,7 @@ import { navWidth } from "../../theme/defaultPalette";
 import FolderIcon from "@mui/icons-material/Folder";
 import StarIcon from "@mui/icons-material/Star";
 import { useLocation } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
 
 function VerticalNavListItem({
   sideNavOpen,
@@ -97,6 +98,14 @@ export default function SideNav() {
           viewable={true}
           href={"/starred"}
           selected={pathname === "/starred"}
+        />
+        <VerticalNavListItem
+          icon={<EditIcon />}
+          sideNavOpen={sideNavOpen}
+          primaryText={"Deck Editor"}
+          viewable={true}
+          href={"/deck-editor"}
+          selected={pathname === "/deck-editor"}
         />
       </List>
     </Paper>

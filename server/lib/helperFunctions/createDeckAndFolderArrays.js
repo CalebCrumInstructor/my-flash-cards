@@ -1,11 +1,12 @@
 const findAndReturnFolders = (deckFolder, folderArr, deckArr) => {
-  const { title, cardCount, _id, parentDeckFolder, isFolder } = deckFolder;
+  const { title, cardCount, _id, parentDeckFolder, isFolder, isPrivate } = deckFolder;
   if (!isFolder) {
     deckArr.push({
       selected: false,
       _id,
       title,
       cardCount,
+      isPrivate,
       parentDeckFolderId: parentDeckFolder ? parentDeckFolder : null
     })
     return;
@@ -19,6 +20,7 @@ const findAndReturnFolders = (deckFolder, folderArr, deckArr) => {
     open: !Boolean(parentDeckFolder),
     _id,
     title,
+    isPrivate,
     parentDeckFolderId: parentDeckFolder ? parentDeckFolder : null
   });
 

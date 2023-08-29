@@ -95,7 +95,7 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
               variant="subtitle2"
               sx={{ mr: 1 }}
             >
-              {cardCount} card{cardCount > 1 ? "s" : ""}
+              {cardCount} card{cardCount === 1 ? "" : "s"}
             </Typography>
           </Stack>
         </ListItemButton>

@@ -28,6 +28,17 @@ export default function FolderOptionsMenu({
     );
   };
 
+  const openCreateDeckDialog = () => {
+    handleCloseSecondMenu();
+    dispatch(
+      setDialogOpen({
+        open: true,
+        dialogName: "createDeckDialog",
+        parentDeckFolderId: deckFolderId,
+      })
+    );
+  };
+
   const openDeleteFolderDialog = () => {
     handleCloseMenu();
     dispatch(
@@ -93,6 +104,7 @@ export default function FolderOptionsMenu({
         anchorEl={secondAnchorEl}
         handleCloseMenu={handleCloseSecondMenu}
         openCreateFolderDialog={openCreateFolderDialog}
+        openCreateDeckDialog={openCreateDeckDialog}
       />
     </>
   );

@@ -6,6 +6,7 @@ export default function AddDeckOrFolderMenu({
   anchorEl,
   handleCloseMenu,
   openCreateFolderDialog,
+  openCreateDeckDialog,
 }) {
   return (
     <Menu
@@ -24,7 +25,7 @@ export default function AddDeckOrFolderMenu({
       open={Boolean(anchorEl)}
       onClose={handleCloseMenu}
     >
-      <MenuItem>
+      <MenuItem onClick={openCreateDeckDialog}>
         <ListItemIcon>
           <DynamicFeedIcon />
         </ListItemIcon>

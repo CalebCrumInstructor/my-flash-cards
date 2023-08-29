@@ -17,7 +17,7 @@ const typeDefs = `
   type DeckFolder {
     _id: ID!
     title: String!
-    isPublic: Boolean!
+    isPrivate: Boolean!
     isFolder: Boolean!
     cards: [Card]
     cardCount: Int
@@ -49,6 +49,7 @@ const typeDefs = `
     _id: String
     title: String
     cardCount: Int
+    isPrivate: Boolean
     parentDeckFolderId: ID
   }
 
@@ -56,6 +57,7 @@ const typeDefs = `
     open: Boolean
     _id: String
     title: String
+    isPrivate: Boolean
     parentDeckFolderId: ID
   }
 
@@ -79,13 +81,15 @@ const typeDefs = `
     me: User
     rootFolderDepthOfFour: RootFolderDepthOfFourType
     deckFolderDepthOfFourByIdPrivate(_id: String!): DeckFolderDepthOfFourType
+    getAllDecksForUserPrivate: [DeckFolder]
   }
 
   type Mutation {
     addUser(email: String!, password: String!, username: String!): Auth
     loginUser(email: String!, password: String!): Auth
-    createFolder(title: String!, parentDeckFolderId: String): DeckFolder
-    editFolderTitle(title: String!, deckFolderId: String!): SuccessObj
+    createFolder(title: String!, parentDeckFolderId: String, isPrivate: Boolean): DeckFolder
+    createDeck(title: String!, parentDeckFolderId: String, isPrivate: Boolean): DeckFolder
+    editDeckFolder(title: String!, deckFolderId: String!, isPrivate: Boolean): SuccessObj
     moveDeckFolder(deckFolderId: String!, oldParentFolderId: String, newParentFolderId: String): SuccessObj
     deleteFolder(parentDeckFolderId: String, deckFolderId: String!): DeckFolder
   }
