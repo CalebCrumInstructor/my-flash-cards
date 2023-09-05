@@ -12,8 +12,14 @@ const initialState = {
     editFolderDialog: {
       open: false,
       deckFolderId: null,
-    }
-  }
+    },
+    deleteCardsDialog: {
+      open: false,
+      deckFolderId: null,
+    },
+  },
+  cardSelectedForEdit: null,
+  selectedCardsObj: {},
 }
 
 export const deckEditorSlice = createSlice({
@@ -22,6 +28,7 @@ export const deckEditorSlice = createSlice({
   reducers: {
     setSelectedDeck: (state, { payload }) => {
       state.selectedDeck = payload;
+      state.selectedCardsObj = {};
     },
     setDialogOpen: (state, { payload }) => {
       const dialogValues = {
@@ -35,11 +42,30 @@ export const deckEditorSlice = createSlice({
         ...dialogValues
       }
 
-    }
+    },
+    setCardSelectedForEdit: (state, { payload }) => {
+      state.cardSelectedForEdit = payload;
+    },
+    addOrRemoveCardToSelectedCardsObj: (state, { payload: card }) => {
+      if (state.selectedCardsObj[card._id]) {
+        delete state.selectedCardsObj[card._id];
+        return;
+      };
+      state.selectedCardsObj[card._id] = card;
+    },
+    resetSelectedCardsObj: (state, { payload }) => {
+      state.selectedCardsObj = {};
+    },
   },
 })
 
-export const { setSelectedDeck, setDialogOpen } = deckEditorSlice.actions
+export const {
+  setSelectedDeck,
+  setDialogOpen,
+  setCardSelectedForEdit,
+  addOrRemoveCardToSelectedCardsObj,
+  resetSelectedCardsObj
+} = deckEditorSlice.actions
 
 export const getDeckEditor = () => (state) =>
   state?.[deckEditorSlice.name];

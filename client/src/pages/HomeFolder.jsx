@@ -7,10 +7,7 @@ import HomeFolderList from "../components/lists/HomeFolderList";
 const headContent = (
   <>
     <title>Home Folder - My-Flash-Cards</title>
-    <meta
-      name="description"
-      content="View all your folders and card decks here."
-    />
+    <meta name="description" content="View all your folders and Decks here." />
   </>
 );
 

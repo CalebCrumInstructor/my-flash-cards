@@ -106,3 +106,15 @@ export const GET_ALL_DECKS_FOR_USER_PRIVATE = gql`
     }
   }
 `
+
+export const GET_CARD_BY_ID = gql`
+  query GetCardById($cardId: ID!, $deckFolderId: ID!) {
+    getCardById(cardId: $cardId, deckFolderId: $deckFolderId) {
+      _id
+      frontContent
+      backContent
+      createdAt
+      updatedAt
+    }
+  }
+`

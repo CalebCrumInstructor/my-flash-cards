@@ -57,7 +57,7 @@ export default function DeleteDeckFolderDialog({
           ...deckFolderInput.title,
           error: true,
           errorMsg: `Please enter the name of the ${
-            isFolder ? "folder" : "card deck"
+            isFolder ? "folder" : "Deck"
           } to be deleted.`,
         },
       });
@@ -93,17 +93,17 @@ export default function DeleteDeckFolderDialog({
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
       <form onSubmit={handleOnSubmit}>
         <DialogTitle color={"error"}>
-          Delete {isFolder ? "Folder" : "Card Deck"}
+          Delete {isFolder ? "Folder" : "Deck"}
         </DialogTitle>
         <DialogContent>
           <Stack spacing={2}>
             <Typography>
               Are you Sure you want to delete this{" "}
-              {isFolder ? "folder" : "card deck"}?
+              {isFolder ? "folder" : "Deck"}?
             </Typography>
             {isFolder ? (
               <Typography sx={{ fontWeight: "bold", fontStyle: "italic" }}>
-                You will loose all nested folders and card decks!
+                You will loose all nested folders and Decks!
               </Typography>
             ) : (
               <Typography sx={{ fontWeight: "bold", fontStyle: "italic" }}>
@@ -120,7 +120,7 @@ export default function DeleteDeckFolderDialog({
               fullWidth
               id="title"
               label={`Type "${deckFolder?.title}" to delete this ${
-                isFolder ? "folder" : "card deck"
+                isFolder ? "folder" : "Deck"
               }`}
               name="title"
               autoComplete="title"

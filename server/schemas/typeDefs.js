@@ -82,6 +82,7 @@ const typeDefs = `
     rootFolderDepthOfFour: RootFolderDepthOfFourType
     deckFolderDepthOfFourByIdPrivate(_id: String!): DeckFolderDepthOfFourType
     getAllDecksForUserPrivate: [DeckFolder]
+    getCardById(cardId: ID!, deckFolderId: ID!): Card
   }
 
   type Mutation {
@@ -89,6 +90,9 @@ const typeDefs = `
     loginUser(email: String!, password: String!): Auth
     createFolder(title: String!, parentDeckFolderId: String, isPrivate: Boolean): DeckFolder
     createDeck(title: String!, parentDeckFolderId: String, isPrivate: Boolean): DeckFolder
+    createCard(frontContent: String!, backContent: String!, deckFolderId: ID!): Card
+    deleteCards(deckFolderId: ID!, cardIdsArr: [ID]!): DeckFolder
+    editCard(frontContent: String!, backContent: String!, deckFolderId: ID!, cardId: ID!): Card
     editDeckFolder(title: String!, deckFolderId: String!, isPrivate: Boolean): SuccessObj
     moveDeckFolder(deckFolderId: String!, oldParentFolderId: String, newParentFolderId: String): SuccessObj
     deleteFolder(parentDeckFolderId: String, deckFolderId: String!): DeckFolder

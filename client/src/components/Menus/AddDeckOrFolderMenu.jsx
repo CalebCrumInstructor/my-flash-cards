@@ -29,7 +29,7 @@ export default function AddDeckOrFolderMenu({
         <ListItemIcon>
           <DynamicFeedIcon />
         </ListItemIcon>
-        <ListItemText>Card Deck</ListItemText>
+        <ListItemText>Deck</ListItemText>
       </MenuItem>
       <MenuItem onClick={openCreateFolderDialog}>
         <ListItemIcon>

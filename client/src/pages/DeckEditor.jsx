@@ -11,6 +11,7 @@ import {
   CardActionArea,
   CardContent,
   Box,
+  IconButton,
 } from "@mui/material";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import { useQuery, useApolloClient } from "@apollo/client";
@@ -21,7 +22,9 @@ import {
   getDeckEditor,
   setSelectedDeck,
   setDialogOpen,
-} from "../redux/slices/deckEditor";
+  setCardSelectedForEdit,
+  resetSelectedCardsObj,
+} from "../redux/slices/deckEditorSlice";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -29,6 +32,8 @@ import DeckEditorGrid from "../components/grids/DeckEditorGrid";
 import { useBreakpoints } from "../hooks";
 import DeleteDeckFolderDialog from "../components/Dialogs/DeleteDeckFolderDialog";
 import EditFolderDialog from "../components/Dialogs/EditFolderDialog";
+import { useNavigate } from "react-router-dom";
+import DeleteCardsDialog from "../components/Dialogs/DeleteCardsDialog";
 
 const headContent = (
   <>
@@ -39,16 +44,27 @@ const headContent = (
 
 export default function DeckEditor() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const client = useApolloClient();
-
   const [searchParams, setSearchParams] = useSearchParams();
-  const { selectedDeck, dialogs } = useSelector(getDeckEditor());
+  const { selectedDeck, dialogs, selectedCardsObj } = useSelector(
+    getDeckEditor()
+  );
   const { isMediumOrUp } = useBreakpoints();
   // ! Will need to eventually add updating of this cache,
   // ! for now make request each time component renders
   const { data, loading, error } = useQuery(GET_ALL_DECKS_FOR_USER_PRIVATE, {
     fetchPolicy: "network-only",
   });
+
+  const moveToCreateCard = () => {
+    navigate(`/deck-editor/${selectedDeck._id}/create-card`);
+  };
+
+  const moveToEditCard = (card) => {
+    dispatch(setCardSelectedForEdit(card));
+    navigate(`/deck-editor/${selectedDeck._id}/edit-card/${card._id}`);
+  };
 
   const handleDeckChange = (event, value) => {
     dispatch(setSelectedDeck(value));
@@ -68,7 +84,7 @@ export default function DeckEditor() {
     dispatch(setSelectedDeck(foundDeck));
   }, [data]);
 
-  const openCreateFolderDialog = () => {
+  const openDeleteFolderDialog = () => {
     if (!selectedDeck) return;
     dispatch(
       setDialogOpen({
@@ -100,6 +116,16 @@ export default function DeckEditor() {
         parentDeckFolderId: null,
         deckFolderId: null,
         isFolder: false,
+      })
+    );
+  };
+
+  const handleDeleteCardsDialogClose = () => {
+    dispatch(
+      setDialogOpen({
+        open: false,
+        dialogName: "deleteCardsDialog",
+        deckFolderId: null,
       })
     );
   };
@@ -158,6 +184,20 @@ export default function DeckEditor() {
     );
   };
 
+  const alterStateAfterCardDeletion = ({ deckFolderId, cardIdsArr }) => {
+    dispatch(resetSelectedCardsObj());
+    dispatch(
+      setSelectedDeck({
+        ...selectedDeck,
+        cards: selectedDeck.cards.filter(({ _id }) => {
+          console.log(_id);
+          console.log(!cardIdsArr.includes(_id));
+          return !cardIdsArr.includes(_id);
+        }),
+      })
+    );
+  };
+
   return (
     <Page isProtected={true} headContent={headContent}>
       <DefaultLayout
@@ -187,32 +227,48 @@ export default function DeckEditor() {
             )}
             fullWidth={!isMediumOrUp}
           />
-          <Stack direction={"row"} spacing={4}>
+          <Stack
+            direction={isMediumOrUp ? "row" : "column-reverse"}
+            spacing={isMediumOrUp ? 4 : 2}
+          >
             <Button
               sx={{ maxHeight: 40 }}
-              startIcon={<EditIcon />}
-              variant="outlined"
+              startIcon={<AddCircleOutlineIcon />}
+              variant="contained"
               disabled={!Boolean(selectedDeck)}
-              onClick={openEditFolderDialog}
+              color="secondary"
+              onClick={moveToCreateCard}
+              size={isMediumOrUp ? "" : "large"}
             >
-              Edit Details
+              Add Card
             </Button>
-            <Button
-              sx={{ maxHeight: 40 }}
-              color="error"
-              startIcon={<DeleteForeverIcon />}
-              disabled={!Boolean(selectedDeck)}
-              onClick={openCreateFolderDialog}
-            >
-              Delete
-            </Button>
+            <Stack direction={"row"} spacing={4}>
+              <Button
+                sx={{ maxHeight: 40 }}
+                startIcon={<EditIcon />}
+                variant="outlined"
+                disabled={!Boolean(selectedDeck)}
+                onClick={openEditFolderDialog}
+              >
+                Edit Details
+              </Button>
+              <Button
+                sx={{ maxHeight: 40 }}
+                color="error"
+                startIcon={<DeleteForeverIcon />}
+                disabled={!Boolean(selectedDeck)}
+                onClick={openDeleteFolderDialog}
+              >
+                Delete
+              </Button>
+            </Stack>
           </Stack>
         </Stack>
-
         {selectedDeck ? (
           <DeckEditorGrid
             selectedDeck={selectedDeck}
             isMediumOrUp={isMediumOrUp}
+            moveToEditCard={moveToEditCard}
           />
         ) : (
           <Typography variant="h5" align="center" sx={{ paddingTop: 3 }}>
@@ -235,6 +291,13 @@ export default function DeckEditor() {
         handleClose={handleEditFolderDialogClose}
         alterStateAfterSuccess={(obj) => alterStateAfterEdit(obj)}
         deckFolder={selectedDeck}
+      />
+      <DeleteCardsDialog
+        handleClose={handleDeleteCardsDialogClose}
+        open={dialogs.deleteCardsDialog.open}
+        cardIdsArr={Object.values(selectedCardsObj).map(({ _id }) => _id)}
+        deckFolderId={dialogs.deleteCardsDialog.deckFolderId}
+        alterStateAfterSuccess={(obj) => alterStateAfterCardDeletion(obj)}
       />
     </Page>
   );

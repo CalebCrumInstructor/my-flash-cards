@@ -1,7 +1,7 @@
 const { User, DeckFolder } = require('../models');
 const { signToken, AuthenticationError, UserInputError, emailHasAccount, emailDoesNotHaveAccount, incorrectPassword } = require('../utils/auth');
 const { dateScalar } = require('./scalar');
-const createDeckAndFolderArrays = require('../lib/helperFunctions/createDeckAndFolderArrays')
+const createDeckAndFolderArrays = require('../lib/helperFunctions/createDeckAndFolderArrays');
 
 const removeFolders = async (objId) => {
   const deckFolderData = await DeckFolder.findByIdAndUpdate(
@@ -132,6 +132,28 @@ const resolvers = {
         console.log(err);
       }
     },
+    getCardById: async (parent, { cardId, deckFolderId }, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      try {
+        const deckFolderData = await DeckFolder.findOne({
+          createdByUser: context.user._id,
+          _id: deckFolderId,
+        });
+
+        const card = deckFolderData.cards.find(({ _id }) => _id.toString() === cardId);
+
+        if (!card) {
+          throw UserInputError;
+        };
+
+        return card;
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
   Mutation: {
     addUser: async (parent, argObj) => {
@@ -244,6 +266,82 @@ const resolvers = {
       await parentDeckFolderData.save();
 
       return deckFolderData;
+    },
+    createCard: async (parent, { frontContent, backContent, deckFolderId }, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      const deckFolderData = await DeckFolder.findOneAndUpdate(
+        {
+          _id: deckFolderId,
+          createdByUser: context.user._id
+        },
+        {
+          $push: { cards: { frontContent, backContent } }
+        },
+        {
+          new: true,
+          runValidators: true
+        }
+      );
+
+      return deckFolderData.cards[deckFolderData.cards.length - 1];
+    },
+    editCard: async (parent, { frontContent, backContent, deckFolderId, cardId }, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      const deckFolderData = await DeckFolder.findOneAndUpdate(
+        {
+          _id: deckFolderId,
+          createdByUser: context.user._id,
+          "cards._id": cardId
+        },
+        {
+          $set: {
+            "cards.$.frontContent": frontContent,
+            "cards.$.backContent": backContent,
+          }
+        },
+        {
+          new: true,
+          runValidators: true
+        }
+      );
+
+      const card = deckFolderData.cards.find(({ _id }) => _id.toString() === cardId);
+
+      if (!card) {
+        throw UserInputError;
+      };
+
+      return card;
+    },
+    deleteCards: async (parent, { deckFolderId, cardIdsArr }, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      const deckFolderData = await DeckFolder.findOneAndUpdate({
+        _id: deckFolderId,
+        createdByUser: context.user._id
+      }, {
+        $pull: {
+          cards: {
+            _id: {
+              $in: cardIdsArr
+            }
+          }
+        }
+      }, {
+        new: true,
+        runValidators: true
+      });
+
+      return deckFolderData;
+
     },
     deleteFolder: async (parent, { parentDeckFolderId, deckFolderId }, context) => {
       if (!context.user) {

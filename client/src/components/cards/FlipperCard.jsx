@@ -1,23 +1,19 @@
-import {
-  Box,
-  Paper,
-  Typography,
-  Card,
-  CardActionArea,
-  CardContent,
-  Button,
-} from "@mui/material";
+import { Box, Card, CardActionArea, CardContent } from "@mui/material";
 import { useState } from "react";
+import { RichTextReadOnly } from "mui-tiptap";
+import { useExtensions } from "../../hooks";
 
 export default function FlipperCard({ card }) {
   const { frontContent, backContent } = card;
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const extensions = useExtensions({
+    placeholder: "loading",
+  });
+
   const handleClick = () => {
     setIsFlipped(!isFlipped);
   };
-
-  // return <Paper component={Button}>hi</Paper>;
 
   return (
     <Card
@@ -26,7 +22,6 @@ export default function FlipperCard({ card }) {
         minHeight: 200,
         backgroundColor: "background.default",
       }}
-      // elevation={0}
     >
       <CardActionArea
         sx={{
@@ -60,9 +55,7 @@ export default function FlipperCard({ card }) {
               flexDirection: "column",
             }}
           >
-            <Typography sx={{ marginY: 6 }} align="center">
-              {frontContent}
-            </Typography>
+            <RichTextReadOnly extensions={extensions} content={frontContent} />
           </Box>
         </CardContent>
         <CardContent
@@ -85,120 +78,10 @@ export default function FlipperCard({ card }) {
               flexDirection: "column",
             }}
           >
-            <Typography sx={{ marginY: 6 }} align="center">
-              {backContent}
-            </Typography>
+            <RichTextReadOnly extensions={extensions} content={backContent} />
           </Box>
         </CardContent>
       </CardActionArea>
     </Card>
   );
-
-  // return (
-  //   <Box
-  //     sx={{
-  //       position: "relative",
-  //       transformStyle: "preserve-3d",
-  //       transition: "transform 0.5s",
-  //       transform: isFlipped ? "rotateX(180deg)" : "",
-  //       display: "flex",
-  //       justifyContent: "center",
-  //       alignItems: "center",
-  //       width: 200,
-  //       height: 200,
-  //       // padding: 3,
-  //       cursor: "pointer",
-  //       // color: "inherit",
-  //       // "&:hover": {
-  //       //   opacity: theme.palette.action.hoverOpacity,
-  //       //   "@media (hover: none)": {
-  //       //     opacity: 0,
-  //       //   },
-  //       // },
-  //     }}
-  //     onClick={handleClick}
-  //   >
-  //     <Card
-  //       sx={{
-  //         display: isFlipped ? "none" : "absolute",
-  //         backfaceVisibility: "hidden",
-  //         width: "100%",
-  //         height: "100%",
-  //       }}
-  //     >
-  //       <CardActionArea
-  //         sx={{
-  //           width: "100%",
-  //           height: "100%",
-  //         }}
-  //       >
-  //         <CardContent>
-  //           <Typography align="center">{frontContent}</Typography>
-  //         </CardContent>
-  //       </CardActionArea>
-  //     </Card>
-  //     <Card
-  //       sx={{
-  //         display: isFlipped ? "absolute" : "none",
-  //         backfaceVisibility: "hidden",
-  //         transform: "rotateX(180deg)",
-  //         width: "100%",
-  //         height: "100%",
-  //       }}
-  //     >
-  //       <CardActionArea
-  //         sx={{
-  //           width: "100%",
-  //           height: "100%",
-  //         }}
-  //       >
-  //         <CardContent>
-  //           <Typography align="center">{backContent}</Typography>
-  //         </CardContent>
-  //       </CardActionArea>
-  //     </Card>
-  //   </Box>
-  // );
-
-  // return (
-  //   <Paper
-  //     sx={{
-  //       position: "relative",
-  //       transformStyle: "preserve-3d",
-  //       transition: "transform 0.5s",
-  //       transform: isFlipped ? "rotateY(180deg)" : "",
-  //       display: "flex",
-  //       // justifyContent: "center",
-  //       // alignItems: "center",
-  //       width: 200,
-  //       height: 200,
-  //       textTransform: "none",
-  //       // overflowY: "hidden",
-  //     }}
-  //     component={Button}
-  //     onClick={handleClick}
-  //   >
-  //     <Box
-  //       sx={{
-  //         display: isFlipped ? "none" : "absolute",
-  //         backfaceVisibility: "hidden",
-  //         // width: "100%",
-  //         // height: "100%",
-  //       }}
-  //     >
-  //       <Typography align="center">{frontContent}</Typography>
-  //     </Box>
-  //     <Box
-  //       sx={{
-  //         display: isFlipped ? "absolute" : "none",
-  //         backfaceVisibility: "hidden",
-  //         transform: "rotateY(180deg)",
-  //         // width: "100%",
-  //         // height: "100%",
-  //       }}
-  //     >
-  //       <Typography align="center">{backContent}</Typography>
-  //     </Box>
-  //   </Paper>
-  // );
 }

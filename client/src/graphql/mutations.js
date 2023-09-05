@@ -77,3 +77,37 @@ export const MOVE_DECK_FOLDER = gql`
     }
   }
 `
+
+export const CREATE_CARD = gql`
+  mutation CreateCard($frontContent: String!, $backContent: String!, $deckFolderId: ID!) {
+    createCard(frontContent: $frontContent, backContent: $backContent, deckFolderId: $deckFolderId) {
+      _id
+      backContent
+      createdAt
+      frontContent
+      updatedAt
+    }
+  }
+`
+
+
+export const EDIT_CARD = gql`
+  mutation EditCard($frontContent: String!, $backContent: String!, $deckFolderId: ID!, $cardId: ID!) {
+    editCard(frontContent: $frontContent, backContent: $backContent, deckFolderId: $deckFolderId, cardId: $cardId) {
+      _id
+      frontContent
+      backContent
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+
+export const DELETE_CARDS = gql`
+  mutation DeleteCards($deckFolderId: ID!, $cardIdsArr: [ID]!) {
+    deleteCards(deckFolderId: $deckFolderId, cardIdsArr: $cardIdsArr) {
+      _id
+    }
+  }
+`

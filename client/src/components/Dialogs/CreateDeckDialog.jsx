@@ -120,7 +120,7 @@ export default function CreateDeckDialog({
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
       <form onSubmit={handleOnSubmit}>
-        <DialogTitle>New Card Deck</DialogTitle>
+        <DialogTitle>New Deck</DialogTitle>
         <DialogContent>
           <Stack spacing={1}>
             <TextField
