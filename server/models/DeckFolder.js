@@ -79,12 +79,6 @@ const deckFolderSchema = new Schema(
   }
 );
 
-// ! Will need to add more code to ensure cardCount stays up to date
-deckFolderSchema.pre('save', async function (next) {
-  this.cardCount = this.cards.length;
-
-  next();
-});
 
 const DeckFolder = model('DeckFolder', deckFolderSchema);
 

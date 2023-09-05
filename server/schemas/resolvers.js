@@ -278,7 +278,8 @@ const resolvers = {
           createdByUser: context.user._id
         },
         {
-          $push: { cards: { frontContent, backContent } }
+          $push: { cards: { frontContent, backContent } },
+          $inc: { cardCount: 1 }
         },
         {
           new: true,
@@ -334,7 +335,8 @@ const resolvers = {
               $in: cardIdsArr
             }
           }
-        }
+        },
+        $inc: { cardCount: (-1 * cardIdsArr.length) }
       }, {
         new: true,
         runValidators: true
