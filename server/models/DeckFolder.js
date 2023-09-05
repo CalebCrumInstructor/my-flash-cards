@@ -10,7 +10,7 @@ const deckFolderSchema = new Schema(
       required: true,
       trim: true
     },
-    isPublic: {
+    isPrivate: {
       type: Boolean,
       required: true,
       default: false

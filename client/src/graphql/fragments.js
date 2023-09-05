@@ -5,7 +5,7 @@ export const folderFragment = gql`
 fragment FolderDetails on DeckFolder {
   _id
   title
-  isPublic
+  isPrivate
   isFolder
   isDeckFolderReference
   cardCount

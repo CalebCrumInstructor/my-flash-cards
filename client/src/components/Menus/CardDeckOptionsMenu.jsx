@@ -5,6 +5,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useDispatch } from "react-redux";
 import { setDialogOpen } from "../../redux/slices/homeFolderSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function CardDeckOptionsMenu({
   anchorEl,
@@ -13,6 +14,7 @@ export default function CardDeckOptionsMenu({
   deckFolderId,
 }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const openCreateFolderDialog = () => {
     handleCloseMenu();
@@ -25,6 +27,10 @@ export default function CardDeckOptionsMenu({
         isFolder: false,
       })
     );
+  };
+
+  const editFolder = () => {
+    navigate(`/deck-editor?deckFolderId=${deckFolderId}`);
   };
 
   return (
@@ -44,7 +50,7 @@ export default function CardDeckOptionsMenu({
       open={Boolean(anchorEl)}
       onClose={handleCloseMenu}
     >
-      <MenuItem>
+      <MenuItem onClick={editFolder}>
         <ListItemIcon>
           <EditIcon />
         </ListItemIcon>

@@ -32,8 +32,9 @@ export default function BottomNavBar() {
         display: {
           md: "none",
         },
+        zIndex: 2,
       }}
-      elevation={0}
+      elevation={1}
     >
       <BottomNavigation showLabels value={setPageValue(pathname)}>
         <BottomNavigationAction

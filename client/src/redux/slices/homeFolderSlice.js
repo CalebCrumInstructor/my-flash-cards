@@ -17,6 +17,10 @@ const initialState = {
       open: false,
       parentDeckFolderId: null
     },
+    createDeckDialog: {
+      open: false,
+      parentDeckFolderId: null
+    },
     deleteDeckFolder: {
       open: false,
       isFolder: false,
@@ -114,9 +118,16 @@ export const homeFolderSlice = createSlice({
     updateStateWithSubFolderWithNewFolder: (state, { payload }) => {
       const { deckFolder, parentDeckFolderId } = payload;
 
-      state.folders = {
-        ...state.folders,
-        [deckFolder._id]: deckFolder
+      if (deckFolder.isFolder) {
+        state.folders = {
+          ...state.folders,
+          [deckFolder._id]: deckFolder
+        };
+      } else {
+        state.decks = {
+          ...state.decks,
+          [deckFolder._id]: deckFolder
+        }
       };
 
       if (!parentDeckFolderId) {
@@ -127,11 +138,12 @@ export const homeFolderSlice = createSlice({
       state.rootFolder = state.rootFolder.map((deckFolderObj) => returnEditedDeckFolderAfterFolderCreation(deckFolderObj, parentDeckFolderId, deckFolder))
     },
     updateAfterFolderEdit: (state, { payload }) => {
-      const { deckFolderId, title } = payload;
+      const { deckFolderId, title, isPrivate } = payload;
 
       state.folders[deckFolderId].title = title;
+      state.folders[deckFolderId].isPrivate = isPrivate;
 
-      state.rootFolder = state.rootFolder.map((deckFolderObj) => editValueInDeckFolder(deckFolderObj, deckFolderId, 'title', title))
+      state.rootFolder = state.rootFolder.map((deckFolderObj) => editValueInDeckFolder(deckFolderObj, deckFolderId, { title, isPrivate }))
 
     },
     updateAfterFolderDeckMove: (state, { payload }) => {

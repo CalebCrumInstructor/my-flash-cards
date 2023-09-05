@@ -6,6 +6,9 @@ import {
   TextField,
   Button,
   CircularProgress,
+  Checkbox,
+  FormControlLabel,
+  Stack,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,6 +31,12 @@ export default function CreateFolderDialog() {
       error: false,
       errorMsg: "Please enter a folder name.",
       name: "title",
+    },
+    isPrivate: {
+      val: false,
+      error: false,
+      errorMsg: "",
+      name: "isPrivate",
     },
   });
 
@@ -56,6 +65,17 @@ export default function CreateFolderDialog() {
     setFolderInput(newObj);
   };
 
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    const newObj = {
+      ...folderInput,
+    };
+
+    newObj[name].val = checked;
+
+    setFolderInput(newObj);
+  };
+
   const handleOnSubmit = async (event) => {
     event.preventDefault();
 
@@ -73,6 +93,7 @@ export default function CreateFolderDialog() {
     try {
       const variables = {
         title: folderInput.title.val,
+        isPrivate: folderInput.isPrivate.val,
       };
 
       if (dialogs.createFolderDialog.parentDeckFolderId) {
@@ -112,21 +133,34 @@ export default function CreateFolderDialog() {
       <form onSubmit={handleOnSubmit}>
         <DialogTitle>New Folder</DialogTitle>
         <DialogContent>
-          <TextField
-            sx={{
-              marginTop: 1,
-            }}
-            onChange={(e) => handleChange(e)}
-            variant="outlined"
-            required
-            fullWidth
-            id="title"
-            label="Folder Name"
-            name="title"
-            autoComplete="title"
-            error={folderInput.title.error}
-            helperText={folderInput.title.error && folderInput.title.errorMsg}
-          />
+          <Stack spacing={1}>
+            <TextField
+              sx={{
+                marginTop: 1,
+              }}
+              onChange={(e) => handleChange(e)}
+              variant="outlined"
+              required
+              fullWidth
+              id="title"
+              label="Folder Name"
+              name="title"
+              autoComplete="title"
+              error={folderInput.title.error}
+              helperText={folderInput.title.error && folderInput.title.errorMsg}
+              autoFocus
+            />
+            <FormControlLabel
+              label="Private"
+              control={
+                <Checkbox
+                  name="isPrivate"
+                  onChange={handleCheckboxChange}
+                  checked={folderInput.isPrivate.val}
+                />
+              }
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
           {loading ? (

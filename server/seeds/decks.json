@@ -40,6 +40,44 @@
             "backContent": "The <div> element is a block-level container used to group other HTML elements together for styling and layout purposes."
           }
         ]
+      },
+      {
+        "title": "CSS",
+        "isFolder": false,
+        "cards": [
+          {
+            "frontContent": "Why do we use media queries?",
+            "backContent": "### We use media quires to deliver a tailored style sheet to desktops, laptops, tablets, and phones."
+          },
+          {
+            "frontContent": "How would you center a box using the flexbox layout model?",
+            "backContent": "### Create a flex container and use justify-content and align-items"
+          },
+          {
+            "frontContent": "What can we do with the CSS transform property?",
+            "backContent": "### We can use the transform property to rotate, scale, and skew CSS boxes."
+          },
+          {
+            "frontContent": "Why do we use CSS resets?",
+            "backContent": "### CSS resets are used to erase browser default styling."
+          },
+          {
+            "frontContent": "What is a use case for pseudo-classes?",
+            "backContent": "### Changing the styling of a button when a user hovers their mouse over the button."
+          },
+          {
+            "frontContent": "What are data attributes used for?",
+            "backContent": "### Data attributes are used to store custom data in an html element."
+          },
+          {
+            "frontContent": "Why do we use CSS Variables?",
+            "backContent": "- We use CSS Variables to: \n\n - make code easier to read\n\n  - make it easier to change css values, such as color"
+          },
+          {
+            "frontContent": "How do we declare and use CSS Variables?",
+            "backContent": "- We declare variables globally in the root or universal selectors using a custom property name that begins with a double hyphen (--) and a property value that can be any valid css value. \n\n ```css  \n\n :root {  \n\n --main-text-color: brown;  \n\n }  \n\n ```  \n\n - To use a css variable, we call the var() function with the custom property inside, in place of a regular property value. \n\n ```css \n\n p { \n\n color: var(--main-text-color); \n\n } \n\n ```"
+          }
+        ]
       }
     ]
   },
@@ -74,6 +112,108 @@
       {
         "frontContent": "No-legs lay on one-leg,\ntwo-legs sat near on three-legs,\nfour-legs got some.",
         "backContent": "Fish on a little table, man on a stool, the cat gets the scraps."
+      }
+    ]
+  },
+  {
+    "title": "Lorem",
+    "isFolder": false,
+    "cards": [
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
+      },
+      {
+        "frontContent": "Lorem Ipsum 2x",
+        "backContent": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit! Lorem ipsum dolor sit amet consectetur adipisicing elit. Est doloremque voluptas maiores tempora corrupti, hic nostrum accusamus dolore iste consequatur atque, id doloribus dignissimos autem repellendus recusandae quia beatae velit!"
       }
     ]
   },

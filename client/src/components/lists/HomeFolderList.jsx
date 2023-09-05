@@ -8,6 +8,9 @@ import {
   getHomeFolder,
   toggleFolderOpen,
   updateAfterFolderDeckMove,
+  setDialogOpen,
+  removeDeckFolder,
+  updateAfterFolderEdit,
 } from "../../redux/slices/homeFolderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -19,6 +22,7 @@ import AddItemToList from "./AddItemToList";
 import CreateFolderDialog from "../Dialogs/CreateFolderDialog";
 import DeleteDeckFolderDialog from "../Dialogs/DeleteDeckFolderDialog";
 import EditFolderDialog from "../Dialogs/EditFolderDialog";
+import CreateDeckDialog from "../Dialogs/CreateDeckDialog";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
@@ -27,7 +31,7 @@ export default function HomeFolderList() {
   const [errorMsg, setErrorMsg] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const { isDarkTheme } = useThemeMode();
-  const { rootFolder } = useSelector(getHomeFolder());
+  const { rootFolder, dialogs, folders, decks } = useSelector(getHomeFolder());
   const [
     moveDeckFolder,
     { loading: moveDeckFolderLoading, error: moveDeckFolderError },
@@ -101,6 +105,38 @@ export default function HomeFolderList() {
     setIsHovered(false);
   };
 
+  const handleCreateDeckDialogClose = () => {
+    dispatch(
+      setDialogOpen({
+        open: false,
+        dialogName: "createDeckDialog",
+        parentDeckFolderId: null,
+      })
+    );
+  };
+
+  const handleDeleteDeckFolderDialogClose = () => {
+    dispatch(
+      setDialogOpen({
+        open: false,
+        dialogName: "deleteDeckFolder",
+        parentDeckFolderId: null,
+        deckFolderId: null,
+        isFolder: false,
+      })
+    );
+  };
+
+  const handleEditFolderDialogClose = () => {
+    dispatch(
+      setDialogOpen({
+        open: false,
+        dialogName: "editFolderDialog",
+        deckFolderId: null,
+      })
+    );
+  };
+
   if (loading) {
     return <Skeleton sx={{ height: 390 }} variant="rounded" />;
   }
@@ -138,8 +174,31 @@ export default function HomeFolderList() {
         </List>
       )}
       <CreateFolderDialog />
-      <DeleteDeckFolderDialog />
-      <EditFolderDialog />
+      <DeleteDeckFolderDialog
+        handleClose={handleDeleteDeckFolderDialogClose}
+        open={dialogs.deleteDeckFolder.open}
+        isFolder={dialogs.deleteDeckFolder.isFolder}
+        parentDeckFolderId={dialogs.deleteDeckFolder.parentDeckFolderId}
+        deckFolderId={dialogs.deleteDeckFolder.deckFolderId}
+        deckFolder={
+          dialogs.deleteDeckFolder.isFolder
+            ? folders[dialogs.deleteDeckFolder.deckFolderId]
+            : decks[dialogs.deleteDeckFolder.deckFolderId]
+        }
+        alterStateAfterSuccess={(obj) => dispatch(removeDeckFolder(obj))}
+      />
+      <EditFolderDialog
+        open={dialogs.editFolderDialog.open}
+        deckFolderId={dialogs.editFolderDialog.deckFolderId}
+        handleClose={handleEditFolderDialogClose}
+        alterStateAfterSuccess={(obj) => dispatch(updateAfterFolderEdit(obj))}
+        deckFolder={folders[dialogs.editFolderDialog.deckFolderId]}
+      />
+      <CreateDeckDialog
+        open={dialogs.createDeckDialog.open}
+        parentDeckFolderId={dialogs.createDeckDialog.parentDeckFolderId}
+        handleClose={handleCreateDeckDialogClose}
+      />
     </Card>
   );
 }

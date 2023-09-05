@@ -11,6 +11,7 @@ export default function DefaultLayout({ icon, title, children }) {
           paddingTop: isMediumOrUp ? 1 : 3,
           paddingBottom: 3,
           width: "100%",
+          position: "relative",
         }}
         spacing={3}
       >
