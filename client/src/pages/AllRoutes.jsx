@@ -8,6 +8,7 @@ import SignUp from "./SignUp";
 import DeckEditor from "./DeckEditor";
 import CreateCard from "./CreateCard";
 import EditCard from "./EditCard";
+import Study from "./Study";
 
 export default function AllRoutes() {
   return (
@@ -24,6 +25,7 @@ export default function AllRoutes() {
         path="/deck-editor/:deckFolderId/edit-card/:cardId"
         element={<EditCard />}
       />
+      <Route path="/study" element={<Study />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<Page404 />} />

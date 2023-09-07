@@ -132,6 +132,26 @@ const resolvers = {
         console.log(err);
       }
     },
+    getDecks: async (parent, { deckIdsArr }, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      try {
+        const data = await DeckFolder.find({
+          createdByUser: context.user._id,
+          isFolder: false,
+          status: { $ne: 'removed' },
+          _id: {
+            $in: deckIdsArr
+          }
+        });
+
+        return data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
     getCardById: async (parent, { cardId, deckFolderId }, context) => {
       if (!context.user) {
         throw AuthenticationError;

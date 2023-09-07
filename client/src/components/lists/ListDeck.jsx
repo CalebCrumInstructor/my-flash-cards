@@ -10,18 +10,17 @@ import {
   Typography,
   Menu,
   MenuItem,
+  Box,
 } from "@mui/material";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setDialogOpen } from "../../redux/slices/homeFolderSlice";
-import FolderIcon from "@mui/icons-material/Folder";
-import StickyNote2Icon from "@mui/icons-material/StickyNote2";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  toggleDeckSelected,
+  getDeckById,
+} from "../../redux/slices/homeFolderSlice";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import CardDeckOptionsMenu from "../Menus/CardDeckOptionsMenu";
-
-import { Draggable } from "react-beautiful-dnd";
 
 const handleDragStart = (event, deckFolderId, oldParentFolderId) => {
   event.stopPropagation();
@@ -39,7 +38,9 @@ const handleDragStart = (event, deckFolderId, oldParentFolderId) => {
 };
 
 export default function ListDeck({ deckFolder, paddingLeft }) {
+  const dispatch = useDispatch();
   const { title, _id, parentDeckFolder, cardCount } = deckFolder;
+  const { selected } = useSelector(getDeckById(_id));
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [isPressing, setIsPressing] = useState(false);
@@ -52,8 +53,13 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleToggleSelected = (event) => {
+    event.stopPropagation();
+    dispatch(toggleDeckSelected(_id));
+  };
+
   return (
-    <div
+    <Box
       onDragStart={(event) =>
         handleDragStart(event, _id, parentDeckFolder?._id)
       }
@@ -65,9 +71,6 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
             <IconButton onClick={handleOpenMenu}>
               <MoreVertIcon />
             </IconButton>
-            {/* <IconButton>
-              <DragIndicatorIcon />
-            </IconButton> */}
           </Stack>
         }
         disablePadding
@@ -75,6 +78,7 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
           paddingLeft: paddingLeft,
         }}
         key={deckFolder._id}
+        onClick={handleToggleSelected}
       >
         <ListItemButton dense>
           <Stack
@@ -84,7 +88,7 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
             justifyContent={"space-between"}
           >
             <Stack direction={"row"}>
-              <Checkbox edge="start" disableRipple />
+              <Checkbox edge="start" disableRipple checked={selected} />
               <Stack direction="row" alignItems={"center"} spacing={0.5}>
                 <DynamicFeedIcon color="primary" />
                 <Typography className="line-clamp-1">{title}</Typography>
@@ -106,6 +110,6 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
         parentDeckFolderId={parentDeckFolder?._id}
         deckFolderId={_id}
       />
-    </div>
+    </Box>
   );
 }

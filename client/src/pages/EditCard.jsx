@@ -24,6 +24,7 @@ import {
   setCardSelectedForEdit,
   getDeckEditor,
 } from "../redux/slices/deckEditorSlice";
+import EditIcon from "@mui/icons-material/Edit";
 
 const headContent = (
   <>
@@ -88,7 +89,7 @@ export default function EditCard() {
   return (
     <Page isProtected={true} headContent={headContent}>
       <DefaultLayout
-        icon={<AddCircleOutlineIcon fontSize="large" color="inherit" />}
+        icon={<EditIcon fontSize="large" color="inherit" />}
         title={"Edit Card"}
       >
         <Box position="relative">

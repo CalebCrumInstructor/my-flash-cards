@@ -82,6 +82,7 @@ const typeDefs = `
     rootFolderDepthOfFour: RootFolderDepthOfFourType
     deckFolderDepthOfFourByIdPrivate(_id: String!): DeckFolderDepthOfFourType
     getAllDecksForUserPrivate: [DeckFolder]
+    getDecks(deckIdsArr: [ID]!): [DeckFolder]
     getCardById(cardId: ID!, deckFolderId: ID!): Card
   }
 

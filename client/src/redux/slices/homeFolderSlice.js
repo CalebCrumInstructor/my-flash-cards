@@ -238,6 +238,22 @@ export const homeFolderSlice = createSlice({
       }
 
 
+    },
+    toggleDeckSelected: (state, { payload: deckFolderId }) => {
+      state.decks[deckFolderId].selected = !state.decks[deckFolderId].selected;
+    },
+    unselectAllDecks: (state) => {
+
+      const updatedDecksObj = {};
+
+      for (const deckFolderId in state.decks) {
+        updatedDecksObj[deckFolderId] = {
+          ...state.decks[deckFolderId],
+          selected: false
+        }
+      };
+
+      state.decks = updatedDecksObj;
     }
   },
 })
@@ -251,7 +267,9 @@ export const {
   setDialogOpen,
   removeDeckFolder,
   updateAfterFolderEdit,
-  updateAfterFolderDeckMove
+  updateAfterFolderDeckMove,
+  toggleDeckSelected,
+  unselectAllDecks,
 } = homeFolderSlice.actions
 
 export const getHomeFolder = () => (state) =>

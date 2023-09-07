@@ -7,7 +7,11 @@ import {
   returnFilteredDeckFolder,
   updatedFoldersAndDecks,
   returnDeckFolderById
-} from './homeFolderSliceHelpers'
+} from './homeFolderSliceHelpers';
+import {
+  weightedRandomSelection,
+  getDifferentCard,
+} from './studySliceHelpers';
 
 export {
   validateEmail,
@@ -18,5 +22,7 @@ export {
   returnFilteredDeckFolder,
   updatedFoldersAndDecks,
   editValueInDeckFolder,
-  returnDeckFolderById
+  returnDeckFolderById,
+  weightedRandomSelection,
+  getDifferentCard,
 }
