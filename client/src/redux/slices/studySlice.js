@@ -50,10 +50,15 @@ export const studySlice = createSlice({
       state.currentCard = getDifferentCard(cardId, state.cardsObj);
 
     },
+    clearCardState: (state) => {
+      state.isComplete = false;
+      state.cardsObj = {};
+      state.currentCard = null
+    }
   },
 })
 
-export const { setInitialState, removeCardFromCardsObj, modifyCardWeight } = studySlice.actions
+export const { setInitialState, removeCardFromCardsObj, modifyCardWeight, clearCardState } = studySlice.actions
 
 export const getStudy = () => (state) =>
   state?.[studySlice.name];

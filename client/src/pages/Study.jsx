@@ -16,7 +16,11 @@ import { useQuery } from "@apollo/client";
 import { GET_DECKS } from "../graphql/queries";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getStudy, setInitialState } from "../redux/slices/studySlice";
+import {
+  getStudy,
+  setInitialState,
+  clearCardState,
+} from "../redux/slices/studySlice";
 import CloseIcon from "@mui/icons-material/Close";
 import StudyGrid from "../components/grids/StudyGrid";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
@@ -128,6 +132,7 @@ export default function Study() {
   });
 
   const handleEndClick = () => {
+    dispatch(clearCardState());
     const doesAnyHistoryEntryExist = location.key !== "default";
 
     if (!doesAnyHistoryEntryExist) return navigate("/home-folder");
@@ -141,11 +146,19 @@ export default function Study() {
   };
 
   useEffect(() => {
+    if (!data) {
+      dispatch(clearCardState());
+      return;
+    }
     handleInitialState();
   }, [data]);
 
   return (
-    <Page isProtected={true} headContent={headContent}>
+    <Page
+      isProtected={true}
+      headContent={headContent}
+      withBottomNav={isMediumOrUp}
+    >
       <DefaultLayout
         icon={<SendIcon fontSize="large" color="inherit" />}
         title={"Study"}
@@ -156,7 +169,7 @@ export default function Study() {
               sx={{ position: "absolute", top: -12, width: "100%" }}
             />
           )}
-          <Stack spacing={2} height={"100%"}>
+          <Stack spacing={2}>
             <Stack
               direction={"row"}
               justifyContent={"space-between"}
@@ -164,11 +177,28 @@ export default function Study() {
               spacing={2}
               paddingX={isMediumOrUp ? "" : 2}
             >
-              <Typography variant="h5" className="line-clamp-1">
-                {data?.getDecks
-                  ? getDeckCombinationTitle(data.getDecks)
-                  : "No Decks Selected. Please, return to your Home Folder."}
-              </Typography>
+              <Tooltip
+                title={
+                  data?.getDecks
+                    ? getDeckCombinationTitle(data.getDecks)
+                    : loading
+                    ? "Loading"
+                    : "No Decks Selected. Please, return to your Home Folder."
+                }
+                enterTouchDelay={1}
+                leaveTouchDelay={3000}
+                disableFocusListener={isMediumOrUp}
+                disableHoverListener={isMediumOrUp}
+                disableTouchListener={isMediumOrUp}
+              >
+                <Typography variant="h5" className="line-clamp-1">
+                  {data?.getDecks
+                    ? getDeckCombinationTitle(data.getDecks)
+                    : loading
+                    ? "Loading"
+                    : "No Decks Selected. Please, return to your Home Folder."}
+                </Typography>
+              </Tooltip>
               <Stack direction={"row"} spacing={2} alignItems={"center"}>
                 <Button
                   variant="outlined"
@@ -178,7 +208,12 @@ export default function Study() {
                 >
                   End
                 </Button>
-                <Tooltip title={<ToolTipContent />} placement="bottom-start">
+                <Tooltip
+                  title={<ToolTipContent />}
+                  placement="bottom-start"
+                  enterTouchDelay={1}
+                  leaveTouchDelay={6000}
+                >
                   <HelpOutlineIcon sx={{ cursor: "pointer" }} />
                 </Tooltip>
               </Stack>

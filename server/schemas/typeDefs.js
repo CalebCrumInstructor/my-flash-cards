@@ -87,7 +87,7 @@ const typeDefs = `
   }
 
   type Mutation {
-    addUser(email: String!, password: String!, username: String!): Auth
+    addUser(email: String!, password: String!, username: String!, includeStarterDecks: Boolean!): Auth
     loginUser(email: String!, password: String!): Auth
     createFolder(title: String!, parentDeckFolderId: String, isPrivate: Boolean): DeckFolder
     createDeck(title: String!, parentDeckFolderId: String, isPrivate: Boolean): DeckFolder

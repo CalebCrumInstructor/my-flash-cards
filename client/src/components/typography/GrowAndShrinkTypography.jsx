@@ -7,6 +7,7 @@ export default function GrowAndShrinkTypography({
   remainingNumber,
   changeColor,
   setChangeColor,
+  isMediumOrUp,
 }) {
   const elmRef = useRef(null);
   const animationRef = useRef(null);
@@ -55,7 +56,13 @@ export default function GrowAndShrinkTypography({
   }, [changeColor]);
 
   return (
-    <Typography ref={elmRef} align="start" variant="subtitle2" color={color}>
+    <Typography
+      ref={elmRef}
+      align="start"
+      variant="subtitle2"
+      color={color}
+      sx={{ paddingLeft: isMediumOrUp ? "" : 2 }}
+    >
       {remainingNumber} Remain
     </Typography>
   );

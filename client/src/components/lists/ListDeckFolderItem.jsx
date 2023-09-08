@@ -5,6 +5,7 @@ export default function ListDeckFolderItem({
   deckFolder,
   handleListButtonOnClick,
   paddingLeft = 0,
+  index,
 }) {
   if (deckFolder.isFolder)
     return (
@@ -12,6 +13,7 @@ export default function ListDeckFolderItem({
         deckFolder={deckFolder}
         handleListButtonOnClick={handleListButtonOnClick}
         paddingLeft={paddingLeft}
+        index={index}
       />
     );
   return <ListDeck deckFolder={deckFolder} paddingLeft={paddingLeft} />;

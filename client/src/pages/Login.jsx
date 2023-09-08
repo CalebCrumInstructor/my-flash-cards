@@ -22,6 +22,7 @@ import {
 import Page from "../components/Page";
 import AuthService from "../utils/auth";
 import UnstyledLink from "../components/UnstyledLink";
+import { useBreakpoints } from "../hooks";
 
 const headContent = (
   <>
@@ -33,6 +34,7 @@ const headContent = (
 export default function Login() {
   const [loginUser, { error, data, loading }] = useMutation(LOGIN_USER);
   const { isAuthenticated } = useSelector(getUser());
+  const { isMediumOrUp } = useBreakpoints();
 
   const [displayedErrorText, setDisplayedErrorText] = useState("");
 
@@ -95,98 +97,102 @@ export default function Login() {
   }
 
   return (
-    <Page isProtected={false} headContent={headContent} withSideNav={false}>
+    <Page
+      isProtected={false}
+      headContent={headContent}
+      withSideNav={false}
+      withBottomNav={false}
+    >
       <Box
         flexGrow={1}
         justifyContent={"center"}
-        alignItems={"center"}
         display={"flex"}
+        sx={{
+          paddingTop: {
+            xs: 4,
+            md: 6,
+          },
+        }}
       >
-        <Grid container justifyContent={`center`}>
-          <Stack spacing={1}>
-            <Card
-              raised
-              sx={{
-                minWidth: {
-                  xs: "100%",
-                  md: 500,
-                },
-              }}
-            >
-              <CardContent>
-                <Stack spacing={3}>
-                  <Stack>
-                    <Typography variant="h4">Login</Typography>
-                    <Typography sx={{ color: "text.secondary" }}>
-                      Let the studying begin!
-                    </Typography>
-                  </Stack>
-                  <form onSubmit={handleFormSubmit}>
-                    <Stack spacing={3}>
-                      <TextField
-                        onChange={(e) => handleChange(e)}
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        error={loginCreds.email.error}
-                        helperText={
-                          loginCreds.email.error && loginCreds.email.errorMsg
-                        }
-                      />
-                      <TextField
-                        onChange={(e) => handleChange(e)}
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        error={loginCreds.password.error}
-                        helperText={
-                          loginCreds.password.error &&
-                          loginCreds.password.errorMsg
-                        }
-                      />
-                      {displayedErrorText && (
-                        <Typography color={"error"}>
-                          {displayedErrorText}
-                        </Typography>
-                      )}
-                      <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="secondary"
-                        size="large"
-                      >
-                        {loading ? (
-                          <CircularProgress color="inherit" />
-                        ) : (
-                          "Login"
-                        )}
-                      </Button>
+        <Grid container justifyContent={"center"}>
+          <Grid item xs={12} md={8} lg={5}>
+            <Stack spacing={1} paddingX={2}>
+              <Card raised>
+                <CardContent>
+                  <Stack spacing={3}>
+                    <Stack>
+                      <Typography variant="h4">Login</Typography>
+                      <Typography sx={{ color: "text.secondary" }}>
+                        Let the studying begin!
+                      </Typography>
                     </Stack>
-                  </form>
-                </Stack>
-              </CardContent>
-            </Card>
-            <UnstyledLink to={"/signup"}>
-              <Typography
-                sx={{
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                }}
-              >
-                Don't have an account? Sign Up
-              </Typography>
-            </UnstyledLink>
-          </Stack>
+                    <form onSubmit={handleFormSubmit}>
+                      <Stack spacing={3}>
+                        <TextField
+                          onChange={(e) => handleChange(e)}
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email Address"
+                          name="email"
+                          autoComplete="email"
+                          error={loginCreds.email.error}
+                          helperText={
+                            loginCreds.email.error && loginCreds.email.errorMsg
+                          }
+                        />
+                        <TextField
+                          onChange={(e) => handleChange(e)}
+                          variant="outlined"
+                          required
+                          fullWidth
+                          name="password"
+                          label="Password"
+                          type="password"
+                          id="password"
+                          autoComplete="current-password"
+                          error={loginCreds.password.error}
+                          helperText={
+                            loginCreds.password.error &&
+                            loginCreds.password.errorMsg
+                          }
+                        />
+                        {displayedErrorText && (
+                          <Typography color={"error"}>
+                            {displayedErrorText}
+                          </Typography>
+                        )}
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="secondary"
+                          size="large"
+                        >
+                          {loading ? (
+                            <CircularProgress color="inherit" />
+                          ) : (
+                            "Login"
+                          )}
+                        </Button>
+                      </Stack>
+                    </form>
+                  </Stack>
+                </CardContent>
+              </Card>
+              <UnstyledLink to={"/signup"}>
+                <Typography
+                  sx={{
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  Don't have an account? Sign Up
+                </Typography>
+              </UnstyledLink>
+            </Stack>
+          </Grid>
         </Grid>
       </Box>
     </Page>

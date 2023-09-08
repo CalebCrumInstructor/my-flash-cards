@@ -91,14 +91,14 @@ export default function SideNav() {
           href={"/home-folder"}
           selected={pathname === "/home-folder"}
         />
-        <VerticalNavListItem
+        {/* <VerticalNavListItem
           icon={<StarIcon />}
           sideNavOpen={sideNavOpen}
           primaryText={"Starred"}
           viewable={true}
           href={"/starred"}
           selected={pathname === "/starred"}
-        />
+        /> */}
         <VerticalNavListItem
           icon={<EditIcon />}
           sideNavOpen={sideNavOpen}

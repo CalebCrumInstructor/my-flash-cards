@@ -39,20 +39,24 @@ export default function Page({
       <Stack height={"100vh"}>
         <TopNav withSideNav={withSideNav} />
         <Stack flexGrow={1} direction={"row"}>
-          {withSideNav && <SideNav />}
-          {/* spacer for SideNav */}
-          <Box
-            sx={{
-              minWidth: sideNavOpen
-                ? navWidth.drawerWidth
-                : navWidth.navClosedDrawerWidth,
-              display: {
-                xs: "none",
-                md: "block",
-              },
-              height: "100%",
-            }}
-          ></Box>
+          {withSideNav && (
+            <>
+              <SideNav />
+              {/* spacer for SideNav */}
+              <Box
+                sx={{
+                  minWidth: sideNavOpen
+                    ? navWidth.drawerWidth
+                    : navWidth.navClosedDrawerWidth,
+                  display: {
+                    xs: "none",
+                    md: "block",
+                  },
+                  height: "100%",
+                }}
+              ></Box>
+            </>
+          )}
           <Container
             maxWidth="xl"
             sx={{ display: "flex" }}

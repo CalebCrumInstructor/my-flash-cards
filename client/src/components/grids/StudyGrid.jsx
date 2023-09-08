@@ -1,4 +1,13 @@
-import { Box, Grid, Typography, Stack, Button, useTheme } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  Stack,
+  Button,
+  useTheme,
+  Paper,
+  BottomNavigation,
+} from "@mui/material";
 import FlipperCard from "../cards/FlipperCard";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,6 +20,44 @@ import { useState, useRef, useEffect } from "react";
 import GrowAndShrinkTypography from "../typography/GrowAndShrinkTypography";
 import anime from "animejs/lib/anime.es.js";
 import { useHotkeys } from "react-hotkeys-hook";
+
+const ButtonStack = ({
+  isDarkTheme,
+  handleModifyCardWeight,
+  handleButton4Click,
+}) => {
+  return (
+    <Stack direction={"row"} spacing={2}>
+      <Button
+        variant="contained"
+        color="error"
+        sx={{ color: isDarkTheme ? "black" : "white" }}
+        size="large"
+        onClick={() => handleModifyCardWeight(1.5, "error")}
+      >
+        <Typography variant="h5">1</Typography>
+      </Button>
+      <Button
+        variant="contained"
+        color="warning"
+        onClick={() => handleModifyCardWeight(1.2, "warning.main")}
+      >
+        <Typography variant="h5">2</Typography>
+      </Button>
+      <Button
+        variant="contained"
+        color="tertiary"
+        sx={{ color: isDarkTheme ? "black" : "white" }}
+        onClick={() => handleModifyCardWeight(1, "tertiary.main")}
+      >
+        <Typography variant="h5">3</Typography>
+      </Button>
+      <Button variant="contained" color="success" onClick={handleButton4Click}>
+        <Typography variant="h5">4</Typography>
+      </Button>
+    </Stack>
+  );
+};
 
 export default function StudyGrid({ isMediumOrUp }) {
   const dispatch = useDispatch();
@@ -74,71 +121,73 @@ export default function StudyGrid({ isMediumOrUp }) {
   };
 
   return (
-    <Box height={"100%"}>
-      <Grid container spacing={3} sx={{ paddingBottom: 2 }}>
-        <Grid item xs={12} md={9} lg={6}>
-          <Stack spacing={1}>
-            <GrowAndShrinkTypography
-              remainingNumber={Object.keys(cardsObj).length}
-              animateNum={animateCardsRemaining}
-              changeColor={changeColor}
-              setChangeColor={setChangeColor}
-            />
-            <Box ref={flipperRef}>
-              <FlipperCard
-                card={currentCard}
-                isFlippedOverride={isFlippedObj}
-                toggleFlipper={toggleFlipper}
+    <>
+      <Box height={"100%"} paddingBottom={isMediumOrUp ? "" : 4}>
+        <Grid container spacing={3} sx={{ paddingBottom: 2 }}>
+          <Grid item xs={12} md={9} lg={6}>
+            <Stack spacing={1}>
+              <GrowAndShrinkTypography
+                remainingNumber={Object.keys(cardsObj).length}
+                animateNum={animateCardsRemaining}
+                changeColor={changeColor}
+                setChangeColor={setChangeColor}
+                isMediumOrUp={isMediumOrUp}
               />
-            </Box>
-          </Stack>
-        </Grid>
-        {isMediumOrUp && (
-          <Grid item md={4} lg={3}>
-            <Stack
-              spacing={1}
-              sx={{ position: "sticky", top: theme.spacing(8) }}
-            >
-              <Typography variant="subtitle2" align="start" color={"primary"}>
-                Comprehension Level
-              </Typography>
-              <Stack direction={"row"} spacing={2}>
-                <Button
-                  variant="contained"
-                  color="error"
-                  sx={{ color: isDarkTheme ? "black" : "white" }}
-                  size="large"
-                  onClick={() => handleModifyCardWeight(1.5, "error")}
-                >
-                  <Typography variant="h5">1</Typography>
-                </Button>
-                <Button
-                  variant="contained"
-                  color="warning"
-                  onClick={() => handleModifyCardWeight(1.2, "warning.main")}
-                >
-                  <Typography variant="h5">2</Typography>
-                </Button>
-                <Button
-                  variant="contained"
-                  color="tertiary"
-                  sx={{ color: isDarkTheme ? "black" : "white" }}
-                  onClick={() => handleModifyCardWeight(1, "tertiary.main")}
-                >
-                  <Typography variant="h5">3</Typography>
-                </Button>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={handleButton4Click}
-                >
-                  <Typography variant="h5">4</Typography>
-                </Button>
-              </Stack>
+              <Box ref={flipperRef}>
+                <FlipperCard
+                  card={currentCard}
+                  isFlippedOverride={isFlippedObj}
+                  toggleFlipper={toggleFlipper}
+                />
+              </Box>
             </Stack>
           </Grid>
-        )}
-      </Grid>
-    </Box>
+          {isMediumOrUp && (
+            <Grid item md={4} lg={3}>
+              <Stack
+                spacing={1}
+                sx={{ position: "sticky", top: theme.spacing(8) }}
+              >
+                <Typography variant="subtitle2" align="start" color={"primary"}>
+                  Comprehension Level
+                </Typography>
+                <ButtonStack
+                  isDarkTheme={isDarkTheme}
+                  handleButton4Click={handleButton4Click}
+                  handleModifyCardWeight={handleModifyCardWeight}
+                />
+              </Stack>
+            </Grid>
+          )}
+        </Grid>
+      </Box>
+      {!isMediumOrUp && (
+        <Paper
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            right: 0,
+            left: 0,
+            display: "flex",
+            zIndex: 2,
+            justifyContent: "center",
+            paddingTop: 2,
+            paddingBottom: 1,
+          }}
+          elevation={1}
+        >
+          <Stack spacing={1}>
+            <ButtonStack
+              isDarkTheme={isDarkTheme}
+              handleButton4Click={handleButton4Click}
+              handleModifyCardWeight={handleModifyCardWeight}
+            />
+            <Typography variant="subtitle2" align="center" color={"primary"}>
+              Comprehension Level
+            </Typography>
+          </Stack>
+        </Paper>
+      )}
+    </>
   );
 }

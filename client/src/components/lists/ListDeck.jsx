@@ -50,6 +50,7 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
   };
 
   const handleOpenMenu = (event) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
@@ -64,6 +65,7 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
         handleDragStart(event, _id, parentDeckFolder?._id)
       }
       draggable
+      key={_id}
     >
       <ListItem
         secondaryAction={
@@ -88,7 +90,11 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
             justifyContent={"space-between"}
           >
             <Stack direction={"row"}>
-              <Checkbox edge="start" disableRipple checked={selected} />
+              <Checkbox
+                edge="start"
+                disableRipple
+                checked={selected == null ? false : selected}
+              />
               <Stack direction="row" alignItems={"center"} spacing={0.5}>
                 <DynamicFeedIcon color="primary" />
                 <Typography className="line-clamp-1">{title}</Typography>

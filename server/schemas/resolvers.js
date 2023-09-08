@@ -2,6 +2,8 @@ const { User, DeckFolder } = require('../models');
 const { signToken, AuthenticationError, UserInputError, emailHasAccount, emailDoesNotHaveAccount, incorrectPassword } = require('../utils/auth');
 const { dateScalar } = require('./scalar');
 const createDeckAndFolderArrays = require('../lib/helperFunctions/createDeckAndFolderArrays');
+const handleSubFolderCreation = require('../lib/helperFunctions/handleSubFolderCreation');
+const starterDecks = require('../seeds/starter-decks.json');
 
 const removeFolders = async (objId) => {
   const deckFolderData = await DeckFolder.findByIdAndUpdate(
@@ -178,9 +180,22 @@ const resolvers = {
   Mutation: {
     addUser: async (parent, argObj) => {
       try {
-        const user = await User.create(argObj);
-        const token = signToken(user);
-        return { token, user };
+        const argObjCopy = { ...argObj };
+        delete argObjCopy.includeStarterDecks;
+
+        const userData = await User.create(argObjCopy);
+
+        if (argObj.includeStarterDecks) {
+          for (const deckFolderObj of starterDecks) {
+            const deck = await handleSubFolderCreation(DeckFolder, deckFolderObj, null, userData._id);
+            userData.rootFolder.push(deck._id);
+          };
+
+          await userData.save();
+        }
+
+        const token = signToken(userData);
+        return { token, user: userData };
       } catch (err) {
         console.log(err);
         throw emailHasAccount;
