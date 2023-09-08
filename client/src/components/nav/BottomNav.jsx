@@ -2,12 +2,13 @@ import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import FolderIcon from "@mui/icons-material/Folder";
 import StarIcon from "@mui/icons-material/Star";
 import { useNavigate, useLocation } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
 
 const setPageValue = (pathname) => {
   switch (pathname) {
     case "/home-folder":
       return 0;
-    case "/starred":
+    case "/deck-editor":
       return 1;
     default:
       return null;
@@ -42,10 +43,15 @@ export default function BottomNavBar() {
           label="Home Folder"
           icon={<FolderIcon />}
         />
-        <BottomNavigationAction
+        {/* <BottomNavigationAction
           onClick={() => handleReroute("/starred")}
           label="Starred"
           icon={<StarIcon />}
+        /> */}
+        <BottomNavigationAction
+          onClick={() => handleReroute("/deck-editor")}
+          label="Deck Editor"
+          icon={<EditIcon />}
         />
       </BottomNavigation>
     </Paper>

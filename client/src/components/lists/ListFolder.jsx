@@ -49,6 +49,7 @@ export default function ListFolder({
   deckFolder,
   handleListButtonOnClick,
   paddingLeft,
+  index,
 }) {
   const dispatch = useDispatch();
   const { title, _id, subFolder, parentDeckFolder } = deckFolder;
@@ -138,6 +139,7 @@ export default function ListFolder({
         handleDragStart(event, _id, parentDeckFolder?._id)
       }
       draggable
+      key={_id}
     >
       <ListItem
         secondaryAction={
@@ -177,6 +179,7 @@ export default function ListFolder({
             <AddItemToList
               paddingLeft={paddingLeft + 4}
               parentDeckFolderId={_id}
+              key={index}
             />
           )}
           {moveDeckFolderLoading && (

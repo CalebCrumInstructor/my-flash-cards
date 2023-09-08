@@ -19,8 +19,8 @@ export const LOGIN_USER = gql`
 `;
 
 export const ADD_USER = gql`
-  mutation addUserMutation($email: String!, $password: String!, $username: String!) {
-    addUser(email: $email, password: $password, username: $username) {
+  mutation addUserMutation($email: String!, $password: String!, $username: String!, $includeStarterDecks: Boolean!) {
+    addUser(email: $email, password: $password, username: $username, includeStarterDecks: $includeStarterDecks) {
       token
       user {
         _id

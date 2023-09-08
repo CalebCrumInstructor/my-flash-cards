@@ -118,3 +118,22 @@ export const GET_CARD_BY_ID = gql`
     }
   }
 `
+
+
+export const GET_DECKS = gql`
+  query GetDecks($deckIdsArr: [ID]!) {
+    getDecks(deckIdsArr: $deckIdsArr) {
+      _id
+      title
+      cards {
+        _id
+        backContent
+        createdAt
+        frontContent
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`

@@ -1,6 +1,8 @@
 import { Box, Checkbox, IconButton } from "@mui/material";
 import FlipperCard from "./FlipperCard";
 import EditIcon from "@mui/icons-material/Edit";
+import CropSquareIcon from "@mui/icons-material/CropSquare";
+import SquareRoundedIcon from "@mui/icons-material/SquareRounded";
 
 export default function FlipperCardWithOverlay({
   card,
@@ -30,6 +32,8 @@ export default function FlipperCardWithOverlay({
         }}
         onChange={(event) => handleCheckboxChange(event, card)}
         checked={checked}
+        icon={<CropSquareIcon />}
+        checkedIcon={<SquareRoundedIcon />}
       />
       <FlipperCard card={card} />
     </Box>

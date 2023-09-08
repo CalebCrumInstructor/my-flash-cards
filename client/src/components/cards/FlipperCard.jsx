@@ -1,11 +1,25 @@
 import { Box, Card, CardActionArea, CardContent } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RichTextReadOnly } from "mui-tiptap";
 import { useExtensions } from "../../hooks";
 
-export default function FlipperCard({ card }) {
+export default function FlipperCard({
+  card,
+  isFlippedOverride = null,
+  toggleFlipper = 0,
+}) {
   const { frontContent, backContent } = card;
   const [isFlipped, setIsFlipped] = useState(false);
+
+  useEffect(() => {
+    if (!isFlippedOverride) return;
+    setIsFlipped(isFlippedOverride.isFlipped);
+  }, [isFlippedOverride]);
+
+  useEffect(() => {
+    if (toggleFlipper === 0) return;
+    setIsFlipped(!isFlipped);
+  }, [toggleFlipper]);
 
   const extensions = useExtensions({
     placeholder: "loading",

@@ -14,6 +14,8 @@ import {
   TextField,
   Button,
   CircularProgress,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import {
   clearAllErrors,
@@ -23,6 +25,7 @@ import UnstyledLink from "../components/UnstyledLink";
 
 import Page from "../components/Page";
 import AuthService from "../utils/auth";
+import { useBreakpoints } from "../hooks";
 
 const headContent = (
   <>
@@ -34,6 +37,7 @@ const headContent = (
 export default function SignUp() {
   const [addUser, { error, data, loading }] = useMutation(ADD_USER);
   const { isAuthenticated } = useSelector(getUser());
+  const { isMediumOrUp } = useBreakpoints();
 
   const [displayedErrorText, setDisplayedErrorText] = useState("");
 
@@ -63,6 +67,12 @@ export default function SignUp() {
       errorMsg: "Passwords must match.",
       name: "secondPassword",
     },
+    includeStarterDecks: {
+      val: true,
+      error: false,
+      errorMsg: "Value Required",
+      name: "includeStarterDecks",
+    },
   });
 
   const handleChange = (event) => {
@@ -79,6 +89,17 @@ export default function SignUp() {
     setRegisterCreds(newObj);
   };
 
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    const newObj = {
+      ...registerCreds,
+    };
+
+    newObj[name].val = checked;
+
+    setRegisterCreds(newObj);
+  };
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     setDisplayedErrorText("");
@@ -87,12 +108,13 @@ export default function SignUp() {
       return;
 
     try {
-      const { email, username, password } = registerCreds;
+      const { email, username, password, includeStarterDecks } = registerCreds;
 
       const variables = {
         email: email.val,
         username: username.val,
         password: password.val,
+        includeStarterDecks: includeStarterDecks.val,
       };
 
       const { data } = await addUser({
@@ -111,130 +133,152 @@ export default function SignUp() {
   }
 
   return (
-    <Page isProtected={false} headContent={headContent} withSideNav={false}>
+    <Page
+      isProtected={false}
+      headContent={headContent}
+      withSideNav={false}
+      withBottomNav={false}
+    >
       <Box
         flexGrow={1}
         justifyContent={"center"}
-        alignItems={"center"}
         display={"flex"}
+        sx={{
+          paddingTop: {
+            xs: 4,
+            md: 6,
+          },
+        }}
       >
-        <Grid container justifyContent={`center`}>
-          <Stack spacing={1}>
-            <Card
-              raised
-              sx={{
-                minWidth: {
-                  xs: "100%",
-                  md: 500,
-                },
-              }}
-            >
-              <CardContent>
-                <Stack spacing={3}>
-                  <Stack>
-                    <Typography variant="h4">Sign Up</Typography>
-                    <Typography sx={{ color: "text.secondary" }}>
-                      Create Your Account Today
-                    </Typography>
-                  </Stack>
-                  <form onSubmit={handleFormSubmit}>
-                    <Stack spacing={3}>
-                      <TextField
-                        onChange={(e) => handleChange(e)}
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        error={registerCreds.email.error}
-                        helperText={
-                          registerCreds.email.error &&
-                          registerCreds.email.errorMsg
-                        }
-                      />
-                      <TextField
-                        onChange={(e) => handleChange(e)}
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="username"
-                        label="Username"
-                        name="username"
-                        autoComplete="username"
-                        error={registerCreds.username.error}
-                        helperText={
-                          registerCreds.username.error &&
-                          registerCreds.username.errorMsg
-                        }
-                      />
-                      <TextField
-                        onChange={(e) => handleChange(e)}
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        error={registerCreds.password.error}
-                        helperText={
-                          registerCreds.password.error &&
-                          registerCreds.password.errorMsg
-                        }
-                      />
-                      <TextField
-                        onChange={(e) => handleChange(e)}
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="secondPassword"
-                        label="Re-enter Password"
-                        type="password"
-                        id="secondPassword"
-                        autoComplete="current-password"
-                        error={registerCreds.secondPassword.error}
-                        helperText={
-                          registerCreds.secondPassword.error &&
-                          registerCreds.secondPassword.errorMsg
-                        }
-                      />
-                      {displayedErrorText && (
-                        <Typography color={"error"}>
-                          {displayedErrorText}
-                        </Typography>
-                      )}
-                      <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="secondary"
-                        size="large"
-                      >
-                        {loading ? (
-                          <CircularProgress color="inherit" />
-                        ) : (
-                          "Create Account"
-                        )}
-                      </Button>
-                    </Stack>
-                  </form>
-                </Stack>
-              </CardContent>
-            </Card>
-            <UnstyledLink to={"/login"}>
-              <Typography
+        <Grid container justifyContent={"center"}>
+          <Grid item xs={12} md={8} lg={5}>
+            <Stack spacing={1} paddingX={2}>
+              <Card
+                raised
                 sx={{
-                  textDecoration: "underline",
-                  cursor: "pointer",
+                  minWidth: {
+                    xs: "100%",
+                    md: 500,
+                  },
                 }}
               >
-                Already have an account? Login
-              </Typography>
-            </UnstyledLink>
-          </Stack>
+                <CardContent>
+                  <Stack spacing={3}>
+                    <Stack>
+                      <Typography variant="h4">Sign Up</Typography>
+                      <Typography sx={{ color: "text.secondary" }}>
+                        Create Your Account Today
+                      </Typography>
+                    </Stack>
+                    <form onSubmit={handleFormSubmit}>
+                      <Stack spacing={3}>
+                        <TextField
+                          onChange={(e) => handleChange(e)}
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email Address"
+                          name="email"
+                          autoComplete="email"
+                          error={registerCreds.email.error}
+                          helperText={
+                            registerCreds.email.error &&
+                            registerCreds.email.errorMsg
+                          }
+                        />
+                        <TextField
+                          onChange={(e) => handleChange(e)}
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="username"
+                          label="Username"
+                          name="username"
+                          autoComplete="username"
+                          error={registerCreds.username.error}
+                          helperText={
+                            registerCreds.username.error &&
+                            registerCreds.username.errorMsg
+                          }
+                        />
+                        <TextField
+                          onChange={(e) => handleChange(e)}
+                          variant="outlined"
+                          required
+                          fullWidth
+                          name="password"
+                          label="Password"
+                          type="password"
+                          id="password"
+                          autoComplete="current-password"
+                          error={registerCreds.password.error}
+                          helperText={
+                            registerCreds.password.error &&
+                            registerCreds.password.errorMsg
+                          }
+                        />
+                        <TextField
+                          onChange={(e) => handleChange(e)}
+                          variant="outlined"
+                          required
+                          fullWidth
+                          name="secondPassword"
+                          label="Re-enter Password"
+                          type="password"
+                          id="secondPassword"
+                          autoComplete="current-password"
+                          error={registerCreds.secondPassword.error}
+                          helperText={
+                            registerCreds.secondPassword.error &&
+                            registerCreds.secondPassword.errorMsg
+                          }
+                        />
+                        <FormControlLabel
+                          label="Add starter decks to my account."
+                          control={
+                            <Checkbox
+                              name="includeStarterDecks"
+                              onChange={handleCheckboxChange}
+                              checked={registerCreds.includeStarterDecks.val}
+                            />
+                          }
+                        />
+                        {displayedErrorText && (
+                          <Typography color={"error"}>
+                            {displayedErrorText}
+                          </Typography>
+                        )}
+                        <Button
+                          type="submit"
+                          fullWidth
+                          variant="contained"
+                          color="secondary"
+                          size="large"
+                        >
+                          {loading ? (
+                            <CircularProgress color="inherit" />
+                          ) : (
+                            "Create Account"
+                          )}
+                        </Button>
+                      </Stack>
+                    </form>
+                  </Stack>
+                </CardContent>
+              </Card>
+              <UnstyledLink to={"/login"}>
+                <Typography
+                  sx={{
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  Already have an account? Login
+                </Typography>
+              </UnstyledLink>
+            </Stack>
+          </Grid>
         </Grid>
       </Box>
     </Page>
