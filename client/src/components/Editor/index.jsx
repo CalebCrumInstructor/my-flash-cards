@@ -23,7 +23,7 @@ export default function Editor({
       renderControls={() => <EditorMenuControls />}
       onUpdate={(value) => {
         // ! This causes too many re-renders
-        // setStateValue(value.editor.getHTML());
+        setStateValue(value.editor.getHTML());
       }}
     >
       {() => (
