@@ -122,7 +122,11 @@ export default function StudyGrid({ isMediumOrUp }) {
 
   return (
     <>
-      <Box height={"100%"} paddingBottom={isMediumOrUp ? "" : 4}>
+      <Box
+        height={"100%"}
+        paddingBottom={isMediumOrUp ? "" : 4}
+        sx={{ overflow: isMediumOrUp ? "" : "hidden" }}
+      >
         <Grid container spacing={3} sx={{ paddingBottom: 2 }}>
           <Grid item xs={12} md={9} lg={6}>
             <Stack spacing={1}>

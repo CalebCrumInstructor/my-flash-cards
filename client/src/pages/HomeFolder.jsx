@@ -18,7 +18,7 @@ const headContent = (
 
 export default function HomeFolder() {
   const theme = useTheme();
-  const { isMediumOrUp } = useBreakpoints();
+  const { isMediumOrUp, isLargeOrUp } = useBreakpoints();
   const { decks } = useSelector(getHomeFolder());
 
   const selectedDecksArr = Object.values(decks).filter(
@@ -37,7 +37,7 @@ export default function HomeFolder() {
               <HomeFolderList />
             </Grid>
             {isMediumOrUp && selectedDecksArr.length > 0 && (
-              <Grid item md={4} lg={3}>
+              <Grid item md={4} lg={3.2}>
                 <Stack
                   sx={{ position: "sticky", top: theme.spacing(8) }}
                   spacing={3}
@@ -45,6 +45,7 @@ export default function HomeFolder() {
                   <StartStudyingButton
                     selectedDecksArr={selectedDecksArr}
                     isMediumOrUp={isMediumOrUp}
+                    isLargeOrUp={isLargeOrUp}
                   />
                   <UnselectAllDecksButton />
                 </Stack>
@@ -60,6 +61,7 @@ export default function HomeFolder() {
             <StartStudyingButton
               selectedDecksArr={selectedDecksArr}
               isMediumOrUp={isMediumOrUp}
+              isLargeOrUp={isLargeOrUp}
             />
             <UnselectAllDecksButton variant="contained" />
           </Stack>

@@ -1,12 +1,4 @@
-import {
-  Stack,
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  Typography,
-  LinearProgress,
-} from "@mui/material";
+import { Stack, Box, Button, Grid, Typography } from "@mui/material";
 import Editor from "./index";
 import FlipperCard from "../cards/FlipperCard";
 import { useEffect, useRef, useState } from "react";
@@ -30,6 +22,7 @@ export default function CardEditors({
 
   const [frontContent, setFrontContent] = useState(initialFrontContent);
   const [backContent, setBackContent] = useState(initialBackContent);
+  console.log("hit");
 
   useEffect(() => {
     if (
