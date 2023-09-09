@@ -18,15 +18,16 @@ export default function GrowAndShrinkTypography({
     setColor("success.main");
     animationRef.current = anime({
       targets: elmRef.current,
-      scale: 1.05,
-      duration: 300,
+      // scale: 1.05,
+      translateX: 20,
+      duration: 400,
       easing: "easeInOutQuad",
       direction: "alternate",
       autoplay: false,
     });
     setTimeout(() => {
       setColor("primary");
-    }, 1000);
+    }, 800);
 
     return () => {
       if (animationRef.current) {
@@ -38,10 +39,6 @@ export default function GrowAndShrinkTypography({
 
   useEffect(() => {
     if (animateNum !== 0 && animationRef.current) {
-      setColor("success.main");
-      setTimeout(() => {
-        setColor("primary");
-      }, 1500);
       animationRef.current.restart();
     }
   }, [animateNum]);
@@ -52,7 +49,7 @@ export default function GrowAndShrinkTypography({
     setTimeout(() => {
       setColor("primary");
       setChangeColor(null);
-    }, 1000);
+    }, 800);
   }, [changeColor]);
 
   return (

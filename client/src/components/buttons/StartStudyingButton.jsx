@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function StartStudyingButton({
   isMediumOrUp,
+  isLargeOrUp,
   selectedDecksArr,
 }) {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function StartStudyingButton({
       variant="contained"
       sx={{ textTransform: "none" }}
       fullWidth
+      // startIcon={<SendIcon fontSize="large" />}
     >
       <Stack
         direction={"row"}
@@ -34,9 +36,9 @@ export default function StartStudyingButton({
         sx={{
           width: "100%",
         }}
-        spacing={3}
+        spacing={2}
       >
-        <SendIcon fontSize="large" />
+        {isMediumOrUp && !isLargeOrUp ? <></> : <SendIcon fontSize="large" />}
         <Stack>
           <Typography
             align="center"

@@ -1,23 +1,11 @@
 import Page from "../components/Page";
-import {
-  Stack,
-  Typography,
-  Grid,
-  Button,
-  Box,
-  LinearProgress,
-} from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
 import DefaultLayout from "../components/layouts/DefaultLayout";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useParams, useNavigate } from "react-router-dom";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import SaveIcon from "@mui/icons-material/Save";
-import Editor from "../components/Editor";
-import { useState, useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { useMutation, useLazyQuery } from "@apollo/client";
 import { EDIT_CARD } from "../graphql/mutations";
 import { GET_CARD_BY_ID } from "../graphql/queries";
-import FlipperCard from "../components/cards/FlipperCard";
 import CardEditors from "../components/Editor/CardEditors";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -85,6 +73,8 @@ export default function EditCard() {
       getCard();
     }
   }, []);
+
+  console.log("edit card page");
 
   return (
     <Page isProtected={true} headContent={headContent}>
