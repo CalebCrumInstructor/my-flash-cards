@@ -21,14 +21,11 @@ import FolderIcon from "@mui/icons-material/Folder";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
 import ListDeckFolderItem from "./ListDeckFolderItem";
 import LoadDeckFolders from "./LoadDeckFolders";
 import AddItemToList from "./AddItemToList";
 import FolderOptionsMenu from "../Menus/FolderOptionsMenu";
-
-import { Draggable, Droppable } from "react-beautiful-dnd";
 
 const handleDragStart = (event, deckFolderId, oldParentFolderId) => {
   event.stopPropagation();
