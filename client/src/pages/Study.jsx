@@ -162,74 +162,68 @@ export default function Study() {
       <DefaultLayout
         icon={<SendIcon fontSize="large" color="inherit" />}
         title={"Study"}
+        loading={loading}
       >
-        <Box sx={{ position: "relative", height: "100%" }}>
-          {loading && (
-            <LinearProgress
-              sx={{ position: "absolute", top: -12, width: "100%" }}
-            />
-          )}
-          <Stack spacing={2}>
-            <Stack
-              direction={"row"}
-              justifyContent={"space-between"}
-              alignItems={"center"}
-              spacing={2}
-              paddingX={isMediumOrUp ? "" : 2}
+        <Stack spacing={2}>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            spacing={2}
+            paddingX={isMediumOrUp ? "" : 2}
+          >
+            <Tooltip
+              title={
+                data?.getDecks
+                  ? getDeckCombinationTitle(data.getDecks)
+                  : loading
+                  ? "Loading"
+                  : "No Decks Selected. Please, return to your Home Folder."
+              }
+              enterTouchDelay={1}
+              leaveTouchDelay={3000}
+              disableFocusListener={isMediumOrUp}
+              disableHoverListener={isMediumOrUp}
+              disableTouchListener={isMediumOrUp}
             >
-              <Tooltip
-                title={
-                  data?.getDecks
-                    ? getDeckCombinationTitle(data.getDecks)
-                    : loading
-                    ? "Loading"
-                    : "No Decks Selected. Please, return to your Home Folder."
-                }
-                enterTouchDelay={1}
-                leaveTouchDelay={3000}
-                disableFocusListener={isMediumOrUp}
-                disableHoverListener={isMediumOrUp}
-                disableTouchListener={isMediumOrUp}
+              <Typography variant="h5" className="line-clamp-1">
+                {data?.getDecks
+                  ? getDeckCombinationTitle(data.getDecks)
+                  : loading
+                  ? "Loading"
+                  : "No Decks Selected. Please, return to your Home Folder."}
+              </Typography>
+            </Tooltip>
+            <Stack direction={"row"} spacing={2} alignItems={"center"}>
+              <Button
+                variant="outlined"
+                color="error"
+                startIcon={<CloseIcon />}
+                onClick={handleEndClick}
               >
-                <Typography variant="h5" className="line-clamp-1">
-                  {data?.getDecks
-                    ? getDeckCombinationTitle(data.getDecks)
-                    : loading
-                    ? "Loading"
-                    : "No Decks Selected. Please, return to your Home Folder."}
-                </Typography>
+                End
+              </Button>
+              <Tooltip
+                title={<ToolTipContent />}
+                placement="bottom-start"
+                enterTouchDelay={1}
+                leaveTouchDelay={6000}
+              >
+                <HelpOutlineIcon sx={{ cursor: "pointer" }} />
               </Tooltip>
-              <Stack direction={"row"} spacing={2} alignItems={"center"}>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  startIcon={<CloseIcon />}
-                  onClick={handleEndClick}
-                >
-                  End
-                </Button>
-                <Tooltip
-                  title={<ToolTipContent />}
-                  placement="bottom-start"
-                  enterTouchDelay={1}
-                  leaveTouchDelay={6000}
-                >
-                  <HelpOutlineIcon sx={{ cursor: "pointer" }} />
-                </Tooltip>
-              </Stack>
             </Stack>
-            {isComplete ? (
-              <StudyCompleteGrid
-                handleEndClick={handleEndClick}
-                handleInitialState={handleInitialState}
-              />
-            ) : currentCard ? (
-              <StudyGrid isMediumOrUp={isMediumOrUp} />
-            ) : (
-              <></>
-            )}
           </Stack>
-        </Box>
+          {isComplete ? (
+            <StudyCompleteGrid
+              handleEndClick={handleEndClick}
+              handleInitialState={handleInitialState}
+            />
+          ) : currentCard ? (
+            <StudyGrid isMediumOrUp={isMediumOrUp} />
+          ) : (
+            <></>
+          )}
+        </Stack>
       </DefaultLayout>
     </Page>
   );

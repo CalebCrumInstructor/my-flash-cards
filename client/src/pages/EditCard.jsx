@@ -81,26 +81,20 @@ export default function EditCard() {
       <DefaultLayout
         icon={<EditIcon fontSize="large" color="inherit" />}
         title={"Edit Card"}
+        loading={loading}
       >
-        <Box position="relative">
-          {(loading || getCardLoading) && (
-            <LinearProgress
-              sx={{ position: "absolute", top: -12, width: "100%" }}
-            />
-          )}
-          <CardEditors
-            moveTo={moveToDeckEditor}
-            handleSubmit={handleSubmit}
-            loading={loading}
-            isEdit={true}
-            initialFrontContent={
-              cardSelectedForEdit ? cardSelectedForEdit.frontContent : ""
-            }
-            initialBackContent={
-              cardSelectedForEdit ? cardSelectedForEdit.backContent : ""
-            }
-          />
-        </Box>
+        <CardEditors
+          moveTo={moveToDeckEditor}
+          handleSubmit={handleSubmit}
+          loading={loading}
+          isEdit={true}
+          initialFrontContent={
+            cardSelectedForEdit ? cardSelectedForEdit.frontContent : ""
+          }
+          initialBackContent={
+            cardSelectedForEdit ? cardSelectedForEdit.backContent : ""
+          }
+        />
       </DefaultLayout>
     </Page>
   );

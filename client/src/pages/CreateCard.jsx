@@ -46,19 +46,13 @@ export default function CreateCard() {
       <DefaultLayout
         icon={<AddCircleOutlineIcon fontSize="large" color="inherit" />}
         title={"Create Card"}
+        loading={loading}
       >
-        <Box position="relative">
-          {loading && (
-            <LinearProgress
-              sx={{ position: "absolute", top: -12, width: "100%" }}
-            />
-          )}
-          <CardEditors
-            moveTo={moveToDeckEditor}
-            handleSubmit={handleSubmit}
-            loading={loading}
-          />
-        </Box>
+        <CardEditors
+          moveTo={moveToDeckEditor}
+          handleSubmit={handleSubmit}
+          loading={loading}
+        />
       </DefaultLayout>
     </Page>
   );

@@ -55,10 +55,10 @@ export default function HomeFolder() {
             )}
           </Grid>
         </Box>
-        <Box>
+        {/* <Box>
           <DraggableItem>drag me</DraggableItem>
           <DropTarget>drop target</DropTarget>
-        </Box>
+        </Box> */}
         {!isMediumOrUp && selectedDecksArr.length > 0 && (
           <Stack
             sx={{ position: "sticky", bottom: theme.spacing(8) }}

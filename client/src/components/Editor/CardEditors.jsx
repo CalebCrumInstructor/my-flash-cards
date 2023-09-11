@@ -6,6 +6,7 @@ import { useBreakpoints } from "../../hooks";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import debounce from "lodash.debounce";
 
 export default function CardEditors({
   moveTo,
@@ -22,7 +23,8 @@ export default function CardEditors({
 
   const [frontContent, setFrontContent] = useState(initialFrontContent);
   const [backContent, setBackContent] = useState(initialBackContent);
-  console.log("hit");
+  const debouncedSetFrontContent = debounce(setFrontContent, 500);
+  const debouncedSetBackContent = debounce(setBackContent, 500);
 
   useEffect(() => {
     if (
@@ -119,7 +121,7 @@ export default function CardEditors({
               <Editor
                 rteRef={frontContentEditorRef}
                 placeholder="Add content for the front of your card."
-                setStateValue={setFrontContent}
+                setStateValue={debouncedSetFrontContent}
                 content={initialFrontContent}
               />
             </Stack>
@@ -137,7 +139,7 @@ export default function CardEditors({
               <Editor
                 rteRef={backContentEditorRef}
                 placeholder="Add content for the back of your card."
-                setStateValue={setBackContent}
+                setStateValue={debouncedSetBackContent}
                 content={initialBackContent}
               />
             </Stack>

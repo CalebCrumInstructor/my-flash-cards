@@ -203,6 +203,7 @@ export default function DeckEditor() {
       <DefaultLayout
         icon={<EditIcon fontSize="large" color="inherit" />}
         title={"Deck Editor"}
+        loading={loading}
       >
         <Stack
           direction={isMediumOrUp ? "row" : "column"}
