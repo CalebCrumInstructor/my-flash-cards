@@ -1,7 +1,12 @@
-import { Stack, Typography, Fade } from "@mui/material";
+import { Stack, Typography, Fade, LinearProgress, Box } from "@mui/material";
 import { useBreakpoints } from "../../hooks";
 
-export default function DefaultLayout({ icon, title, children }) {
+export default function DefaultLayout({
+  icon,
+  title,
+  children,
+  loading = false,
+}) {
   const { isMediumOrUp } = useBreakpoints();
 
   return (
@@ -15,15 +20,24 @@ export default function DefaultLayout({ icon, title, children }) {
         }}
         spacing={3}
       >
-        <Stack
-          direction={"row"}
-          alignItems={"center"}
-          spacing={2}
-          sx={{ paddingX: isMediumOrUp ? "" : 2 }}
-        >
-          {icon}
-          <Typography variant={isMediumOrUp ? "h4" : "h5"}>{title}</Typography>
-        </Stack>
+        <Box sx={{ position: "relative" }}>
+          {loading && (
+            <LinearProgress
+              sx={{ position: "absolute", bottom: -10, width: "100%" }}
+            />
+          )}
+          <Stack
+            direction={"row"}
+            alignItems={"center"}
+            spacing={2}
+            sx={{ paddingX: isMediumOrUp ? "" : 2 }}
+          >
+            {icon}
+            <Typography variant={isMediumOrUp ? "h4" : "h5"}>
+              {title}
+            </Typography>
+          </Stack>
+        </Box>
         {children}
       </Stack>
     </Fade>

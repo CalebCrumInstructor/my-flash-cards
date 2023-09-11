@@ -1,5 +1,4 @@
 import { RichTextEditor, LinkBubbleMenu, TableBubbleMenu } from "mui-tiptap";
-import { useRef } from "react";
 import EditorMenuControls from "./EditorMenuControls";
 import { useExtensions } from "../../hooks";
 const defaultContent = "";
