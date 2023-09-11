@@ -8,6 +8,8 @@ import UnselectAllDecksButton from "../components/buttons/UnselectAllDecksButton
 import { useBreakpoints } from "../hooks";
 import { getHomeFolder } from "../redux/slices/homeFolderSlice";
 import { useSelector } from "react-redux";
+import DropTarget from "../components/drag-and-drop/DropTarget";
+import DraggableItem from "../components/drag-and-drop/DraggableItem";
 
 const headContent = (
   <>
@@ -52,6 +54,10 @@ export default function HomeFolder() {
               </Grid>
             )}
           </Grid>
+        </Box>
+        <Box>
+          <DraggableItem>drag me</DraggableItem>
+          <DropTarget>drop target</DropTarget>
         </Box>
         {!isMediumOrUp && selectedDecksArr.length > 0 && (
           <Stack

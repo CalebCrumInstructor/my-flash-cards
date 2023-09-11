@@ -24,8 +24,6 @@ import DeleteDeckFolderDialog from "../Dialogs/DeleteDeckFolderDialog";
 import EditFolderDialog from "../Dialogs/EditFolderDialog";
 import CreateDeckDialog from "../Dialogs/CreateDeckDialog";
 
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-
 export default function HomeFolderList() {
   const dispatch = useDispatch();
   const [errorMsg, setErrorMsg] = useState("");
