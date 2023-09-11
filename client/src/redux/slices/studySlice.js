@@ -20,7 +20,7 @@ export const studySlice = createSlice({
         cards.forEach((card) => {
           initialCardsObj[card._id] = {
             ...card,
-            weight: 1
+            weight: (1 / decksArr.length)
           }
         })
       });
