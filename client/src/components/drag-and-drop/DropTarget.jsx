@@ -10,6 +10,9 @@ export default function DropTarget({ children }) {
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
+    options: {
+      touch: true,
+    },
   });
 
   return (
