@@ -4,9 +4,6 @@ import { useDrag } from "react-dnd";
 export default function DraggableItem({ children }) {
   const [{ isDragging }, dragRef] = useDrag({
     type: "ITEM",
-    options: {
-      touch: true,
-    },
   });
 
   return (
