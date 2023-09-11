@@ -1,6 +1,14 @@
 import Page from "../components/Page";
 import FolderIcon from "@mui/icons-material/Folder";
-import { Grid, Box, useTheme, Stack } from "@mui/material";
+import {
+  Grid,
+  Box,
+  useTheme,
+  Stack,
+  Snackbar,
+  Alert,
+  Button,
+} from "@mui/material";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import HomeFolderList from "../components/lists/HomeFolderList";
 import StartStudyingButton from "../components/buttons/StartStudyingButton";
@@ -10,6 +18,8 @@ import { getHomeFolder } from "../redux/slices/homeFolderSlice";
 import { useSelector } from "react-redux";
 import DropTarget from "../components/drag-and-drop/DropTarget";
 import DraggableItem from "../components/drag-and-drop/DraggableItem";
+import { isIOS } from "react-device-detect";
+import { useState } from "react";
 
 const headContent = (
   <>
@@ -22,6 +32,7 @@ export default function HomeFolder() {
   const theme = useTheme();
   const { isMediumOrUp, isLargeOrUp } = useBreakpoints();
   const { decks } = useSelector(getHomeFolder());
+  const [snackbarOpen, setSnackbarOpen] = useState(isIOS);
 
   const selectedDecksArr = Object.values(decks).filter(
     ({ selected }) => selected
@@ -72,6 +83,11 @@ export default function HomeFolder() {
             <UnselectAllDecksButton variant="contained" />
           </Stack>
         )}
+        <Snackbar open={snackbarOpen}>
+          <Alert severity="info" onClose={() => setSnackbarOpen(false)}>
+            Drag and drop is not available on ios at this time.
+          </Alert>
+        </Snackbar>
       </DefaultLayout>
     </Page>
   );
