@@ -33,14 +33,14 @@ const ButtonStack = ({
         color="error"
         sx={{ color: isDarkTheme ? "black" : "white" }}
         size="large"
-        onClick={() => handleModifyCardWeight(1.5, "error")}
+        onClick={() => handleModifyCardWeight(3, "error")}
       >
         <Typography variant="h5">1</Typography>
       </Button>
       <Button
         variant="contained"
         color="warning"
-        onClick={() => handleModifyCardWeight(1.2, "warning.main")}
+        onClick={() => handleModifyCardWeight(2, "warning.main")}
       >
         <Typography variant="h5">2</Typography>
       </Button>
