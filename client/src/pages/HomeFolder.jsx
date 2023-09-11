@@ -85,7 +85,7 @@ export default function HomeFolder() {
         )}
         <Snackbar open={snackbarOpen}>
           <Alert severity="info" onClose={() => setSnackbarOpen(false)}>
-            Drag and drop is not available on ios at this time.
+            Drag and drop features are not available on iOS at this time.
           </Alert>
         </Snackbar>
       </DefaultLayout>
