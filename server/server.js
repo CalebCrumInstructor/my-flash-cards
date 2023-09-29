@@ -24,18 +24,19 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
-  app.use((req, res, next) => {
-    if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] === 'http') {
-      return res.redirect(`https://${req.headers.host}${req.url}`);
-    }
-    next();
-  });
 
   app.use('/graphql', expressMiddleware(server, {
     context: authMiddleware
   }));
 
   if (process.env.NODE_ENV === 'production') {
+    app.use((req, res, next) => {
+      if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] === 'http') {
+        return res.redirect(`https://${req.headers.host}${req.url}`);
+      }
+      next();
+    });
+
     app.use(express.static(path.join(__dirname, '../client/build')));
 
     app.get('*', (req, res) => {

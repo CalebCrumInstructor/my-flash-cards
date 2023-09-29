@@ -42,9 +42,9 @@ function App() {
           <Provider store={store}>
             <CustomThemeProvider>
               <Auth>
-                <DndProvider backend={HTML5Backend}>
-                  <AllRoutes />
-                </DndProvider>
+                {/* <DndProvider backend={HTML5Backend}> */}
+                <AllRoutes />
+                {/* </DndProvider> */}
               </Auth>
             </CustomThemeProvider>
           </Provider>
