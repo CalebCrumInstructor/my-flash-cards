@@ -172,13 +172,13 @@ export default function ListFolder({
       </ListItem>
       <Collapse in={open} timeout={"auto"} unmountOnExit>
         <div>
-          {subFolder?.length < 1 && (
-            <AddItemToList
-              paddingLeft={paddingLeft + 4}
-              parentDeckFolderId={_id}
-              key={index}
-            />
-          )}
+          <AddItemToList
+            paddingLeft={paddingLeft + 4}
+            parentDeckFolderId={_id}
+            key={index}
+          />
+          {/* {subFolder?.length < 1 && (
+          )} */}
           {moveDeckFolderLoading && (
             <Skeleton sx={{ marginLeft: paddingLeft + 2, marginRight: 2 }} />
           )}
