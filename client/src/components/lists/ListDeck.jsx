@@ -5,6 +5,7 @@ import {
   Checkbox,
   Stack,
   Typography,
+  Box,
 } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,10 +14,11 @@ import {
   getDeckById,
 } from "../../redux/slices/homeFolderSlice";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
+import DraggableItem from "../drag-and-drop/DraggableItem";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CardDeckOptionsMenu from "../Menus/CardDeckOptionsMenu";
-
-import DraggableItem from "../drag-and-drop/DraggableItem";
 
 export default function ListDeck({ deckFolder, paddingLeft }) {
   const dispatch = useDispatch();
@@ -40,15 +42,8 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
   };
 
   return (
-    <DraggableItem item={deckFolder}>
+    <Box key={_id}>
       <ListItem
-        secondaryAction={
-          <Stack direction={"row"}>
-            <IconButton onClick={handleOpenMenu}>
-              <MoreVertIcon />
-            </IconButton>
-          </Stack>
-        }
         disablePadding
         sx={{
           paddingLeft: paddingLeft,
@@ -56,31 +51,46 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
         key={deckFolder._id}
         onClick={handleToggleSelected}
       >
-        <ListItemButton dense>
-          <Stack
-            direction={"row"}
-            flexGrow={1}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-          >
-            <Stack direction={"row"}>
-              <Checkbox
-                edge="start"
-                disableRipple
-                checked={selected == null ? false : selected}
-              />
-              <Stack direction="row" alignItems={"center"} spacing={0.5}>
-                <DynamicFeedIcon color="primary" />
-                <Typography className="line-clamp-1">{title}</Typography>
-              </Stack>
+        <ListItemButton
+          dense
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Stack direction={"row"}>
+            <Checkbox
+              edge="start"
+              disableRipple
+              checked={selected == null ? false : selected}
+            />
+            <Stack direction="row" alignItems={"center"} spacing={0.5}>
+              <DynamicFeedIcon color="primary" />
+              <Typography className="line-clamp-1">{title}</Typography>
             </Stack>
+          </Stack>
+          <Stack direction={"row"} alignItems={"center"}>
             <Typography
               className="line-clamp-1"
               variant="subtitle2"
-              sx={{ mr: 1 }}
+              sx={{
+                mr: {
+                  md: 2,
+                },
+              }}
             >
               {cardCount} card{cardCount === 1 ? "" : "s"}
             </Typography>
+
+            <IconButton onClick={handleOpenMenu} size="small">
+              <MoreVertIcon />
+            </IconButton>
+            <DraggableItem item={deckFolder}>
+              <IconButton size="small">
+                <DragIndicatorIcon className="grab-element" />
+              </IconButton>
+            </DraggableItem>
           </Stack>
         </ListItemButton>
       </ListItem>
@@ -90,6 +100,6 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
         parentDeckFolderId={parentDeckFolder?._id}
         deckFolderId={_id}
       />
-    </DraggableItem>
+    </Box>
   );
 }
