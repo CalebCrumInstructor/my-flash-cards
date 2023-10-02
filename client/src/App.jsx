@@ -12,8 +12,8 @@ import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter } from "react-router-dom";
 import AllRoutes from "./pages/AllRoutes";
 import Auth from "./components/Auth";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd-multi-backend";
+import { HTML5toTouch } from "rdndmb-html5-to-touch";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -42,9 +42,9 @@ function App() {
           <Provider store={store}>
             <CustomThemeProvider>
               <Auth>
-                {/* <DndProvider backend={HTML5Backend}> */}
-                <AllRoutes />
-                {/* </DndProvider> */}
+                <DndProvider options={HTML5toTouch}>
+                  <AllRoutes />
+                </DndProvider>
               </Auth>
             </CustomThemeProvider>
           </Provider>

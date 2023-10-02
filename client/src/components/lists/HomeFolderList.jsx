@@ -18,6 +18,8 @@ import { useBreakpoints } from "../../hooks";
 import { useThemeMode } from "../../hooks";
 import { useMutation } from "@apollo/client";
 import { MOVE_DECK_FOLDER } from "../../graphql/mutations";
+import { useDrop } from "react-dnd";
+
 import AddItemToList from "./AddItemToList";
 import CreateFolderDialog from "../Dialogs/CreateFolderDialog";
 import DeleteDeckFolderDialog from "../Dialogs/DeleteDeckFolderDialog";
@@ -57,14 +59,9 @@ export default function HomeFolderList() {
     dispatch(toggleFolderOpen(deckFolderId));
   };
 
-  const handleDrop = async (event) => {
-    event.preventDefault();
-    const { deckFolderId, oldParentFolderId } = JSON.parse(
-      event.dataTransfer.getData("text/plain")
-    );
-    setIsHovered(false);
-
-    if (!oldParentFolderId) return;
+  const handleDrop = async (item) => {
+    const deckFolderId = item._id;
+    const oldParentFolderId = item.parentDeckFolder?._id;
 
     try {
       const moveDeckData = await moveDeckFolder({
@@ -89,18 +86,6 @@ export default function HomeFolderList() {
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const handleDragOver = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsHovered(true);
-  };
-
-  const handleDragLeave = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsHovered(false);
   };
 
   const handleCreateDeckDialogClose = () => {
@@ -135,6 +120,20 @@ export default function HomeFolderList() {
     );
   };
 
+  const [{ canDrop, isOverCurrent }, dropRef] = useDrop({
+    accept: "ITEM",
+    drop: (item, monitor) => {
+      if (monitor.didDrop() || !item?.parentDeckFolder?._id) return;
+      handleDrop(item);
+    },
+    collect: (monitor) => ({
+      isOverCurrent: !!monitor.isOver({ shallow: true }),
+      canDrop: !!monitor.canDrop(),
+    }),
+  });
+
+  const isActive = isOverCurrent && canDrop;
+
   if (loading) {
     return <Skeleton sx={{ height: 390 }} variant="rounded" />;
   }
@@ -145,15 +144,13 @@ export default function HomeFolderList() {
         paddingTop: 1,
         paddingBottom: 3,
         paddingX: isMediumOrUp ? 2 : 0,
-        backgroundColor: isHovered
+        backgroundColor: isActive
           ? isDarkTheme
             ? "primary.dark"
             : "primary.light"
           : "",
       }}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
+      ref={dropRef}
     >
       {errorMsg ? (
         <Typography>{errorMsg}</Typography>

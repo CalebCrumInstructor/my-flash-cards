@@ -1,20 +1,16 @@
 import { Box } from "@mui/material";
 import { useDrag } from "react-dnd";
 
-export default function DraggableItem({ children }) {
-  const [{ isDragging }, dragRef] = useDrag({
+export default function DraggableItem({ children, item }) {
+  const [{ isDragging }, dragRef, preview] = useDrag({
     type: "ITEM",
+    item,
   });
 
   return (
-    <Box
-      ref={dragRef}
-      style={{
-        opacity: isDragging ? 0.5 : 1,
-        cursor: "move",
-      }}
-    >
-      {children}
+    <Box>
+      {preview(<div></div>)}
+      <Box ref={dragRef}>{children}</Box>
     </Box>
   );
 }
