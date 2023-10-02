@@ -67,7 +67,10 @@ export default function HomeFolder() {
           </Grid>
         </Box>
         {/* <Box>
-          <DraggableItem>drag me</DraggableItem>
+          <DraggableItem>
+            {" "}
+            <DropTarget>drag me</DropTarget>
+          </DraggableItem>
           <DropTarget>drop target</DropTarget>
         </Box> */}
         {!isMediumOrUp && selectedDecksArr.length > 0 && (

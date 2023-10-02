@@ -1,16 +1,10 @@
 import {
   ListItemButton,
-  ListItemIcon,
-  Collapse,
-  ListItemText,
   ListItem,
   IconButton,
   Checkbox,
   Stack,
   Typography,
-  Menu,
-  MenuItem,
-  Box,
 } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,20 +16,7 @@ import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CardDeckOptionsMenu from "../Menus/CardDeckOptionsMenu";
 
-const handleDragStart = (event, deckFolderId, oldParentFolderId) => {
-  event.stopPropagation();
-  event.dataTransfer.clearData();
-
-  const dragPreview = document.createElement("div");
-  event.dataTransfer.setDragImage(dragPreview, 0, 0);
-
-  const obj = {
-    deckFolderId,
-    oldParentFolderId,
-  };
-
-  event.dataTransfer.setData("text/plain", JSON.stringify(obj));
-};
+import DraggableItem from "../drag-and-drop/DraggableItem";
 
 export default function ListDeck({ deckFolder, paddingLeft }) {
   const dispatch = useDispatch();
@@ -43,7 +24,6 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
   const { selected } = useSelector(getDeckById(_id));
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isPressing, setIsPressing] = useState(false);
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
@@ -60,13 +40,7 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
   };
 
   return (
-    <Box
-      onDragStart={(event) =>
-        handleDragStart(event, _id, parentDeckFolder?._id)
-      }
-      draggable
-      key={_id}
-    >
+    <DraggableItem item={deckFolder}>
       <ListItem
         secondaryAction={
           <Stack direction={"row"}>
@@ -116,6 +90,6 @@ export default function ListDeck({ deckFolder, paddingLeft }) {
         parentDeckFolderId={parentDeckFolder?._id}
         deckFolderId={_id}
       />
-    </Box>
+    </DraggableItem>
   );
 }
