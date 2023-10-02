@@ -2,7 +2,7 @@
 
 A flash card app with a drag and drop folder system, rich card content (images, etc), and dynamic study sessions.
 
-### [myflashcards.org](myflashcards.org)
+### [myflashcards.org](https://www.myflashcards.org)
 
 ## Installation
 
