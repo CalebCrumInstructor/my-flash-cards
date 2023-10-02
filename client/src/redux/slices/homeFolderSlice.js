@@ -163,7 +163,6 @@ export const homeFolderSlice = createSlice({
         state.rootFolder = state.rootFolder.map((deckFolder) => returnFilteredDeckFolder(deckFolder, deckFolderId));
 
       } else {
-        console.log('hit')
         state.rootFolder = state.rootFolder.filter(({ _id }) => _id !== deckFolderId);
       };
 

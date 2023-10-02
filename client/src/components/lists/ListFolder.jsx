@@ -16,6 +16,8 @@ import { MOVE_DECK_FOLDER } from "../../graphql/mutations";
 import { useDispatch } from "react-redux";
 import { updateAfterFolderDeckMove } from "../../redux/slices/homeFolderSlice";
 import { useDrop } from "react-dnd";
+import PanToolIcon from "@mui/icons-material/PanTool";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
 import FolderIcon from "@mui/icons-material/Folder";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -41,6 +43,7 @@ export default function ListFolder({
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [secondAnchorEl, setSecondAnchorEl] = useState(null);
+  const [isMouseDown, setIsMouseDown] = useState(false);
 
   const [
     moveDeckFolder,
@@ -52,6 +55,7 @@ export default function ListFolder({
   };
 
   const handleOpenMenu = (event) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
@@ -62,6 +66,10 @@ export default function ListFolder({
   const handleOpenSecondMenu = (event) => {
     setSecondAnchorEl(anchorEl);
     setAnchorEl(null);
+  };
+
+  const onGrab = (event) => {
+    event.stopPropagation();
   };
 
   const handleDrop = async (item) => {
@@ -114,30 +122,25 @@ export default function ListFolder({
   const isActive = isOverCurrent && canDrop;
 
   return (
-    <Box ref={dropRef}>
-      <DraggableItem item={deckFolder}>
-        <ListItem
-          secondaryAction={
-            <Stack direction={"row"}>
-              <IconButton onClick={handleOpenMenu}>
-                <MoreVertIcon />
-              </IconButton>
-              {/* <IconButton>
-                <DragIndicatorIcon />
-              </IconButton> */}
-            </Stack>
-          }
-          disablePadding
+    <Box ref={dropRef} key={_id}>
+      <ListItem
+        disablePadding
+        sx={{
+          paddingLeft: paddingLeft,
+        }}
+        key={_id}
+      >
+        <ListItemButton
+          selected={isActive}
+          dense
+          onClick={() => handleListButtonOnClick(_id)}
           sx={{
-            paddingLeft: paddingLeft,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
           }}
-          key={_id}
         >
-          <ListItemButton
-            selected={isActive}
-            dense
-            onClick={() => handleListButtonOnClick(_id)}
-          >
+          <Stack direction={"row"}>
             <IconButton edge="start" disableRipple>
               {open ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
             </IconButton>
@@ -146,44 +149,55 @@ export default function ListFolder({
               {/* <ListItemText>{title}</ListItemText> */}
               <Typography className="line-clamp-1">{title}</Typography>
             </Stack>
-          </ListItemButton>
-        </ListItem>
-        <Collapse in={open} timeout={"auto"} unmountOnExit>
-          <div>
-            <AddItemToList
-              paddingLeft={paddingLeft + 4}
-              parentDeckFolderId={_id}
-              key={index}
-            />
-            {/* {subFolder?.length < 1 && (
+          </Stack>
+          <Stack direction={"row"}>
+            <IconButton onClick={handleOpenMenu} size="small">
+              <MoreVertIcon />
+            </IconButton>
+            <DraggableItem item={deckFolder}>
+              <IconButton size="small" onClick={onGrab}>
+                <DragIndicatorIcon className="grab-element" />
+              </IconButton>
+            </DraggableItem>
+          </Stack>
+        </ListItemButton>
+      </ListItem>
+      <Collapse in={open} timeout={"auto"} unmountOnExit>
+        <div>
+          <AddItemToList
+            paddingLeft={paddingLeft + 4}
+            parentDeckFolderId={_id}
+            key={index}
+          />
+          {/* {subFolder?.length < 1 && (
             )} */}
-            {moveDeckFolderLoading && (
-              <Skeleton sx={{ marginLeft: paddingLeft + 2, marginRight: 2 }} />
-            )}
-            {subFolder ? (
-              subFolder.map((deckFolder, index) => (
-                <ListDeckFolderItem
-                  deckFolder={deckFolder}
-                  handleListButtonOnClick={handleListButtonOnClick}
-                  paddingLeft={paddingLeft + 4}
-                  index={index}
-                />
-              ))
-            ) : (
-              <LoadDeckFolders marginLeft={paddingLeft + 4} _id={_id} />
-            )}
-          </div>
-        </Collapse>
-        <FolderOptionsMenu
-          handleCloseMenu={handleCloseMenu}
-          anchorEl={anchorEl}
-          parentDeckFolderId={parentDeckFolder?._id}
-          deckFolderId={_id}
-          handleOpenSecondMenu={handleOpenSecondMenu}
-          secondAnchorEl={secondAnchorEl}
-          handleCloseSecondMenu={handleCloseSecondMenu}
-        />
-      </DraggableItem>
+          {moveDeckFolderLoading && (
+            <Skeleton sx={{ marginLeft: paddingLeft + 2, marginRight: 2 }} />
+          )}
+          {subFolder ? (
+            subFolder.map((deckFolder, index) => (
+              <ListDeckFolderItem
+                deckFolder={deckFolder}
+                handleListButtonOnClick={handleListButtonOnClick}
+                paddingLeft={paddingLeft + 4}
+                index={index}
+                key={deckFolder._id}
+              />
+            ))
+          ) : (
+            <LoadDeckFolders marginLeft={paddingLeft + 4} _id={_id} />
+          )}
+        </div>
+      </Collapse>
+      <FolderOptionsMenu
+        handleCloseMenu={handleCloseMenu}
+        anchorEl={anchorEl}
+        parentDeckFolderId={parentDeckFolder?._id}
+        deckFolderId={_id}
+        handleOpenSecondMenu={handleOpenSecondMenu}
+        secondAnchorEl={secondAnchorEl}
+        handleCloseSecondMenu={handleCloseSecondMenu}
+      />
     </Box>
   );
 }

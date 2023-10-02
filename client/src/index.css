@@ -15,6 +15,15 @@ a {
   border-radius: 8px;
 }
 
+.grab-element {
+  cursor: grab;
+  /* Additional styles for your element */
+}
+
+.grab-element:active {
+  cursor: grabbing;
+}
+
 * {
   box-sizing: border-box;
 
