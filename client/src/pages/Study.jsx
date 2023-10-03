@@ -1,12 +1,4 @@
-import {
-  Stack,
-  Grid,
-  Button,
-  Typography,
-  Box,
-  LinearProgress,
-  Tooltip,
-} from "@mui/material";
+import { Stack, Button, Typography, Tooltip, IconButton } from "@mui/material";
 import Page from "../components/Page";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import { useBreakpoints } from "../hooks";
@@ -14,7 +6,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_DECKS } from "../graphql/queries";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getStudy,
@@ -25,6 +17,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import StudyGrid from "../components/grids/StudyGrid";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import StudyCompleteGrid from "../components/grids/StudyCompleteGrid";
+import StudySessionInfoDialog from "../components/Dialogs/StudySessionInfoDialog";
 
 const headContent = (
   <>
@@ -125,6 +118,21 @@ export default function Study() {
   const [searchParams] = useSearchParams();
   const deckIdsArr = JSON.parse(searchParams.get("deckIdsArr"));
 
+  const [studySessionInfoDialogOpen, setStudySessionInfoDialogOpen] =
+    useState(false);
+  const handleStudySessionInfoDialogClose = () => {
+    setStudySessionInfoDialogOpen(false);
+    localStorage.setItem("hasSeenStudySessionInfoDialog", true);
+  };
+  useEffect(() => {
+    const hasSeenStudySessionInfoDialog = localStorage.getItem(
+      "hasSeenStudySessionInfoDialog"
+    );
+
+    if (hasSeenStudySessionInfoDialog) return;
+    setStudySessionInfoDialogOpen(true);
+  }, []);
+
   const { data, loading, error } = useQuery(GET_DECKS, {
     variables: {
       deckIdsArr,
@@ -203,14 +211,18 @@ export default function Study() {
               >
                 End
               </Button>
-              <Tooltip
+              <HelpOutlineIcon
+                sx={{ cursor: "pointer" }}
+                onClick={() => setStudySessionInfoDialogOpen(true)}
+              />
+              {/* <Tooltip
                 title={<ToolTipContent />}
                 placement="bottom-start"
                 enterTouchDelay={1}
                 leaveTouchDelay={6000}
               >
                 <HelpOutlineIcon sx={{ cursor: "pointer" }} />
-              </Tooltip>
+              </Tooltip> */}
             </Stack>
           </Stack>
           {isComplete ? (
@@ -225,6 +237,10 @@ export default function Study() {
           )}
         </Stack>
       </DefaultLayout>
+      <StudySessionInfoDialog
+        open={studySessionInfoDialogOpen}
+        handleClose={handleStudySessionInfoDialogClose}
+      />
     </Page>
   );
 }
