@@ -156,14 +156,15 @@ export default function HomeFolderList() {
         <Typography>{errorMsg}</Typography>
       ) : (
         <List>
-          <AddItemToList paddingLeft={0} />
+          <AddItemToList paddingLeft={0} key={0} />
           {moveDeckFolderLoading && (
-            <Skeleton sx={{ marginLeft: 2, marginRight: 2 }} />
+            <Skeleton sx={{ marginLeft: 2, marginRight: 2 }} key={1} />
           )}
           {rootFolder.map((deckFolder) => (
             <ListDeckFolderItem
               deckFolder={deckFolder}
               handleListButtonOnClick={handleListButtonOnClick}
+              key={deckFolder._id}
             />
           ))}
         </List>
