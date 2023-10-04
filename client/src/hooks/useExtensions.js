@@ -153,7 +153,7 @@ export default function useExtensions({
       FontSize,
       HorizontalRule,
       Color,
-      Highlight,
+      Highlight.configure({ multicolor: true }),
       ResizableImage,
       // When images are dragged, we want to show the "drop cursor" for where they'll
       // land
