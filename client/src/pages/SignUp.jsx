@@ -68,7 +68,7 @@ export default function SignUp() {
       name: "secondPassword",
     },
     includeStarterDecks: {
-      val: true,
+      val: false,
       error: false,
       errorMsg: "Value Required",
       name: "includeStarterDecks",

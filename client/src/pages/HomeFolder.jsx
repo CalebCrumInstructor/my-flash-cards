@@ -18,10 +18,6 @@ const headContent = (
   </>
 );
 
-const setLocalStorage = () => {
-  localStorage.setItem("hasSeenMobileDragAndDropAlert", true);
-};
-
 export default function HomeFolder() {
   const theme = useTheme();
   const { isMediumOrUp, isLargeOrUp } = useBreakpoints();
@@ -89,7 +85,7 @@ export default function HomeFolder() {
         )}
         <Snackbar open={snackbarOpen}>
           <Alert severity="info" onClose={handleSnackbarClose}>
-            Currently, drag and drop features will work better on Desktop.
+            Currently, drag and drop features work better on Desktop.
           </Alert>
         </Snackbar>
       </DefaultLayout>
