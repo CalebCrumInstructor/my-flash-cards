@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getFolderById } from "../../redux/slices/homeFolderSlice";
+import { getUser } from "../../redux/slices/userSlice";
 import { useMutation } from "@apollo/client";
 import { MOVE_DECK_FOLDER } from "../../graphql/mutations";
 import { useDispatch } from "react-redux";
@@ -18,6 +19,7 @@ import { updateAfterFolderDeckMove } from "../../redux/slices/homeFolderSlice";
 import { useDrop } from "react-dnd";
 import PanToolIcon from "@mui/icons-material/PanTool";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import { checkDeckFolderOwnership } from "../../lib/helperFunctions";
 
 import FolderIcon from "@mui/icons-material/Folder";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -38,8 +40,14 @@ export default function ListFolder({
   index,
 }) {
   const dispatch = useDispatch();
-  const { title, _id, subFolder, parentDeckFolder } = deckFolder;
+  const { title, _id, subFolder, parentDeckFolder, createdByUser } = deckFolder;
   const { open } = useSelector(getFolderById(_id));
+  const { userData } = useSelector(getUser());
+  const { userIsOwner, deckFolderIsMovable } = checkDeckFolderOwnership(
+    useSelector(getFolderById(parentDeckFolder?._id)),
+    createdByUser,
+    userData
+  );
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [secondAnchorEl, setSecondAnchorEl] = useState(null);
@@ -147,10 +155,17 @@ export default function ListFolder({
             <Stack direction="row" alignItems={"center"} spacing={0.5}>
               <FolderIcon color="inherit" />
               {/* <ListItemText>{title}</ListItemText> */}
-              <Typography className="line-clamp-1">{title}</Typography>
+              <Typography className="line-clamp-1">
+                {userIsOwner ? title : `${title} (un-editable)`}
+              </Typography>
             </Stack>
           </Stack>
-          <Stack direction={"row"}>
+          <Stack
+            direction={"row"}
+            sx={{
+              visibility: !userIsOwner && "hidden",
+            }}
+          >
             <IconButton onClick={handleOpenMenu} size="small">
               <MoreVertIcon />
             </IconButton>
@@ -164,11 +179,13 @@ export default function ListFolder({
       </ListItem>
       <Collapse in={open} timeout={"auto"} unmountOnExit>
         <div>
-          <AddItemToList
-            paddingLeft={paddingLeft + 4}
-            parentDeckFolderId={_id}
-            key={index}
-          />
+          {userIsOwner && (
+            <AddItemToList
+              paddingLeft={paddingLeft + 4}
+              parentDeckFolderId={_id}
+              key={index}
+            />
+          )}
           {/* {subFolder?.length < 1 && (
             )} */}
           {moveDeckFolderLoading && (
@@ -197,6 +214,7 @@ export default function ListFolder({
         handleOpenSecondMenu={handleOpenSecondMenu}
         secondAnchorEl={secondAnchorEl}
         handleCloseSecondMenu={handleCloseSecondMenu}
+        userIsOwner={userIsOwner}
       />
     </Box>
   );

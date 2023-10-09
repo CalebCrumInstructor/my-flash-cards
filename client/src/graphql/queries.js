@@ -28,6 +28,7 @@ export const GET_ROOT_FOLDER = gql`
         cardCount
         isPrivate
         parentDeckFolderId
+        createdByUserId
       }
       folderArr {
         open
@@ -35,6 +36,7 @@ export const GET_ROOT_FOLDER = gql`
         title
         isPrivate
         parentDeckFolderId
+        createdByUserId
       }
       rootFolder {
         ...FolderDetails
@@ -62,12 +64,14 @@ export const GET_SUB_FOLDER_BY_ID_PRIVATE = gql`
         title
         isPrivate
         cardCount
+        createdByUserId
       }
       folderArr {
         open
         _id
         title
         isPrivate
+        createdByUserId
       }
       subFolder {
         ...FolderDetails

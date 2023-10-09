@@ -12,6 +12,9 @@ import {
   weightedRandomSelection,
   getDifferentCard,
 } from './studySliceHelpers';
+import {
+  checkDeckFolderOwnership,
+} from './checkDeckFolderOwnership';
 
 
 export {
@@ -26,4 +29,5 @@ export {
   returnDeckFolderById,
   weightedRandomSelection,
   getDifferentCard,
+  checkDeckFolderOwnership
 }

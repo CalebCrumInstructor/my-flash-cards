@@ -26,6 +26,7 @@ const initialState = {
       isFolder: false,
       parentDeckFolderId: null,
       deckFolderId: null,
+      userIsOwner: false
     },
     editFolderDialog: {
       open: false,

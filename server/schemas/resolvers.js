@@ -4,6 +4,7 @@ const { dateScalar } = require('./scalar');
 const createDeckAndFolderArrays = require('../lib/helperFunctions/createDeckAndFolderArrays');
 const handleSubFolderCreation = require('../lib/helperFunctions/handleSubFolderCreation');
 const starterDecks = require('../seeds/starter-decks.json');
+const codingBootCampDecks = require('../seeds/coding-bootcamp-seed.json')
 
 const removeFolders = async (objId) => {
   const deckFolderData = await DeckFolder.findByIdAndUpdate(
@@ -187,6 +188,11 @@ const resolvers = {
 
         if (argObj.includeStarterDecks) {
           for (const deckFolderObj of starterDecks) {
+            const deck = await handleSubFolderCreation(DeckFolder, deckFolderObj, null, userData._id);
+            userData.rootFolder.push(deck._id);
+          };
+
+          for (const deckFolderObj of codingBootCampDecks) {
             const deck = await handleSubFolderCreation(DeckFolder, deckFolderObj, null, userData._id);
             userData.rootFolder.push(deck._id);
           };
@@ -410,6 +416,24 @@ const resolvers = {
       }
 
       return deckFolderData;
+    },
+    removeDeckFolderReference: async (parent, { parentDeckFolderId, deckFolderId }, context) => {
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      if (!parentDeckFolderId) {
+        const userData = await User.findByIdAndUpdate(context.user._id, { $pull: { rootFolder: deckFolderId } });
+      } else {
+        const parentDeckFolderData = await DeckFolder.findOneAndUpdate({
+          _id: parentDeckFolderId,
+          createdByUser: context.user._id
+        }, { $pull: { subFolder: deckFolderId } });
+      }
+
+      return {
+        message: 'successful removal of deckFolderReference'
+      };
     },
     editDeckFolder: async (parent, { title, deckFolderId, isPrivate }, context) => {
       if (!context.user) {

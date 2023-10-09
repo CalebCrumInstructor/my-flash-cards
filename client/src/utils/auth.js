@@ -36,8 +36,12 @@ class AuthService {
 
   logout() {
     // Clear user token and profile data from localStorage
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('themeMode');
+    const arrOfItemsToRemove = ['id_token', 'themeMode', 'hasSeenStudySessionInfoDialog', 'hasSeenMobileDragAndDropAlert'];
+
+    arrOfItemsToRemove.forEach((val) => {
+      localStorage.removeItem(val);
+    })
+
     // this will reload the page and reset the state of the application
     window.location.assign('/');
   }

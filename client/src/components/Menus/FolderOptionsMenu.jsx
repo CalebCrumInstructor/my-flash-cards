@@ -14,6 +14,7 @@ export default function FolderOptionsMenu({
   secondAnchorEl,
   handleCloseSecondMenu,
   handleOpenSecondMenu,
+  userIsOwner,
 }) {
   const dispatch = useDispatch();
 
@@ -48,6 +49,7 @@ export default function FolderOptionsMenu({
         parentDeckFolderId,
         deckFolderId,
         isFolder: true,
+        userIsOwner,
       })
     );
   };
@@ -81,13 +83,23 @@ export default function FolderOptionsMenu({
         open={Boolean(anchorEl)}
         onClose={handleCloseMenu}
       >
-        <MenuItem onClick={handleOpenSecondMenu}>
+        <MenuItem
+          onClick={handleOpenSecondMenu}
+          sx={{
+            display: !userIsOwner && "none",
+          }}
+        >
           <ListItemIcon>
             <AddCircleOutlineIcon />
           </ListItemIcon>
           <ListItemText sx={{ marginRight: 0.5 }}>Add</ListItemText>
         </MenuItem>
-        <MenuItem onClick={openEditFolderDialog}>
+        <MenuItem
+          onClick={openEditFolderDialog}
+          sx={{
+            display: !userIsOwner && "none",
+          }}
+        >
           <ListItemIcon>
             <EditIcon />
           </ListItemIcon>

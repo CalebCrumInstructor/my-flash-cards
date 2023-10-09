@@ -1,5 +1,5 @@
 const findAndReturnFolders = (deckFolder, folderArr, deckArr) => {
-  const { title, cardCount, _id, parentDeckFolder, isFolder, isPrivate } = deckFolder;
+  const { title, cardCount, _id, parentDeckFolder, isFolder, isPrivate, createdByUser } = deckFolder;
   if (!isFolder) {
     deckArr.push({
       selected: false,
@@ -7,7 +7,8 @@ const findAndReturnFolders = (deckFolder, folderArr, deckArr) => {
       title,
       cardCount,
       isPrivate,
-      parentDeckFolderId: parentDeckFolder ? parentDeckFolder : null
+      parentDeckFolderId: parentDeckFolder ? parentDeckFolder : null,
+      createdByUserId: createdByUser ? createdByUser : null
     })
     return;
   };
@@ -21,7 +22,8 @@ const findAndReturnFolders = (deckFolder, folderArr, deckArr) => {
     _id,
     title,
     isPrivate,
-    parentDeckFolderId: parentDeckFolder ? parentDeckFolder : null
+    parentDeckFolderId: parentDeckFolder ? parentDeckFolder : null,
+    createdByUserId: createdByUser ? createdByUser : null
   });
 
 };

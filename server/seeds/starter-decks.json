@@ -1,207 +1,5 @@
 [
   {
-    "title": "Coding",
-    "isFolder": true,
-    "subFolder": [
-      {
-        "title": "HTML",
-        "isFolder": false,
-        "cards": [
-          {
-            "frontContent": "What does HTML stand for?",
-            "backContent": "HyperText Markup Language"
-          },
-          {
-            "frontContent": "What is the purpose of HTML?",
-            "backContent": "HTML is used to create the structure of a web page by defining elements like headings, paragraphs, links, images, etc."
-          },
-          {
-            "frontContent": "What is an HTML element?",
-            "backContent": "An HTML element is a building block of a web page. It consists of a start tag, content, and an end tag. Example: <tag>content</tag>"
-          },
-          {
-            "frontContent": "What is an HTML tag?",
-            "backContent": "An HTML tag is a special code that is used to define various elements on a web page. Tags are enclosed in angle brackets (<>)."
-          },
-          {
-            "frontContent": "What is the basic structure of an HTML document?",
-            "backContent": "<!DOCTYPE html>\n<html>\n  <head>\n    <title>Title of the page</title>\n  </head>\n  <body>\n    Content of the page\n  </body>\n</html>"
-          },
-          {
-            "frontContent": "What is the purpose of the <!DOCTYPE html> declaration?",
-            "backContent": "It specifies the version of HTML that the document is using. In this case, it indicates HTML5."
-          },
-          {
-            "frontContent": "What is an HTML attribute?",
-            "backContent": "An HTML attribute provides additional information about an element. Attributes are always included in the opening tag and are written as name-value pairs (name=\"value\")."
-          },
-          {
-            "frontContent": "What is an HTML class?",
-            "backContent": "An HTML class is an attribute used to apply styles or behaviors to multiple elements with the same class name. It is defined using the class attribute."
-          },
-          {
-            "frontContent": "What is an HTML ID?",
-            "backContent": "An HTML ID is a unique identifier for an element. It is used to apply styles or behaviors to a specific element. It is defined using the id attribute."
-          },
-          {
-            "frontContent": "What is an HTML hyperlink?",
-            "backContent": "An HTML hyperlink (or anchor) is used to create a clickable link to another page or resource. It is defined using the <a> element."
-          },
-          {
-            "frontContent": "What is an HTML list?",
-            "backContent": "An HTML list is used to organize content into an ordered or unordered list. It is defined using the <ul> (unordered) or <ol> (ordered) element, along with <li> elements for each list item."
-          },
-          {
-            "frontContent": "What is an HTML image element?",
-            "backContent": "The <img> element is used to display an image on a web page. It is a self-closing tag and requires the 'src' attribute to specify the image source."
-          }
-        ]
-      },
-      {
-        "title": "CSS",
-        "isFolder": false,
-        "cards": [
-          {
-            "frontContent": "What does CSS stand for?",
-            "backContent": "Cascading Style Sheets"
-          },
-          {
-            "frontContent": "What is the purpose of CSS?",
-            "backContent": "CSS is used to style the visual presentation of a web page. It controls layout, colors, fonts, and other design aspects."
-          },
-          {
-            "frontContent": "What is the basic syntax of a CSS rule?",
-            "backContent": "selector {\n  property: value;\n}"
-          },
-          {
-            "frontContent": "What is a CSS selector?",
-            "backContent": "A CSS selector is used to target and apply styles to HTML elements. It can be an element name, class, ID, or other attribute."
-          },
-          {
-            "frontContent": "What is the 'box model' in CSS?",
-            "backContent": "The box model refers to how elements are structured in CSS, including content, padding, border, and margin."
-          },
-          {
-            "frontContent": "What is the purpose of 'padding' in CSS?",
-            "backContent": "Padding is the space between the content of an element and its border. It can be used to create space around an element's content."
-          },
-          {
-            "frontContent": "What is the purpose of 'margin' in CSS?",
-            "backContent": "Margin is the space outside an element. It controls the space between elements on a page."
-          },
-          {
-            "frontContent": "What is the purpose of 'border' in CSS?",
-            "backContent": "Border is the area around an element's content and padding. It can be used to create visual boundaries."
-          },
-          {
-            "frontContent": "What is a CSS class selector?",
-            "backContent": "A class selector targets elements with a specific class attribute. It is denoted by a period (.) followed by the class name."
-          },
-          {
-            "frontContent": "What is a CSS ID selector?",
-            "backContent": "An ID selector targets a specific element with a unique ID attribute. It is denoted by a hash (#) followed by the ID name."
-          },
-          {
-            "frontContent": "What is the purpose of 'float' in CSS?",
-            "backContent": "The 'float' property is used to position elements horizontally. It can be used to create a multi-column layout."
-          },
-          {
-            "frontContent": "What is the purpose of 'display' property in CSS?",
-            "backContent": "The 'display' property determines how an element should be displayed on a web page. It can change the behavior of elements from block to inline, or vice versa."
-          }
-        ]
-      },
-      {
-        "title": "JavaScript",
-        "isFolder": false,
-        "cards": [
-          {
-            "frontContent": "What is JavaScript?",
-            "backContent": "JavaScript is a high-level programming language that is commonly used to create interactive effects within web browsers."
-          },
-          {
-            "frontContent": "Who developed JavaScript?",
-            "backContent": "Brendan Eich"
-          },
-          {
-            "frontContent": "What is the purpose of a 'for' loop in JavaScript?",
-            "backContent": "A 'for' loop is used to repeatedly execute a block of code a specified number of times."
-          },
-          {
-            "frontContent": "What is a 'closure' in JavaScript?",
-            "backContent": "A closure is a function that has access to its own scope, the outer function's scope, and the global scope, even after the outer function has finished executing."
-          },
-          {
-            "frontContent": "What is 'hoisting' in JavaScript?",
-            "backContent": "Hoisting is a mechanism in JavaScript that moves variable and function declarations to the top of their containing scope during the compile phase."
-          },
-          {
-            "frontContent": "What is an 'arrow function' in JavaScript?",
-            "backContent": "An arrow function is a more concise way to write function expressions in JavaScript. It does not have its own 'this' and 'arguments' binding."
-          },
-          {
-            "frontContent": "What is 'callback hell' in JavaScript?",
-            "backContent": "Callback hell refers to the situation where callbacks are nested within other callbacks, leading to code that is hard to read and maintain."
-          },
-          {
-            "frontContent": "What is 'JSON' in JavaScript?",
-            "backContent": "JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write and easy for machines to parse and generate."
-          },
-          {
-            "frontContent": "What is the purpose of the 'typeof' operator in JavaScript?",
-            "backContent": "The 'typeof' operator is used to determine the data type of a variable or expression."
-          },
-          {
-            "frontContent": "What is 'ECMAScript'?",
-            "backContent": "ECMAScript is the standard upon which JavaScript is based. It is maintained by ECMA International."
-          },
-          {
-            "frontContent": "What is a 'promise' in JavaScript?",
-            "backContent": "A promise is an object that represents the eventual completion or failure of an asynchronous operation."
-          },
-          {
-            "frontContent": "What does 'DOM' stand for in the context of JavaScript?",
-            "backContent": "DOM stands for Document Object Model. It represents the structure of a document as a tree of objects, allowing programs to manipulate the content and structure of a document."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "title": "Riddles",
-    "isFolder": false,
-    "cards": [
-      {
-        "frontContent": "What has roots as nobody sees,\nIs taller than trees,\nUp, up it goes,\nAnd yet never grows?",
-        "backContent": "Mountain"
-      },
-      {
-        "frontContent": "Voiceless it cries,\nWingless flutters,\nToothless bites,\nMouthless mutters.",
-        "backContent": "Wind"
-      },
-      {
-        "frontContent": "An eye in a blue face\nSaw an eye in a green face.\n'That eye is like to this eye'\nSaid the first eye,\n'But in low place,\nNot in high place.'",
-        "backContent": "Sun on daisies"
-      },
-      {
-        "frontContent": "It cannot be seen, cannot be felt,\nCannot be heard, cannot be smelt.\nIt lies behind stars and under hills,\nAnd empty holes it fills.\nIt comes first and follows after,\nEnds life, kills laughter.",
-        "backContent": "Darkness"
-      },
-      {
-        "frontContent": "A box without hinges, key, or lid,\nYet golden treasure inside is hid.",
-        "backContent": "Egg"
-      },
-      {
-        "frontContent": "Alive without breath,\nAs cold as death;\nNever thirsty, ever drinking,\nAll in mail never clinking.",
-        "backContent": "Fish"
-      },
-      {
-        "frontContent": "No-legs lay on one-leg,\ntwo-legs sat near on three-legs,\nfour-legs got some.",
-        "backContent": "Fish on a little table, man on a stool, the cat gets the scraps."
-      }
-    ]
-  },
-  {
     "title": "Trivia",
     "isFolder": true,
     "subFolder": [
@@ -482,6 +280,40 @@
             ]
           }
         ]
+      }
+    ]
+  },
+  {
+    "title": "Riddles",
+    "isFolder": false,
+    "cards": [
+      {
+        "frontContent": "What has roots as nobody sees,\nIs taller than trees,\nUp, up it goes,\nAnd yet never grows?",
+        "backContent": "Mountain"
+      },
+      {
+        "frontContent": "Voiceless it cries,\nWingless flutters,\nToothless bites,\nMouthless mutters.",
+        "backContent": "Wind"
+      },
+      {
+        "frontContent": "An eye in a blue face\nSaw an eye in a green face.\n'That eye is like to this eye'\nSaid the first eye,\n'But in low place,\nNot in high place.'",
+        "backContent": "Sun on daisies"
+      },
+      {
+        "frontContent": "It cannot be seen, cannot be felt,\nCannot be heard, cannot be smelt.\nIt lies behind stars and under hills,\nAnd empty holes it fills.\nIt comes first and follows after,\nEnds life, kills laughter.",
+        "backContent": "Darkness"
+      },
+      {
+        "frontContent": "A box without hinges, key, or lid,\nYet golden treasure inside is hid.",
+        "backContent": "Egg"
+      },
+      {
+        "frontContent": "Alive without breath,\nAs cold as death;\nNever thirsty, ever drinking,\nAll in mail never clinking.",
+        "backContent": "Fish"
+      },
+      {
+        "frontContent": "No-legs lay on one-leg,\ntwo-legs sat near on three-legs,\nfour-legs got some.",
+        "backContent": "Fish on a little table, man on a stool, the cat gets the scraps."
       }
     ]
   }
