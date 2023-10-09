@@ -181,6 +181,7 @@ export default function HomeFolderList() {
             ? folders[dialogs.deleteDeckFolder.deckFolderId]
             : decks[dialogs.deleteDeckFolder.deckFolderId]
         }
+        userIsOwner={dialogs.deleteDeckFolder.userIsOwner}
         alterStateAfterSuccess={(obj) => dispatch(removeDeckFolder(obj))}
       />
       <EditFolderDialog

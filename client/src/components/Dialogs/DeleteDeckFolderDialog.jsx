@@ -11,7 +11,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { DELETE_FOLDER } from "../../graphql/mutations";
+import {
+  DELETE_FOLDER,
+  REMOVE_DECK_FOLDER_REFERENCE,
+} from "../../graphql/mutations";
 import { clearAllErrors } from "../../lib/helperFunctions";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
@@ -22,9 +25,15 @@ export default function DeleteDeckFolderDialog({
   parentDeckFolderId,
   deckFolderId,
   deckFolder,
+  userIsOwner,
   alterStateAfterSuccess = () => {},
 }) {
   const [deleteFolder, { loading, error }] = useMutation(DELETE_FOLDER);
+  const [
+    removeDeckFolderReference,
+    { loading: removeRefLoading, error: removeRefError },
+  ] = useMutation(REMOVE_DECK_FOLDER_REFERENCE);
+
   const [deckFolderInput, setDeckFolderInput] = useState({
     title: {
       val: "",
@@ -73,13 +82,24 @@ export default function DeleteDeckFolderDialog({
         variables.parentDeckFolderId = parentDeckFolderId;
       }
 
-      const { data } = await deleteFolder({
-        variables,
-      });
+      if (userIsOwner) {
+        const { data } = await deleteFolder({
+          variables,
+        });
 
-      if (error) {
-        console.log(error);
-        return;
+        if (error) {
+          console.log(error);
+          return;
+        }
+      } else {
+        const { data } = await removeDeckFolderReference({
+          variables,
+        });
+
+        if (removeRefError) {
+          console.log(removeRefError);
+          return;
+        }
       }
 
       alterStateAfterSuccess({ ...variables, isFolder });
@@ -93,7 +113,7 @@ export default function DeleteDeckFolderDialog({
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
       <form onSubmit={handleOnSubmit}>
         <DialogTitle color={"error"}>
-          Delete {isFolder ? "Folder" : "Deck"}
+          Delete {isFolder ? "Folder" : "Deck"} {!userIsOwner && "Reference"}
         </DialogTitle>
         <DialogContent>
           <Stack spacing={2}>
@@ -132,7 +152,7 @@ export default function DeleteDeckFolderDialog({
           </Stack>
         </DialogContent>
         <DialogActions>
-          {loading ? (
+          {loading || removeRefLoading ? (
             <CircularProgress />
           ) : (
             <>

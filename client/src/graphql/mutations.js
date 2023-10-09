@@ -111,3 +111,11 @@ export const DELETE_CARDS = gql`
     }
   }
 `
+
+export const REMOVE_DECK_FOLDER_REFERENCE = gql`
+  mutation RemoveDeckFolderReference($deckFolderId: String!, $parentDeckFolderId: String) {
+    removeDeckFolderReference(deckFolderId: $deckFolderId, parentDeckFolderId: $parentDeckFolderId) {
+      message
+    }
+  }
+`

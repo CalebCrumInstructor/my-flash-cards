@@ -12,6 +12,9 @@ fragment FolderDetails on DeckFolder {
   parentDeckFolder {
     _id
   }
+  createdByUser {
+    _id
+  }
   createdAt
   updatedAt
 }

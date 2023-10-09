@@ -51,6 +51,7 @@ const typeDefs = `
     cardCount: Int
     isPrivate: Boolean
     parentDeckFolderId: ID
+    createdByUserId: ID
   }
 
   type FolderObjForArr {
@@ -59,6 +60,7 @@ const typeDefs = `
     title: String
     isPrivate: Boolean
     parentDeckFolderId: ID
+    createdByUserId: ID
   }
 
   type RootFolderDepthOfFourType {
@@ -97,6 +99,7 @@ const typeDefs = `
     editDeckFolder(title: String!, deckFolderId: String!, isPrivate: Boolean): SuccessObj
     moveDeckFolder(deckFolderId: String!, oldParentFolderId: String, newParentFolderId: String): SuccessObj
     deleteFolder(parentDeckFolderId: String, deckFolderId: String!): DeckFolder
+    removeDeckFolderReference(parentDeckFolderId: String, deckFolderId: String!): SuccessObj
   }
 `;
 
