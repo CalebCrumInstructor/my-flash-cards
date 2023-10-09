@@ -142,7 +142,14 @@ const resolvers = {
 
       try {
         const data = await DeckFolder.find({
-          createdByUser: context.user._id,
+          $or: [
+            {
+              createdByUser: context.user._id
+            },
+            {
+              isPrivate: false
+            }
+          ],
           isFolder: false,
           status: { $ne: 'removed' },
           _id: {
@@ -191,11 +198,7 @@ const resolvers = {
             const deck = await handleSubFolderCreation(DeckFolder, deckFolderObj, null, userData._id);
             userData.rootFolder.push(deck._id);
           };
-
-          for (const deckFolderObj of codingBootCampDecks) {
-            const deck = await handleSubFolderCreation(DeckFolder, deckFolderObj, null, userData._id);
-            userData.rootFolder.push(deck._id);
-          };
+          userData.rootFolder.push(process.env.CODING_BOOTCAMP_DECK_FOLDER_ID);
 
           await userData.save();
         }
