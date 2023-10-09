@@ -156,7 +156,7 @@ export default function ListFolder({
               <FolderIcon color="inherit" />
               {/* <ListItemText>{title}</ListItemText> */}
               <Typography className="line-clamp-1">
-                {userIsOwner ? title : `${title} (un-editable)`}
+                {userIsOwner ? title : `${title} (uneditable)`}
               </Typography>
             </Stack>
           </Stack>
